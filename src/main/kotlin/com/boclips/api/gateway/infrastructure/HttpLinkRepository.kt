@@ -1,18 +1,15 @@
 package com.boclips.api.gateway.infrastructure
 
-import com.boclips.api.gateway.config.RoutingProperties
 import com.boclips.api.gateway.domain.model.Link
 import com.boclips.api.gateway.domain.model.LinkRepository
 import org.springframework.boot.web.client.RestTemplateBuilder
-import org.springframework.stereotype.Service
 
-@Service
-class MarketingServiceLinkRepository(
+class HttpLinkRepository(
         restTemplateBuilder: RestTemplateBuilder,
-        routingProperties: RoutingProperties
+        rootUri: String
 ) : LinkRepository {
 
-    val restTemplate = restTemplateBuilder.rootUri(routingProperties.marketingServiceUrl).build()
+    val restTemplate = restTemplateBuilder.rootUri(rootUri).build()
 
     override fun findAll(): List<Link> {
         val links: Links = restTemplate.getForObject("/v1/", Links::class.java)!!

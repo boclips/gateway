@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 
-internal class MarketingServiceLinkRepositoryTest : AbstractSpringIntergrationTest() {
+internal class HttpLinkRepositoryTest : AbstractSpringIntergrationTest() {
 
     @Autowired
-    lateinit var subject: MarketingServiceLinkRepository
+    lateinit var marketingServiceLinkRepository: HttpLinkRepository
 
     @Test
     fun `extracts all available links`() {
@@ -21,21 +21,21 @@ internal class MarketingServiceLinkRepositoryTest : AbstractSpringIntergrationTe
                                 """
                                     {
                                       "_links": {
-                                            "marketingCollection": {
-                                                "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections/{id}",
+                                            "peanuts": {
+                                                "href": "http://example.com/1",
                                                 "templated": true
                                             },
-                                            "marketingCollections": {
-                                                "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections"
+                                            "walnuts": {
+                                                "href": "http://example.com/2"
                                             }
                                         }
                                     }
                                 """
                         )))
 
-        Assertions.assertThat(subject.findAll().map { it.href }).containsExactlyInAnyOrder(
-                "${routingProperties.marketingServiceUrl}/v1/marketing-collections/{id}",
-                "${routingProperties.marketingServiceUrl}/v1/marketing-collections"
+        Assertions.assertThat(marketingServiceLinkRepository.findAll().map { it.href }).containsExactlyInAnyOrder(
+                "http://example.com/1",
+                "http://example.com/2"
         )
     }
 }
