@@ -8,7 +8,7 @@ export GRADLE_USER_HOME=".gradle"
 version=$(cat version/version)
 
 (
-cd source/gateway
+cd source
 ./gradlew -Pversion=${version} clean build --rerun-tasks
 )
 
