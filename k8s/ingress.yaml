@@ -14,3 +14,10 @@ spec:
         backend:
           serviceName: gateway
           servicePort: http
+  - host: backoffice.${DOMAIN}
+    http:
+      paths:
+      - path: /v1
+        backend:
+          serviceName: gateway
+          servicePort: http
