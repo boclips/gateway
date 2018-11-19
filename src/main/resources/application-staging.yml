@@ -1,0 +1,4 @@
+gateway:
+  services:
+    videoIngestorUrl: https://video-ingestor.staging-boclips.com
+    marketingServiceUrl: https://marketing-service.staging-boclips.com
