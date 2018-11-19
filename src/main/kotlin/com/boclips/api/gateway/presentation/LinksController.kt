@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.util.UriComponentsBuilder
 
 @RestController
+@RequestMapping("/v1")
 class LinksController(
         val getLinks: GetLinks
 ) {

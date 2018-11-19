@@ -49,7 +49,7 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                                 """
                         )))
 
-        val response = restTemplate.getForObject("/", Map::class.java)
+        val response = restTemplate.getForObject("/v1/", Map::class.java)
         assertThat(response).isEqualTo(objectMapper.readValue(
                 """
             {
