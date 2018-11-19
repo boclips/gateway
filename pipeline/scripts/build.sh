@@ -12,4 +12,4 @@ cd source/gateway
 ./gradlew -Pversion=${version} clean build --rerun-tasks
 )
 
-cp -a source/gateway/* dist/
+cp -a source/* dist/
