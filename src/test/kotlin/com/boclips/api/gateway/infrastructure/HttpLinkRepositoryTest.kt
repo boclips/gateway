@@ -1,13 +1,13 @@
 package com.boclips.api.gateway.infrastructure
 
-import com.boclips.api.gateway.testsupport.AbstractSpringIntergrationTest
+import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
 import com.github.tomakehurst.wiremock.client.WireMock
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 
-internal class HttpLinkRepositoryTest : AbstractSpringIntergrationTest() {
+internal class HttpLinkRepositoryTest : AbstractSpringIntegrationTest() {
 
     @Autowired
     lateinit var marketingServiceLinkRepository: HttpLinkRepository

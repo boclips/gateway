@@ -1,12 +1,12 @@
 package com.boclips.api.gateway
 
-import com.boclips.api.gateway.testsupport.AbstractSpringIntergrationTest
+import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 
-class ProxyingE2eTest : AbstractSpringIntergrationTest() {
+class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `marketing-collections are proxied to marketing-service`() {

@@ -1,8 +1,8 @@
 package com.boclips.api.gateway.testsupport
 
-import com.boclips.api.gateway.testsupport.AbstractSpringIntergrationTest.Companion.MARKETING_SERVICE_PORT
+import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.MARKETING_SERVICE_PORT
 import com.boclips.api.gateway.config.RoutingProperties
-import com.boclips.api.gateway.testsupport.AbstractSpringIntergrationTest.Companion.VIDEO_INGESTOR_PORT
+import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.VIDEO_INGESTOR_PORT
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
@@ -25,7 +25,7 @@ import org.springframework.web.client.RestTemplate
     "gateway.services.marketingServiceUrl=http://localhost:$MARKETING_SERVICE_PORT",
     "gateway.services.videoIngestorUrl=http://localhost:$VIDEO_INGESTOR_PORT"
 ])
-abstract class AbstractSpringIntergrationTest {
+abstract class AbstractSpringIntegrationTest {
 
     @LocalServerPort
     lateinit var appPort: String

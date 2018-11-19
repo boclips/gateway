@@ -1,12 +1,12 @@
 package com.boclips.api.gateway
 
-import com.boclips.api.gateway.testsupport.AbstractSpringIntergrationTest
+import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class LinksE2eTest : AbstractSpringIntergrationTest() {
+class LinksE2eTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `aggregates services links`() {
@@ -49,7 +49,7 @@ class LinksE2eTest : AbstractSpringIntergrationTest() {
                                 """
                         )))
 
-        val response = restTemplate.getForObject("/v1/", Map::class.java)
+        val response = restTemplate.getForObject("/", Map::class.java)
         assertThat(response).isEqualTo(objectMapper.readValue(
                 """
             {
