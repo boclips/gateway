@@ -1,21 +1,22 @@
 package com.boclips.api.gateway.infrastructure
 
+import com.boclips.api.gateway.domain.model.RequestDomain
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
-import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 
-internal class HttpLinkRepositoryTest : AbstractSpringIntegrationTest() {
+class HttpLinkRepositoryTest : AbstractSpringIntegrationTest() {
 
     @Autowired
     lateinit var marketingServiceLinkRepository: HttpLinkRepository
 
     @Test
     fun `extracts all available links`() {
-        marketingServiceMock.register(WireMock.get(WireMock.urlEqualTo("/v1/"))
-                .willReturn(WireMock.aResponse()
+        marketingServiceMock.register(get(urlEqualTo("/v1/"))
+                .willReturn(aResponse()
                         .withHeader("Content-Type", "application/hal+json")
                         .withBody(
                                 """
@@ -33,9 +34,10 @@ internal class HttpLinkRepositoryTest : AbstractSpringIntegrationTest() {
                                 """
                         )))
 
-        Assertions.assertThat(marketingServiceLinkRepository.findAll().map { it.href }).containsExactlyInAnyOrder(
+        Assertions.assertThat(marketingServiceLinkRepository.findAll(RequestDomain(protocol = "http", host = "example.com", port = 80)).map { it.href }).containsExactlyInAnyOrder(
                 "http://example.com/1",
                 "http://example.com/2"
         )
     }
+
 }

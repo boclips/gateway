@@ -12,11 +12,11 @@ class RoutesConfig {
     fun routeLocator(builder: RouteLocatorBuilder, routingProperties: RoutingProperties): RouteLocator {
         return builder.routes()
                 .route { p ->
-                            p.path("/v1/marketing-collections/**")
+                    p.path("/v1/marketing-collections/**")
                             .uri(routingProperties.marketingServiceUrl)
                 }
                 .route { p ->
-                            p.path("/v1/jobs/**")
+                    p.path("/v1/jobs/**")
                             .uri(routingProperties.videoIngestorUrl)
                 }
 

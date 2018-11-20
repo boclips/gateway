@@ -8,7 +8,7 @@ class LinksToLinksResourceConverter {
 
     fun convert(links: List<Link>): LinksResource {
         val linkEntries = mutableMapOf<String, Map<String, Any>>()
-        links.forEach{
+        links.forEach {
             linkEntries[it.rel] = mapOf(
                     "href" to it.href,
                     "templated" to it.templated

@@ -55,19 +55,19 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
             {
                 "_links": {
                     "jobDetails": {
-                        "href": "$gatewayBaseUrl/v1/jobs/{id}",
+                        "href": "${routingProperties.videoIngestorUrl}/v1/jobs/{id}",
                         "templated": true
                     },
                     "jobs": {
-                        "href": "$gatewayBaseUrl/v1/jobs?page=0&size=20",
+                        "href": "${routingProperties.videoIngestorUrl}/v1/jobs?page=0&size=20",
                         "templated": false
                     },
                     "marketingCollection": {
-                        "href": "$gatewayBaseUrl/v1/marketing-collections/{id}",
+                        "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections/{id}",
                         "templated": true
                     },
                     "marketingCollections": {
-                        "href": "$gatewayBaseUrl/v1/marketing-collections",
+                        "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections",
                         "templated": false
                     }
                 }

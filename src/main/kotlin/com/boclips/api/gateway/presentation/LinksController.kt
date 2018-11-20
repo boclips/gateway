@@ -1,7 +1,7 @@
 package com.boclips.api.gateway.presentation
 
 import com.boclips.api.gateway.application.GetLinks
-import com.boclips.api.gateway.domain.model.LinkRepository
+import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -14,6 +14,9 @@ class LinksController(
 ) {
 
     @GetMapping("", "/")
-    fun getLinks(uriBuilder: UriComponentsBuilder) = getLinks.execute(uriBuilder.toUriString())
+    fun getLinks(uriBuilder: UriComponentsBuilder, serverHttpRequest: ServerHttpRequest): LinksResource {
+        return getLinks.execute(
+                uriBuilder, serverHttpRequest)
+    }
 
 }

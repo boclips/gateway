@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 
 @Component
 @ConfigurationProperties("gateway.services")
-class RoutingProperties{
+class RoutingProperties {
     lateinit var marketingServiceUrl: String
     lateinit var videoIngestorUrl: String
 }
