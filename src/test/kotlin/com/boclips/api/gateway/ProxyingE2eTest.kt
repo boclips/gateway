@@ -2,8 +2,12 @@ package com.boclips.api.gateway
 
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.github.tomakehurst.wiremock.matching.AnythingPattern
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 
 
 class ProxyingE2eTest : AbstractSpringIntegrationTest() {
@@ -57,16 +61,45 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
-    fun `gateway request contains X-Forwarded-Host header`() {
+    fun `gateway request propagates X-Forwarded-* headers when present`() {
         marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/hal+json")
                         .withBody(""))
         )
 
-        restTemplate.getForObject("/v1/marketing-collections", String::class.java)
+        val headers = HttpHeaders().apply {
+            set("X-Forwarded-Host", "example.com")
+            set("X-Forwarded-Port", "443")
+            set("X-Forwarded-Proto", "https")
+        }
+        val entity = HttpEntity(null, headers)
+        restTemplate.exchange("/v1/marketing-collections", HttpMethod.GET, entity, String::class.java)
+
         marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/marketing-collections"))
-                .withHeader("X-Forwarded-Host", equalTo("localhost:$appPort")))
+                .withHeader("X-Forwarded-Host", equalTo("example.com"))
+                .withHeader("X-Forwarded-Proto", equalTo("https"))
+                .withHeader("X-Forwarded-Port", equalTo("443"))
+        )
+    }
+
+    @Test
+    fun `gateway request sets X-Forwarded-* headers when headers not present`() {
+        marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/hal+json")
+                        .withBody(""))
+        )
+
+        val headers = HttpHeaders()
+        val entity = HttpEntity(null, headers)
+        restTemplate.exchange("/v1/marketing-collections", HttpMethod.GET, entity, String::class.java)
+
+        marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/marketing-collections"))
+                .withHeader("X-Forwarded-Host", equalTo("localhost"))
+                .withHeader("X-Forwarded-Proto", equalTo("http"))
+                .withHeader("X-Forwarded-Port", AnythingPattern())
+        )
     }
 
 }
