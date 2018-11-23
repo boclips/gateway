@@ -2,3 +2,20 @@ gateway:
   services:
     videoIngestorUrl: https://video-ingestor.staging-boclips.com
     marketingServiceUrl: https://marketing-service.staging-boclips.com
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            maxAge: 1800
+            allowedOrigins: "*"
+            allowCredentials: true
+            allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - PATCH
+            - OPTIONS
