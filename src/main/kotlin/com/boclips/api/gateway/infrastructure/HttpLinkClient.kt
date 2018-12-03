@@ -20,7 +20,12 @@ class HttpLinkClient(
         }
         val entity = HttpEntity(null, headers)
         val restTemplate = restTemplateBuilder.rootUri(uri.toString()).build()
-        return restTemplate.exchange("/v1/", HttpMethod.GET, entity, Links::class.java).body
-                ?: Links(_links = emptyMap())
+
+        return try {
+            restTemplate.exchange("/v1/", HttpMethod.GET, entity, Links::class.java).body
+                    ?: Links(_links = emptyMap())
+        } catch (e: Exception) {
+            Links(_links = emptyMap())
+        }
     }
 }
