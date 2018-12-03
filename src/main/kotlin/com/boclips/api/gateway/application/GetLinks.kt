@@ -14,10 +14,8 @@ class GetLinks(
 ) {
 
     val requestExtractor = RequestExtractor()
-    fun execute(uri: UriComponentsBuilder, serverHttpRequest: ServerHttpRequest): LinksResource {
+    fun execute(serverHttpRequest: ServerHttpRequest): LinksResource {
         return linksResourceConverter.convert(
-
-
                 linkRepositories.flatMap { repo ->
                     repo.findAll(requestExtractor.extract(serverHttpRequest))
                 }
