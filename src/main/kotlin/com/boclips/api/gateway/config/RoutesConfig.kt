@@ -22,6 +22,10 @@ class RoutesConfig {
                     p.path("/v1/jobs/**")
                             .uri(routingProperties.videoIngestorUrl)
                 }
+                .route { p ->
+                    p.path("/v1/users/**")
+                            .uri(routingProperties.userServiceUrl)
+                }
 
                 .build()
     }

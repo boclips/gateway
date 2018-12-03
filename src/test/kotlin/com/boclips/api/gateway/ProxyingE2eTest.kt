@@ -61,6 +61,30 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
+    fun `users are proxied to user-service`() {
+        userServiceMock.register(get(urlEqualTo("/v1/users"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/users", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
+    fun `users sub-resources are proxied to user-service`() {
+        userServiceMock.register(get(urlEqualTo("/v1/users/1"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/users/1", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
     fun `gateway request propagates X-Forwarded-* headers when present`() {
         marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
                 .willReturn(aResponse()

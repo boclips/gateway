@@ -2,6 +2,7 @@ package com.boclips.api.gateway.testsupport
 
 import com.boclips.api.gateway.config.RoutingProperties
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.MARKETING_SERVICE_PORT
+import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.USER_SERVICE_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.VIDEO_INGESTOR_PORT
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
@@ -23,7 +24,8 @@ import org.springframework.web.client.RestTemplate
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = [
     "gateway.services.marketingServiceUrl=http://localhost:$MARKETING_SERVICE_PORT",
-    "gateway.services.videoIngestorUrl=http://localhost:$VIDEO_INGESTOR_PORT"
+    "gateway.services.videoIngestorUrl=http://localhost:$VIDEO_INGESTOR_PORT",
+    "gateway.services.userServiceUrl=http://localhost:$USER_SERVICE_PORT"
 ])
 abstract class AbstractSpringIntegrationTest {
 
@@ -33,25 +35,31 @@ abstract class AbstractSpringIntegrationTest {
     companion object {
         const val MARKETING_SERVICE_PORT = 8090
         const val VIDEO_INGESTOR_PORT = 8091
+        const val USER_SERVICE_PORT = 8092
 
         val marketingServiceWireMockServer = WireMockServer(options().port(MARKETING_SERVICE_PORT))
         val videoIngestorWireMockServer = WireMockServer(options().port(VIDEO_INGESTOR_PORT))
+        val userServiceWireMockServer = WireMockServer(options().port(USER_SERVICE_PORT))
+        val wiremockServers = listOf(
+                marketingServiceWireMockServer,
+                videoIngestorWireMockServer,
+                userServiceWireMockServer
+        )
         val marketingServiceMock = WireMock("localhost", MARKETING_SERVICE_PORT)
         val videoIngestorMock = WireMock("localhost", VIDEO_INGESTOR_PORT)
+        val userServiceMock = WireMock("localhost", USER_SERVICE_PORT)
 
 
         @BeforeAll
         @JvmStatic
         internal fun beforeAll() {
-            marketingServiceWireMockServer.start()
-            videoIngestorWireMockServer.start()
+            wiremockServers.forEach { it.start() }
         }
 
         @AfterAll
         @JvmStatic
         internal fun afterAll() {
-            marketingServiceWireMockServer.stop()
-            videoIngestorWireMockServer.stop()
+            wiremockServers.forEach { it.stop() }
         }
 
     }

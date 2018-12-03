@@ -2,3 +2,4 @@ gateway:
   services:
     videoIngestorUrl: https://video-ingestor.boclips.com
     marketingServiceUrl: https://marketing-service.boclips.com
+    userServiceUrl: https://user-service.boclips.com

@@ -2,6 +2,7 @@ gateway:
   services:
     videoIngestorUrl: https://video-ingestor.testing-boclips.com
     marketingServiceUrl: https://marketing-service.testing-boclips.com
+    userServiceUrl: https://user-service.testing-boclips.com
 
 spring:
   cloud:

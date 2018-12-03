@@ -8,4 +8,5 @@ import org.springframework.stereotype.Component
 class RoutingProperties {
     lateinit var marketingServiceUrl: String
     lateinit var videoIngestorUrl: String
+    lateinit var userServiceUrl: String
 }
