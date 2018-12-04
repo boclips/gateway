@@ -3,6 +3,7 @@ package com.boclips.api.gateway.presentation
 import com.boclips.api.gateway.domain.model.Link
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class LinksToLinksResourceConverterTest {
 
@@ -36,5 +37,18 @@ class LinksToLinksResourceConverterTest {
                         )
                 )
         ))
+    }
+
+    @Test
+    fun `if existing rel throws exception`() {
+        val linksToLinksResourceConverter = LinksToLinksResourceConverter()
+
+        assertThrows<DuplicateRelException> {
+            linksToLinksResourceConverter.convert(listOf(
+                    Link(href = "http://example.com", rel = "myResource"),
+                    Link(href = "http://example.com", rel = "myResource")
+            ))
+        }
+
     }
 }

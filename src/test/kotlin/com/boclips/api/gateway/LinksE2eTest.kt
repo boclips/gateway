@@ -40,9 +40,6 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                                             "marketingCollection": {
                                                 "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections/{id}",
                                                 "templated": true
-                                            },
-                                            "marketingCollections": {
-                                                "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections"
                                             }
                                         }
                                     }
@@ -65,9 +62,38 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                     "marketingCollection": {
                         "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections/{id}",
                         "templated": true
-                    },
-                    "marketingCollections": {
-                        "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections",
+                    }
+                }
+            }
+        """
+        ))
+    }
+
+    @Test
+    fun `aggregates customer-facing links`() {
+        userServiceMock.register(get(urlEqualTo("/v1/"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/hal+json")
+                        .withBody(
+                                """
+                                    {
+                                        "_links": {
+                                            "users": {
+                                                "href": "${routingProperties.userServiceUrl}/v1/users/couldnt-care-less"
+                                            }
+                                        }
+                                    }
+                                """
+                        )))
+
+
+        val response = restTemplate.getForObject("/v1/", Map::class.java)
+        assertThat(response).isEqualTo(objectMapper.readValue(
+                """
+            {
+                "_links": {
+                    "users": {
+                        "href": "${routingProperties.userServiceUrl}/v1/users/couldnt-care-less",
                         "templated": false
                     }
                 }

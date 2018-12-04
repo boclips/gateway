@@ -1,5 +1,6 @@
 package com.boclips.api.gateway.config
 
+import com.boclips.api.gateway.config.links.CustomerFacing
 import com.boclips.api.gateway.infrastructure.HttpLinkClient
 import com.boclips.api.gateway.infrastructure.HttpLinkRepository
 import org.springframework.context.annotation.Bean
@@ -21,6 +22,13 @@ class RepositoriesConfig(
     fun videoIngestorLinkRepository() = HttpLinkRepository(
             httpLinkClient,
             routingProperties.videoIngestorUrl
+    )
+
+    @Bean
+    @CustomerFacing
+    fun userServiceLinkRepository() = HttpLinkRepository(
+            httpLinkClient,
+            routingProperties.userServiceUrl
     )
 
 }

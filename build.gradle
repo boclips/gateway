@@ -65,6 +65,7 @@ dependencies {
 	testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
 	testCompile("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 	testCompile("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+	testCompile('com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0')
 }
 
 dependencyManagement {

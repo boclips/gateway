@@ -2,7 +2,9 @@ package com.boclips.api.gateway.application
 
 import com.boclips.api.gateway.domain.model.RequestDomain
 import org.springframework.http.server.reactive.ServerHttpRequest
+import org.springframework.stereotype.Component
 
+@Component
 class RequestExtractor {
     fun extract(request: ServerHttpRequest): RequestDomain {
         val requestUri = request.uri
