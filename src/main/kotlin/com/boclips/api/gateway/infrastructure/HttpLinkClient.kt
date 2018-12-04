@@ -14,6 +14,8 @@ class HttpLinkClient(
 ) {
     fun fetch(uri: URI, requestDomain: RequestDomain): Links {
         val headers = HttpHeaders().apply {
+            requestDomain.headers.entries.forEach { set(it.key, it.value) }
+
             set("X-Forwarded-Host", requestDomain.host)
             set("X-Forwarded-Port", requestDomain.port.toString())
             set("X-Forwarded-Proto", requestDomain.protocol)

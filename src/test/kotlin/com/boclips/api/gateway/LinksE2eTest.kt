@@ -5,6 +5,10 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
+import org.springframework.web.client.exchange
 
 class LinksE2eTest : AbstractSpringIntegrationTest() {
 
@@ -119,5 +123,22 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
             }
         """
         ))
+    }
+
+    @Test
+    fun `propagates authentication header`() {
+        userServiceMock.register(get(urlEqualTo("/v1/"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/hal+json")
+                ))
+
+        val headers = HttpHeaders().apply {
+            set("Authentication", "the-seaguls-poked-in-my-pants")
+        }
+        val entity = HttpEntity(null, headers)
+        restTemplate.exchange("/v1/", HttpMethod.GET, entity, Map::class.java)
+
+        userServiceWireMockServer.verify(getRequestedFor(urlEqualTo("/v1/"))
+                .withHeader("Authentication", equalTo("the-seaguls-poked-in-my-pants")))
     }
 }

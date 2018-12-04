@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest
 
-internal class RequestExtractorTest {
+class RequestExtractorTest {
     private val requestExtractor = RequestExtractor()
 
     @Test
@@ -30,5 +30,18 @@ internal class RequestExtractorTest {
         assertThat(host).isEqualTo("localhost")
         assertThat(port).isEqualTo(8080)
         assertThat(protocol).isEqualTo("http")
+    }
+
+    @Test
+    fun `extracts authentication header if present`() {
+        val (protocol, host, port, headers) = requestExtractor.extract(MockServerHttpRequest
+                .get("http://localhost:8080")
+                .header("Authentication", "poke me in the coconut")
+                .build())
+
+        assertThat(host).isEqualTo("localhost")
+        assertThat(port).isEqualTo(8080)
+        assertThat(protocol).isEqualTo("http")
+        assertThat(headers).containsEntry("Authentication", "poke me in the coconut")
     }
 }

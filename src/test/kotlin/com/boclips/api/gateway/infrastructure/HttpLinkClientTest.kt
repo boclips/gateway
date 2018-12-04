@@ -16,7 +16,7 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `when empty body returns no links`() {
-        AbstractSpringIntegrationTest.marketingServiceMock.register(get(urlEqualTo("/v1/"))
+        marketingServiceMock.register(get(urlEqualTo("/v1/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/hal+json")
                 ))
@@ -31,7 +31,7 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `when server error return no links`() {
-        AbstractSpringIntegrationTest.marketingServiceMock.register(get(urlEqualTo("/v1/"))
+        marketingServiceMock.register(get(urlEqualTo("/v1/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/hal+json")
                         .withStatus(500)
@@ -47,7 +47,7 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `set X-Forwarded headers`() {
-        AbstractSpringIntegrationTest.marketingServiceMock.register(get(urlEqualTo("/v1/"))
+        marketingServiceMock.register(get(urlEqualTo("/v1/"))
                 .willReturn(aResponse()))
 
         httpLinkClient.fetch(
@@ -55,10 +55,28 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
                 RequestDomain(protocol = "https", host = "example.com", port = 80)
         )
 
-        AbstractSpringIntegrationTest.marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/"))
+        marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/"))
                 .withHeader("X-Forwarded-Host", equalTo("example.com"))
                 .withHeader("X-Forwarded-Port", equalTo("80"))
                 .withHeader("X-Forwarded-Proto", equalTo("https"))
+        )
+    }
+
+    @Test
+    fun `sets Authorization headers`() {
+        marketingServiceMock.register(get(urlEqualTo("/v1/"))
+                .willReturn(aResponse()))
+
+        httpLinkClient.fetch(
+                URI(marketingServiceWireMockServer.url("")),
+                RequestDomain(protocol = "https", host = "example.com", port = 80, headers = mapOf("Authorization" to "poke me in the coconut"))
+        )
+
+        marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/"))
+                .withHeader("X-Forwarded-Host", equalTo("example.com"))
+                .withHeader("X-Forwarded-Port", equalTo("80"))
+                .withHeader("X-Forwarded-Proto", equalTo("https"))
+                .withHeader("Authorization", equalTo("poke me in the coconut"))
         )
     }
 }
