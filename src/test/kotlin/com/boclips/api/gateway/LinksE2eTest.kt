@@ -126,19 +126,19 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
-    fun `propagates authentication header`() {
+    fun `propagates Authorization header`() {
         userServiceMock.register(get(urlEqualTo("/v1/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/hal+json")
                 ))
 
         val headers = HttpHeaders().apply {
-            set("Authentication", "the-seaguls-poked-in-my-pants")
+            set("Authorization", "the-seaguls-poked-in-my-pants")
         }
         val entity = HttpEntity(null, headers)
         restTemplate.exchange("/v1/", HttpMethod.GET, entity, Map::class.java)
 
         userServiceWireMockServer.verify(getRequestedFor(urlEqualTo("/v1/"))
-                .withHeader("Authentication", equalTo("the-seaguls-poked-in-my-pants")))
+                .withHeader("Authorization", equalTo("the-seaguls-poked-in-my-pants")))
     }
 }

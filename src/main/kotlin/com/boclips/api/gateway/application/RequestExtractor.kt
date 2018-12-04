@@ -12,7 +12,7 @@ class RequestExtractor {
                 protocol = request.headers["x-forwarded-proto"]?.firstOrNull() ?: requestUri.scheme,
                 host = request.headers["x-forwarded-host"]?.firstOrNull() ?: requestUri.host,
                 port = request.headers["x-forwarded-port"]?.firstOrNull()?.toInt() ?: requestUri.port,
-                headers = request.headers["authentication"]?.firstOrNull()?.let { mapOf("Authentication" to it) } ?: emptyMap()
+                headers = request.headers["authorization"]?.firstOrNull()?.let { mapOf("Authorization" to it) } ?: emptyMap()
         )
     }
 }
