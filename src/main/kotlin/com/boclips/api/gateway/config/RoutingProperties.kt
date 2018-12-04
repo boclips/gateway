@@ -9,4 +9,5 @@ class RoutingProperties {
     lateinit var marketingServiceUrl: String
     lateinit var videoIngestorUrl: String
     lateinit var userServiceUrl: String
+    lateinit var videoServiceUrl: String
 }

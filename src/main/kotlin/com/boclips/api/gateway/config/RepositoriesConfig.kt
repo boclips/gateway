@@ -31,4 +31,11 @@ class RepositoriesConfig(
             routingProperties.userServiceUrl
     )
 
+    @Bean
+    @CustomerFacing
+    fun videoServiceLinkRepository() = HttpLinkRepository(
+            httpLinkClient,
+            routingProperties.videoServiceUrl
+    )
+
 }

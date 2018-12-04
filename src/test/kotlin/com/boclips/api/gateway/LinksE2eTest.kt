@@ -86,6 +86,21 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                                 """
                         )))
 
+        videoServiceMock.register(get(urlEqualTo("/v1/"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/hal+json")
+                        .withBody(
+                                """
+                                    {
+                                        "_links": {
+                                            "videos": {
+                                                "href": "${routingProperties.videoServiceUrl}/v1/videos/couldnt-care-less"
+                                            }
+                                        }
+                                    }
+                                """
+                        )))
+
 
         val response = restTemplate.getForObject("/v1/", Map::class.java)
         assertThat(response).isEqualTo(objectMapper.readValue(
@@ -94,6 +109,10 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                 "_links": {
                     "users": {
                         "href": "${routingProperties.userServiceUrl}/v1/users/couldnt-care-less",
+                        "templated": false
+                    },
+                    "videos": {
+                        "href": "${routingProperties.videoServiceUrl}/v1/videos/couldnt-care-less",
                         "templated": false
                     }
                 }

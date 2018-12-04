@@ -85,6 +85,54 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
+    fun `videos are proxied to video-service`() {
+        videoServiceMock.register(get(urlEqualTo("/v1/videos"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/videos", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
+    fun `videos sub-resources are proxied to video-service`() {
+        videoServiceMock.register(get(urlEqualTo("/v1/videos/1"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/videos/1", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
+    fun `events are proxied to video-service`() {
+        videoServiceMock.register(get(urlEqualTo("/v1/events"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/events", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
+    fun `events sub-resources are proxied to video-service`() {
+        videoServiceMock.register(get(urlEqualTo("/v1/events/1"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/events/1", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
     fun `gateway request propagates X-Forwarded-* headers when present`() {
         marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
                 .willReturn(aResponse()
