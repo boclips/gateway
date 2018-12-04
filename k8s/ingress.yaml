@@ -21,3 +21,10 @@ spec:
         backend:
           serviceName: gateway
           servicePort: http
+  - host: educators.${DOMAIN}
+    http:
+      paths:
+        - path: /v1
+          backend:
+            serviceName: gateway
+            servicePort: http
