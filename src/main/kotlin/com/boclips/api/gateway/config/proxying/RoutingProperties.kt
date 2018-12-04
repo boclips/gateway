@@ -1,4 +1,4 @@
-package com.boclips.api.gateway.config
+package com.boclips.api.gateway.config.proxying
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component

@@ -1,6 +1,6 @@
-package com.boclips.api.gateway.config
+package com.boclips.api.gateway.config.links
 
-import com.boclips.api.gateway.config.links.CustomerFacing
+import com.boclips.api.gateway.config.proxying.RoutingProperties
 import com.boclips.api.gateway.infrastructure.HttpLinkClient
 import com.boclips.api.gateway.infrastructure.HttpLinkRepository
 import org.springframework.context.annotation.Bean

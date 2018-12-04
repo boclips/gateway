@@ -1,4 +1,4 @@
-package com.boclips.api.gateway.config
+package com.boclips.api.gateway.config.proxying
 
 import org.springframework.cloud.gateway.route.RouteLocator
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder

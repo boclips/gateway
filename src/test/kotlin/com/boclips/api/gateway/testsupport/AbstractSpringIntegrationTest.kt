@@ -1,6 +1,6 @@
 package com.boclips.api.gateway.testsupport
 
-import com.boclips.api.gateway.config.RoutingProperties
+import com.boclips.api.gateway.config.proxying.RoutingProperties
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.MARKETING_SERVICE_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.USER_SERVICE_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.VIDEO_INGESTOR_PORT

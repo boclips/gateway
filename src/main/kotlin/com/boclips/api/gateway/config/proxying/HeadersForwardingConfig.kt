@@ -1,4 +1,4 @@
-package com.boclips.api.gateway.config
+package com.boclips.api.gateway.config.proxying
 
 import com.boclips.api.gateway.application.RequestExtractor
 import org.springframework.cloud.gateway.filter.GlobalFilter
