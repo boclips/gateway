@@ -4,20 +4,3 @@ gateway:
     marketingServiceUrl: https://marketing-service.staging-boclips.com
     userServiceUrl: https://user-service.staging-boclips.com
     videoServiceUrl: https://video-service.staging-boclips.com
-
-spring:
-  cloud:
-    gateway:
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            maxAge: 1800
-            allowedOrigins: "*"
-            allowCredentials: true
-            allowedMethods:
-            - GET
-            - POST
-            - PUT
-            - DELETE
-            - PATCH
-            - OPTIONS
