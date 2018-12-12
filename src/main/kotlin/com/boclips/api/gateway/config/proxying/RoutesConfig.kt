@@ -2,6 +2,8 @@ package com.boclips.api.gateway.config.proxying
 
 import org.springframework.cloud.gateway.route.RouteLocator
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder
+import org.springframework.cloud.gateway.route.builder.filters
+import org.springframework.cloud.gateway.route.builder.routes
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -10,27 +12,34 @@ class RoutesConfig {
 
     @Bean
     fun routeLocator(builder: RouteLocatorBuilder, props: RoutingProperties): RouteLocator {
-        return builder.routes()
-                .route {
-                    it.path("/v1/marketing-collections/**")
-                    it.uri(props.marketingServiceUrl)
+        return builder.routes {
+            route {
+                path("/v1/marketing-collections/**")
+                uri(props.marketingServiceUrl)
+            }
+            route {
+                path("/v1/jobs/**")
+                uri(props.videoIngestorUrl)
+            }
+            route {
+                path("/v1/users/**")
+                uri(props.userServiceUrl)
+            }
+            route {
+                path("/v1/videos/**")
+                uri(props.videoServiceUrl)
+            }
+            route {
+                path("/v1/events/**")
+                uri(props.videoServiceUrl)
+            }
+            route {
+                path("/v1/token")
+                filters {
+                    rewritePath("/v1/token", "/auth/realms/teachers/protocol/openid-connect/token")
                 }
-                .route {
-                    it.path("/v1/jobs/**")
-                    it.uri(props.videoIngestorUrl)
-                }
-                .route {
-                    it.path("/v1/users/**")
-                    it.uri(props.userServiceUrl)
-                }
-                .route {
-                    it.path("/v1/videos/**")
-                    it.uri(props.videoServiceUrl)
-                }
-                .route {
-                    it.path("/v1/events/**")
-                    it.uri(props.videoServiceUrl)
-                }
-                .build()
+                uri("${props.keycloakUrl}")
+            }
+        }
     }
 }

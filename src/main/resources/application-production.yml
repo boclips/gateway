@@ -4,3 +4,4 @@ gateway:
     marketingServiceUrl: https://marketing-service.boclips.com
     userServiceUrl: https://user-service.boclips.com
     videoServiceUrl: https://video-service.boclips.com
+    keycloakUrl: https://login.boclips.com

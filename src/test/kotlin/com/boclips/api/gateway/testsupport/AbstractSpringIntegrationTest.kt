@@ -1,6 +1,7 @@
 package com.boclips.api.gateway.testsupport
 
 import com.boclips.api.gateway.config.proxying.RoutingProperties
+import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.KEYCLOAK_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.MARKETING_SERVICE_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.USER_SERVICE_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.VIDEO_INGESTOR_PORT
@@ -27,7 +28,8 @@ import org.springframework.web.client.RestTemplate
     "gateway.services.marketingServiceUrl=http://localhost:$MARKETING_SERVICE_PORT",
     "gateway.services.videoIngestorUrl=http://localhost:$VIDEO_INGESTOR_PORT",
     "gateway.services.userServiceUrl=http://localhost:$USER_SERVICE_PORT",
-    "gateway.services.videoServiceUrl=http://localhost:$VIDEO_SERVICE_PORT"
+    "gateway.services.videoServiceUrl=http://localhost:$VIDEO_SERVICE_PORT",
+    "gateway.services.keycloakUrl=http://localhost:$KEYCLOAK_PORT"
 ])
 abstract class AbstractSpringIntegrationTest {
 
@@ -39,21 +41,25 @@ abstract class AbstractSpringIntegrationTest {
         const val VIDEO_INGESTOR_PORT = 8091
         const val USER_SERVICE_PORT = 8092
         const val VIDEO_SERVICE_PORT = 8093
+        const val KEYCLOAK_PORT = 8094
 
         val marketingServiceWireMockServer = WireMockServer(options().port(MARKETING_SERVICE_PORT))
         val videoIngestorWireMockServer = WireMockServer(options().port(VIDEO_INGESTOR_PORT))
         val userServiceWireMockServer = WireMockServer(options().port(USER_SERVICE_PORT))
         val videoServiceWireMockServer = WireMockServer(options().port(VIDEO_SERVICE_PORT))
+        val keycloakWireMockServer = WireMockServer(options().port(KEYCLOAK_PORT))
         val wiremockServers = listOf(
                 marketingServiceWireMockServer,
                 videoIngestorWireMockServer,
                 userServiceWireMockServer,
-                videoServiceWireMockServer
+                videoServiceWireMockServer,
+                keycloakWireMockServer
         )
         val marketingServiceMock = WireMock("localhost", MARKETING_SERVICE_PORT)
         val videoIngestorMock = WireMock("localhost", VIDEO_INGESTOR_PORT)
         val userServiceMock = WireMock("localhost", USER_SERVICE_PORT)
         val videoServiceMock = WireMock("localhost", VIDEO_SERVICE_PORT)
+        val keycloakMock = WireMock("localhost", KEYCLOAK_PORT)
 
 
         @BeforeAll

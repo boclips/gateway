@@ -10,4 +10,5 @@ class RoutingProperties {
     lateinit var videoIngestorUrl: String
     lateinit var userServiceUrl: String
     lateinit var videoServiceUrl: String
+    lateinit var keycloakUrl: String
 }
