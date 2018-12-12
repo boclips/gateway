@@ -18,6 +18,9 @@ class HeadersForwardingConfig {
             val request = exchange.request.mutate()
                     .headers { headers ->
                         headers.remove("Forwarded")
+                        headers.remove("x-forwarded-host")
+                        headers.remove("x-forwarded-port")
+                        headers.remove("x-forwarded-proto")
                         headers.add("x-forwarded-host", requestDomain.host)
                         headers.add("x-forwarded-port", requestDomain.port.toString())
                         headers.add("x-forwarded-proto", requestDomain.protocol)
