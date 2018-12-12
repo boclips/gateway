@@ -24,19 +24,19 @@ class RequestExtractor {
 
     private fun buildHost(request: ServerHttpRequest): String {
         val forwardedHostHeader = request.headers["x-forwarded-host"]?.firstOrNull()
-        forwardedHostHeader?.apply {
-            logger.info { "Forwarded host configured from request  ${request.uri.toURL()} header x-forwarded-host=$forwardedHostHeader" }
+        return when {
+            request.uri.path == RETRIEVE_TOKEN_PATH -> {
+                val host = request.uri.host.replace("api.", "login.")
+                logger.info { "Forwarded host for token request ${request.uri.toURL()} -> $host" }
+                host
+            }
+            forwardedHostHeader != null -> forwardedHostHeader
+            else -> {
+                val host = request.uri.host
+                logger.info { "Forwarded host for request ${request.uri.toURL()} -> $host" }
+                host
+            }
         }
-        return forwardedHostHeader
-                ?: if (request.uri.path == RETRIEVE_TOKEN_PATH) {
-                    val host = request.uri.host.replace("api.", "login.")
-                    logger.info { "Forwarded host for token request ${request.uri.toURL()} -> $host" }
-                    host
-                } else {
-                    val host = request.uri.host
-                    logger.info { "Forwarded host for request ${request.uri.toURL()} -> $host" }
-                    host
-                }
     }
 
 }
