@@ -2,12 +2,14 @@ package com.boclips.api.gateway.application
 
 import com.boclips.api.gateway.config.proxying.RoutesConfig.Companion.RETRIEVE_TOKEN_PATH
 import com.boclips.api.gateway.domain.model.RequestDomain
+import mu.KLogging
 import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.stereotype.Component
-import java.net.URI
 
 @Component
 class RequestExtractor {
+    companion object : KLogging()
+
     fun extract(request: ServerHttpRequest): RequestDomain {
         val requestUri = request.uri
 
@@ -20,12 +22,22 @@ class RequestExtractor {
         )
     }
 
-    private fun buildHost(request: ServerHttpRequest) =
-            request.headers["x-forwarded-host"]?.firstOrNull()
-                    ?: if (request.uri.path == RETRIEVE_TOKEN_PATH)
-                        request.uri.host.replace("api.", "login.")
-                    else
-                        request.uri.host
+    private fun buildHost(request: ServerHttpRequest): String {
+        val forwardedHostHeader = request.headers["x-forwarded-host"]?.firstOrNull()
+        forwardedHostHeader?.apply {
+            logger.info { "Forwarded host configured from request  ${request.uri.toURL()} header x-forwarded-host=$forwardedHostHeader" }
+        }
+        return forwardedHostHeader
+                ?: if (request.uri.path == RETRIEVE_TOKEN_PATH) {
+                    val host = request.uri.host.replace("api.", "login.")
+                    logger.info { "Forwarded host for token request ${request.uri.toURL()} -> $host" }
+                    host
+                } else {
+                    val host = request.uri.host
+                    logger.info { "Forwarded host for request ${request.uri.toURL()} -> $host" }
+                    host
+                }
+    }
 
 }
 
