@@ -33,6 +33,15 @@ class RequestExtractorTest {
     }
 
     @Test
+    fun `sets token retrieve original header - because keycloak sets iss and it needs to match with the URL configured in apps`() {
+        val host = requestExtractor.extract(MockServerHttpRequest
+                .get("http://api.boclips.com/v1/token")
+                .build()).host
+
+        assertThat(host).isEqualTo("login.boclips.com")
+    }
+
+    @Test
     fun `extracts Authorization header if present`() {
         val (protocol, host, port, headers) = requestExtractor.extract(MockServerHttpRequest
                 .get("http://localhost:8080")
