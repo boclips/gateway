@@ -1,5 +1,6 @@
 package com.boclips.api.gateway.application
 
+import com.boclips.api.gateway.config.proxying.RoutesConfig.Companion.RETRIEVE_TOKEN_PATH
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest
@@ -35,7 +36,7 @@ class RequestExtractorTest {
     @Test
     fun `sets token retrieve original header - because keycloak sets iss and it needs to match with the URL configured in apps`() {
         val host = requestExtractor.extract(MockServerHttpRequest
-                .get("http://api.boclips.com/v1/token")
+                .get("http://api.boclips.com$RETRIEVE_TOKEN_PATH")
                 .build()).host
 
         assertThat(host).isEqualTo("login.boclips.com")

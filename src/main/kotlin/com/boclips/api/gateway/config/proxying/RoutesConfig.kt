@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class RoutesConfig {
+    companion object {
+        const val RETRIEVE_TOKEN_PATH = "/auth/realms/teachers/protocol/openid-connect/token"
+    }
 
     @Bean
     fun routeLocator(builder: RouteLocatorBuilder, props: RoutingProperties): RouteLocator {
@@ -36,7 +39,7 @@ class RoutesConfig {
             route {
                 path("/v1/token")
                 filters {
-                    rewritePath("/v1/token", "/auth/realms/teachers/protocol/openid-connect/token")
+                    rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
                 }
                 uri("${props.keycloakUrl}")
             }
