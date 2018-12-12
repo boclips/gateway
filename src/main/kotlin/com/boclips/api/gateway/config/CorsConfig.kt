@@ -17,7 +17,9 @@ class CorsConfig {
                     "http://localhost:3000",
                     "https://educators.testing-boclips.com",
                     "https://educators.staging-boclips.com",
-                    "https://educators.boclips.com"
+                    "https://educators.boclips.com",
+                    "https://publishers.boclips.com",
+                    "https://boclips.com"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
