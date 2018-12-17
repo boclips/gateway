@@ -186,4 +186,21 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         )
     }
 
+    @Test
+    fun `gateway request strips origin header if present`() {
+        marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/hal+json")
+                        .withBody(""))
+        )
+
+        val headers = HttpHeaders().apply { this.origin = "https://publishers.boclips.com" }
+        val entity = HttpEntity(null, headers)
+        restTemplate.exchange("/v1/marketing-collections", HttpMethod.GET, entity, String::class.java)
+
+        marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/marketing-collections"))
+                .withoutHeader("origin")
+        )
+    }
+
 }

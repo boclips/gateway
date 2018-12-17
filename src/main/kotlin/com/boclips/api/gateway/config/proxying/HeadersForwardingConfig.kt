@@ -21,6 +21,7 @@ class HeadersForwardingConfig {
                         headers.remove("x-forwarded-host")
                         headers.remove("x-forwarded-port")
                         headers.remove("x-forwarded-proto")
+                        headers.remove("origin")
                         headers.add("x-forwarded-host", requestDomain.host)
                         headers.add("x-forwarded-port", requestDomain.port.toString())
                         headers.add("x-forwarded-proto", requestDomain.protocol)
