@@ -15,9 +15,9 @@ class CorsConfig {
                     "http://localhost:8080",
                     "http://localhost:8081",
                     "http://localhost:3000",
-                    "https://educators.testing-boclips.com",
-                    "https://educators.staging-boclips.com",
-                    "https://educators.boclips.com",
+                    "https://teachers.testing-boclips.com",
+                    "https://teachers.staging-boclips.com",
+                    "https://teachers.boclips.com",
                     "https://publishers.boclips.com",
                     "https://boclips.com"
             )
