@@ -146,7 +146,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `token requests are proxied to keycloak`() {
-        keycloakMock.register(get(urlEqualTo("/auth/realms/teachers/protocol/openid-connect/token"))
+        keycloakMock.register(get(urlEqualTo("/auth/realms/boclips/protocol/openid-connect/token"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "text/plain")
                         .withBody("hello"))

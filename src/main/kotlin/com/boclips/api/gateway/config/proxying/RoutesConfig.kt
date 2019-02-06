@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class RoutesConfig {
     companion object {
-        const val RETRIEVE_TOKEN_PATH = "/auth/realms/teachers/protocol/openid-connect/token"
+        const val RETRIEVE_TOKEN_PATH = "/auth/realms/boclips/protocol/openid-connect/token"
     }
 
     @Bean
