@@ -2,7 +2,6 @@ package com.boclips.api.gateway.infrastructure
 
 import com.boclips.api.gateway.domain.model.RequestDomain
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
-import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test

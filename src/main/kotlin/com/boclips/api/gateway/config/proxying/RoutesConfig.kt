@@ -46,7 +46,7 @@ class RoutesConfig {
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
                 }
-                uri("${props.keycloakUrl}")
+                uri(props.keycloakUrl)
             }
         }
     }
