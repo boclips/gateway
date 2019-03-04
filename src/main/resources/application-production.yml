@@ -5,3 +5,4 @@ gateway:
     userServiceUrl: https://user-service.boclips.com
     videoServiceUrl: https://video-service.boclips.com
     keycloakUrl: https://login.boclips.com
+    eventServiceUrl: https://event-service.boclips.com
