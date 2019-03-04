@@ -121,27 +121,39 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
-    fun `events are proxied to video-service`() {
-        videoServiceMock.register(get(urlEqualTo("/v1/events"))
+    fun `events are proxied to event-service`() {
+        eventServiceMock.register(get(urlEqualTo("/v1/events"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "text/plain")
-                        .withBody("hello"))
+                        .withBody("hello-from-event-service"))
         )
 
         val response = restTemplate.getForObject("/v1/events", String::class.java)
-        assertThat(response).isEqualTo("hello")
+        assertThat(response).isEqualTo("hello-from-event-service")
     }
 
     @Test
-    fun `events sub-resources are proxied to video-service`() {
-        videoServiceMock.register(get(urlEqualTo("/v1/events/1"))
+    fun `(legacy) playback events are proxied to video-service`() {
+        videoServiceMock.register(get(urlEqualTo("/v1/events/playback"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "text/plain")
-                        .withBody("hello"))
+                        .withBody("hello-from-video-service"))
         )
 
-        val response = restTemplate.getForObject("/v1/events/1", String::class.java)
-        assertThat(response).isEqualTo("hello")
+        val response = restTemplate.getForObject("/v1/events/playback", String::class.java)
+        assertThat(response).isEqualTo("hello-from-video-service")
+    }
+
+    @Test
+    fun `(legacy) no search results events are proxied to video-service`() {
+        videoServiceMock.register(get(urlEqualTo("/v1/events/no-search-results"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello-from-video-service"))
+        )
+
+        val response = restTemplate.getForObject("/v1/events/no-search-results", String::class.java)
+        assertThat(response).isEqualTo("hello-from-video-service")
     }
 
     @Test
