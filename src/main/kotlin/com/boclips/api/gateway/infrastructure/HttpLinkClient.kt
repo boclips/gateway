@@ -1,6 +1,7 @@
 package com.boclips.api.gateway.infrastructure
 
 import com.boclips.api.gateway.domain.model.RequestDomain
+import mu.KLogging
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -12,6 +13,8 @@ import java.net.URI
 class HttpLinkClient(
         private val restTemplateBuilder: RestTemplateBuilder
 ) {
+    companion object : KLogging()
+
     fun fetch(uri: URI, requestDomain: RequestDomain): Links {
         val headers = HttpHeaders().apply {
             requestDomain.headers.entries.forEach { set(it.key, it.value) }
@@ -27,6 +30,7 @@ class HttpLinkClient(
             restTemplate.exchange("/v1/", HttpMethod.GET, entity, Links::class.java).body
                     ?: Links(_links = emptyMap())
         } catch (e: Exception) {
+            logger.warn("Unable to fetch links from uri=$uri", e)
             Links(_links = emptyMap())
         }
     }
