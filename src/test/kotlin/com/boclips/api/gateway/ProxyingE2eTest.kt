@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.web.client.getForObject
 
 
 class ProxyingE2eTest : AbstractSpringIntegrationTest() {
@@ -225,6 +226,18 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/marketing-collections"))
                 .withoutHeader("origin")
         )
+    }
+
+    @Test
+    fun `analytics events are proxied to mixpanel`() {
+        mixpanelMock.register(get(urlEqualTo("/track?data=abc"))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json")
+                .withBody("0"))
+        )
+
+        val response = restTemplate.getForObject("/mp/track?data=abc", String::class.java)
+
+        assertThat(response).isEqualTo("0")
     }
 
 }

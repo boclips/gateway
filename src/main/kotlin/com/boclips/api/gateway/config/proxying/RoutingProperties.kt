@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties("gateway.services")
 class RoutingProperties {
+    lateinit var mixpanelUrl: String
     lateinit var marketingServiceUrl: String
     lateinit var videoIngestorUrl: String
     lateinit var userServiceUrl: String

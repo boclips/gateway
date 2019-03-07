@@ -18,6 +18,11 @@ class RoutesConfig {
     fun routeLocator(builder: RouteLocatorBuilder, props: RoutingProperties): RouteLocator {
         return builder.routes {
             route {
+                path("/mp/**")
+                uri(props.mixpanelUrl)
+                filters { rewritePath("^/mp", "") }
+            }
+            route {
                 path("/v1/marketing-collections/**")
                 uri(props.marketingServiceUrl)
             }
