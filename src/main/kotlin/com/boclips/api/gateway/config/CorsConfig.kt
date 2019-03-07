@@ -19,7 +19,10 @@ class CorsConfig {
                     "https://teachers.staging-boclips.com",
                     "https://teachers.boclips.com",
                     "https://publishers.boclips.com",
-                    "https://boclips.com"
+                    "https://boclips.com",
+                    "https://login.testing-boclips.com",
+                    "https://login.staging-boclips.com",
+                    "https://login.boclips.com"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
