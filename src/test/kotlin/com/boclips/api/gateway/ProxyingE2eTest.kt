@@ -235,7 +235,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
                 .withBody("0"))
         )
 
-        val response = restTemplate.getForObject("/mp/track?data=abc", String::class.java)
+        val response = restTemplate.getForObject("/v1/mp/track?data=abc", String::class.java)
 
         assertThat(response).isEqualTo("0")
     }
