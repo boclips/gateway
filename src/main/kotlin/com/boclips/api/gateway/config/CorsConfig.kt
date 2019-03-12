@@ -1,13 +1,16 @@
 package com.boclips.api.gateway.config
 
+import org.springframework.cloud.gateway.filter.GlobalFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsWebFilter
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
+import reactor.core.publisher.Mono
 
 @Configuration
 class CorsConfig {
+
     @Bean
     fun corsWebFilter() = CorsWebFilter(UrlBasedCorsConfigurationSource().apply {
         registerCorsConfiguration("/**", CorsConfiguration().apply {
@@ -29,4 +32,19 @@ class CorsConfig {
             allowCredentials = true
         })
     })
+
+    @Bean
+    fun enforceGatewayAllowedOriginsFilter(): GlobalFilter {
+        return GlobalFilter { exchange, chain ->
+            val allowedOrigins: MutableList<String>? = exchange.response.headers["Access-Control-Allow-Origin"]
+
+            chain.filter(exchange).then(Mono.defer {
+                allowedOrigins?.let {
+                    exchange.response.headers["Access-Control-Allow-Origin"] = it
+                }
+
+                Mono.empty<Void>()
+            })
+        }
+    }
 }

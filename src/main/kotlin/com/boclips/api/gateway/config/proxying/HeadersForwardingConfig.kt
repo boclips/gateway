@@ -15,6 +15,7 @@ class HeadersForwardingConfig {
 
         return GlobalFilter { exchange, chain ->
             val requestDomain = RequestExtractor().extract(exchange.request)
+
             val request = exchange.request.mutate()
                     .headers { headers ->
                         headers.remove("Forwarded")

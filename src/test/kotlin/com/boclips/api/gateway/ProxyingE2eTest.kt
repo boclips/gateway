@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
-import org.springframework.web.client.getForObject
 
 
 class ProxyingE2eTest : AbstractSpringIntegrationTest() {
@@ -238,6 +237,26 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         val response = restTemplate.getForObject("/v1/mp/track?data=abc", String::class.java)
 
         assertThat(response).isEqualTo("0")
+    }
+
+
+    @Test
+    fun `analytics events get origin headers rewritten`() {
+        mixpanelMock.register(get(urlEqualTo("/track?data=abc"))
+                .willReturn(aResponse()
+                        .withHeader("Access-Control-Allow-Origin", "*")
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("0"))
+        )
+
+        val headers = HttpHeaders()
+        headers.add("Origin", "https://login.boclips.com")
+        val response = restTemplate.exchange<String>("/v1/mp/track?data=abc", HttpMethod.GET, HttpEntity(null, headers), String::class.java)
+
+        val allowedOrigins = response.headers["Access-Control-Allow-Origin"]
+
+        assertThat(allowedOrigins).contains("https://login.boclips.com")
+        assertThat(allowedOrigins).doesNotContain("*")
     }
 
 }
