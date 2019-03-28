@@ -1,6 +1,5 @@
 gateway:
   services:
-    mixpanelUrl: https://api.mixpanel.com
     videoIngestorUrl: https://video-ingestor.staging-boclips.com
     marketingServiceUrl: https://marketing-service.staging-boclips.com
     userServiceUrl: https://user-service.staging-boclips.com

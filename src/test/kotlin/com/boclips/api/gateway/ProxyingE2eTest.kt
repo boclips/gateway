@@ -228,30 +228,16 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
-    fun `analytics events are proxied to mixpanel`() {
-        mixpanelMock.register(get(urlEqualTo("/track?data=abc"))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json")
-                .withBody("0"))
-        )
-
-        val response = restTemplate.getForObject("/v1/mp/track?data=abc", String::class.java)
-
-        assertThat(response).isEqualTo("0")
-    }
-
-
-    @Test
-    fun `analytics events get origin headers rewritten`() {
-        mixpanelMock.register(get(urlEqualTo("/track?data=abc"))
+    fun `requests get origin headers rewritten`() {
+        marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
                 .willReturn(aResponse()
                         .withHeader("Access-Control-Allow-Origin", "*")
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("0"))
+                        .withBody(""))
         )
 
         val headers = HttpHeaders()
         headers.add("Origin", "https://login.boclips.com")
-        val response = restTemplate.exchange<String>("/v1/mp/track?data=abc", HttpMethod.GET, HttpEntity(null, headers), String::class.java)
+        val response = restTemplate.exchange<String>("/v1/marketing-collections", HttpMethod.GET, HttpEntity(null, headers), String::class.java)
 
         val allowedOrigins = response.headers["Access-Control-Allow-Origin"]
 
