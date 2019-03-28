@@ -2,6 +2,6 @@ spring:
   cloud:
     gateway:
       x-forwarded:
-        enabled: true
+        enabled: false
       forwarded:
         enabled: false

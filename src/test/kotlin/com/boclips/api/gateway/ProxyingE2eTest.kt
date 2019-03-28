@@ -177,7 +177,6 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         )
 
         val headers = HttpHeaders().apply {
-            set("X-Forwarded-For", "127.0.0.2")
             set("X-Forwarded-Host", "example.com")
             set("X-Forwarded-Port", "443")
             set("X-Forwarded-Proto", "https")
@@ -186,10 +185,9 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         restTemplate.exchange("/v1/marketing-collections", HttpMethod.GET, entity, String::class.java)
 
         marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/marketing-collections"))
-                .withHeader("X-Forwarded-For", containing("127.0.0.2"))
-                .withHeader("X-Forwarded-Host", containing("example.com"))
-                .withHeader("X-Forwarded-Proto", containing("https"))
-                .withHeader("X-Forwarded-Port", containing("443"))
+                .withHeader("X-Forwarded-Host", equalTo("example.com"))
+                .withHeader("X-Forwarded-Proto", equalTo("https"))
+                .withHeader("X-Forwarded-Port", equalTo("443"))
         )
     }
 
@@ -206,9 +204,8 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         restTemplate.exchange("/v1/marketing-collections", HttpMethod.GET, entity, String::class.java)
 
         marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/marketing-collections"))
-                .withHeader("X-Forwarded-For", equalTo("127.0.0.1"))
-                .withHeader("X-Forwarded-Host", containing("localhost"))
-                .withHeader("X-Forwarded-Proto", containing("http"))
+                .withHeader("X-Forwarded-Host", equalTo("localhost"))
+                .withHeader("X-Forwarded-Proto", equalTo("http"))
                 .withHeader("X-Forwarded-Port", AnythingPattern())
         )
     }
