@@ -5,6 +5,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/v1")
@@ -13,13 +14,13 @@ class LinksController(
 ) {
 
     @GetMapping("/admin", "/admin/")
-    fun getBackOfficeLinks(serverHttpRequest: ServerHttpRequest): LinksResource {
-        return linkActions.getAllLinks(serverHttpRequest)
+    fun getBackOfficeLinks(serverHttpRequest: ServerHttpRequest): Mono<LinksResource> {
+        return Mono.just(linkActions.getAllLinks(serverHttpRequest))
     }
 
     @GetMapping("", "/")
-    fun getCustomerFacingLinks(serverHttpRequest: ServerHttpRequest): LinksResource {
-        return linkActions.getCustomerFacingLinks(serverHttpRequest)
+    fun getCustomerFacingLinks(serverHttpRequest: ServerHttpRequest): Mono<LinksResource> {
+        return Mono.just(linkActions.getCustomerFacingLinks(serverHttpRequest))
     }
 
 }
