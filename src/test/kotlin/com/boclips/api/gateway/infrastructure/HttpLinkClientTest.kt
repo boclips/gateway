@@ -23,7 +23,7 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
         val links = httpLinkClient.fetch(
                 URI(marketingServiceWireMockServer.url("")),
                 RequestDomain(protocol = "http", host = "example.com", port = 80)
-        )
+        ).block()!!
 
         Assertions.assertThat(links._links).isEmpty()
     }
@@ -39,7 +39,7 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
         val links = httpLinkClient.fetch(
                 URI(marketingServiceWireMockServer.url("")),
                 RequestDomain(protocol = "http", host = "example.com", port = 80)
-        )
+        ).block()!!
 
         Assertions.assertThat(links._links).isEmpty()
     }
@@ -52,7 +52,7 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
         httpLinkClient.fetch(
                 URI(marketingServiceWireMockServer.url("")),
                 RequestDomain(protocol = "https", host = "example.com", port = 80)
-        )
+        ).block()
 
         marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/"))
                 .withHeader("X-Forwarded-Host", equalTo("example.com"))
@@ -69,7 +69,7 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
         httpLinkClient.fetch(
                 URI(marketingServiceWireMockServer.url("")),
                 RequestDomain(protocol = "https", host = "example.com", port = 80, headers = mapOf("Authorization" to "poke me in the coconut"))
-        )
+        ).block()
 
         marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/"))
                 .withHeader("X-Forwarded-Host", equalTo("example.com"))

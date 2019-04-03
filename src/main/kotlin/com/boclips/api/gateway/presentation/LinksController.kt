@@ -15,12 +15,12 @@ class LinksController(
 
     @GetMapping("/admin", "/admin/")
     fun getBackOfficeLinks(serverHttpRequest: ServerHttpRequest): Mono<LinksResource> {
-        return Mono.just(linkActions.getAllLinks(serverHttpRequest))
+        return linkActions.getAllLinks(serverHttpRequest)
     }
 
     @GetMapping("", "/")
     fun getCustomerFacingLinks(serverHttpRequest: ServerHttpRequest): Mono<LinksResource> {
-        return Mono.just(linkActions.getCustomerFacingLinks(serverHttpRequest))
+        return linkActions.getCustomerFacingLinks(serverHttpRequest)
     }
 
 }

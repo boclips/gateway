@@ -99,6 +99,7 @@ abstract class AbstractSpringIntegrationTest {
     fun setUp() {
         gatewayBaseUrl = "http://localhost:$appPort"
         restTemplate = restTemplateBuilder.rootUri(gatewayBaseUrl).build()
+        wiremockServers.forEach { it.resetAll() }
     }
 
 }

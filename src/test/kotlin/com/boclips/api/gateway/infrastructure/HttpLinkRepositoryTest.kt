@@ -34,7 +34,7 @@ class HttpLinkRepositoryTest : AbstractSpringIntegrationTest() {
                                 """
                         )))
 
-        assertThat(marketingServiceLinkRepository.findAll(RequestDomain(protocol = "http", host = "example.com", port = 80)).map { it.href }).containsExactlyInAnyOrder(
+        assertThat(marketingServiceLinkRepository.findAll(RequestDomain(protocol = "http", host = "example.com", port = 80)).map { it.href }.toIterable()).containsExactlyInAnyOrder(
                 "http://example.com/1",
                 "http://example.com/2"
         )

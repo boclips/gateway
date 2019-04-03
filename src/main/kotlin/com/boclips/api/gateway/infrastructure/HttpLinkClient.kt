@@ -2,36 +2,37 @@ package com.boclips.api.gateway.infrastructure
 
 import com.boclips.api.gateway.domain.model.RequestDomain
 import mu.KLogging
-import org.springframework.boot.web.client.RestTemplateBuilder
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
+import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Mono
 import java.net.URI
 
 @Component
-class HttpLinkClient(
-        private val restTemplateBuilder: RestTemplateBuilder
-) {
+class HttpLinkClient {
     companion object : KLogging()
+    val noLinks = Links(_links = emptyMap())
 
-    fun fetch(uri: URI, requestDomain: RequestDomain): Links {
-        val headers = HttpHeaders().apply {
-            requestDomain.headers.entries.forEach { set(it.key, it.value) }
+    fun fetch(uri: URI, requestDomain: RequestDomain): Mono<Links> {
+        val webClient = WebClient.builder().baseUrl(uri.toString()).build()
 
-            set("X-Forwarded-Host", requestDomain.host)
-            set("X-Forwarded-Port", requestDomain.port.toString())
-            set("X-Forwarded-Proto", requestDomain.protocol)
-        }
-        val entity = HttpEntity(null, headers)
-        val restTemplate = restTemplateBuilder.rootUri(uri.toString()).build()
+        return webClient.get()
+                .uri("/v1/")
+                .headers {
+                    requestDomain.headers.entries.forEach { h -> it.set(h.key, h.value) }
 
-        return try {
-            restTemplate.exchange("/v1/", HttpMethod.GET, entity, Links::class.java).body
-                    ?: Links(_links = emptyMap())
-        } catch (e: Exception) {
-            logger.warn("Unable to fetch links from uri=$uri", e)
-            Links(_links = emptyMap())
-        }
+                    it.set("X-Forwarded-Host", requestDomain.host)
+                    it.set("X-Forwarded-Port", requestDomain.port.toString())
+                    it.set("X-Forwarded-Proto", requestDomain.protocol)
+                }
+                .exchange()
+                .flatMap {
+                    if (it.statusCode().isError) {
+                        logger.warn("Unable to fetch links from uri=$uri, status=${it.statusCode()}")
+                        Mono.just(noLinks)
+                    } else {
+                        it.bodyToMono(Links::class.java)
+                    }
+                }
+                .defaultIfEmpty(noLinks)
     }
 }

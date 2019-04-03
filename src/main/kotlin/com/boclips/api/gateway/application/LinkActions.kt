@@ -6,6 +6,8 @@ import com.boclips.api.gateway.presentation.LinksResource
 import com.boclips.api.gateway.presentation.LinksToLinksResourceConverter
 import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @Service
 class LinkActions(
@@ -16,17 +18,17 @@ class LinkActions(
         val customerFacingRepositories: Collection<LinkRepository>
 ) {
 
-    fun getAllLinks(serverHttpRequest: ServerHttpRequest): LinksResource {
+    fun getAllLinks(serverHttpRequest: ServerHttpRequest): Mono<LinksResource> {
         return linksResourceConverter.convert(
-                allRepositories.flatMap { repo ->
+                Flux.fromIterable(allRepositories).flatMap { repo ->
                     repo.findAll(requestExtractor.extract(serverHttpRequest))
                 }
         )
     }
 
-    fun getCustomerFacingLinks(serverHttpRequest: ServerHttpRequest): LinksResource {
+    fun getCustomerFacingLinks(serverHttpRequest: ServerHttpRequest): Mono<LinksResource> {
         return linksResourceConverter.convert(
-                customerFacingRepositories.flatMap { repo ->
+                Flux.fromIterable(customerFacingRepositories).flatMap { repo ->
                     repo.findAll(requestExtractor.extract(serverHttpRequest))
                 }
         )
