@@ -1,6 +1,6 @@
-[![concourse](https://concourse.devboclips.net/api/v1/pipelines/boclips/jobs/build-gateway/badge)]()
-
 # gateway
+
+[![concourse](https://concourse.devboclips.net/api/v1/pipelines/boclips/jobs/build-gateway/badge)]()
 
 A reactive API gateway funneling all the API requests and delegating it to the internal services.
 
