@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
 
 class LinksE2eTest : AbstractSpringIntegrationTest() {
 
@@ -49,8 +50,9 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                                 """
                         )))
 
-        val response = restTemplate.getForObject("/v1/admin", Map::class.java)
-        assertThat(response).isEqualTo(objectMapper.readValue(
+        val response = restTemplate.getForEntity("/v1/admin", Map::class.java)
+        assertThat(response.headers["Content-Type"]).contains("application/hal+json")
+        assertThat(response.body).isEqualTo(objectMapper.readValue(
                 """
             {
                 "_links": {

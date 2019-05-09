@@ -2,6 +2,7 @@ package com.boclips.api.gateway.presentation
 
 import com.boclips.api.gateway.application.LinkActions
 import org.springframework.http.server.reactive.ServerHttpRequest
+import org.springframework.http.server.reactive.ServerHttpResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -14,12 +15,14 @@ class LinksController(
 ) {
 
     @GetMapping("/admin", "/admin/")
-    fun getBackOfficeLinks(serverHttpRequest: ServerHttpRequest): Mono<LinksResource> {
+    fun getBackOfficeLinks(serverHttpRequest: ServerHttpRequest, response: ServerHttpResponse): Mono<LinksResource> {
+        response.headers.set("Content-Type", "application/hal+json")
         return linkActions.getAllLinks(serverHttpRequest)
     }
 
     @GetMapping("", "/")
-    fun getCustomerFacingLinks(serverHttpRequest: ServerHttpRequest): Mono<LinksResource> {
+    fun getCustomerFacingLinks(serverHttpRequest: ServerHttpRequest, response: ServerHttpResponse): Mono<LinksResource> {
+        response.headers.set("Content-Type", "application/hal+json")
         return linkActions.getCustomerFacingLinks(serverHttpRequest)
     }
 
