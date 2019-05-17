@@ -8,40 +8,46 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class RepositoriesConfig(
-        val httpLinkClient: HttpLinkClient,
-        val routingProperties: RoutingProperties
+    val httpLinkClient: HttpLinkClient,
+    val routingProperties: RoutingProperties
 ) {
 
     @Bean
     fun marketingServiceLinkRepository() = HttpLinkRepository(
-            httpLinkClient,
-            routingProperties.marketingServiceUrl
+        httpLinkClient,
+        routingProperties.marketingServiceUrl
+    )
+
+    @Bean
+    fun orderServiceLinkRepository() = HttpLinkRepository(
+        httpLinkClient,
+        routingProperties.orderServiceUrl
     )
 
     @Bean
     fun videoIngestorLinkRepository() = HttpLinkRepository(
-            httpLinkClient,
-            routingProperties.videoIngestorUrl
+        httpLinkClient,
+        routingProperties.videoIngestorUrl
     )
 
     @Bean
     @CustomerFacing
     fun userServiceLinkRepository() = HttpLinkRepository(
-            httpLinkClient,
-            routingProperties.userServiceUrl
+        httpLinkClient,
+        routingProperties.userServiceUrl
     )
 
     @Bean
     @CustomerFacing
     fun videoServiceLinkRepository() = HttpLinkRepository(
-            httpLinkClient,
-            routingProperties.videoServiceUrl
+        httpLinkClient,
+        routingProperties.videoServiceUrl
     )
 
     @Bean
     @CustomerFacing
     fun eventServiceLinkRepository() = HttpLinkRepository(
-            httpLinkClient,
-            routingProperties.eventServiceUrl
+        httpLinkClient,
+        routingProperties.eventServiceUrl
     )
 }

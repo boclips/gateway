@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
-import org.springframework.http.MediaType
 
 class LinksE2eTest : AbstractSpringIntegrationTest() {
 
@@ -16,10 +15,10 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
     fun `aggregates services links`() {
 
         videoIngestorMock.register(get(urlEqualTo("/v1/"))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/hal+json")
-                        .withBody(
-                                """
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/hal+json")
+                .withBody(
+                    """
                                     {
                                         "_links": {
                                             "jobs": {
@@ -32,13 +31,13 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                                         }
                                     }
                                 """
-                        )))
+                )))
 
         marketingServiceMock.register(get(urlEqualTo("/v1/"))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/hal+json")
-                        .withBody(
-                                """
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/hal+json")
+                .withBody(
+                    """
                                     {
                                       "_links": {
                                             "marketingCollection": {
@@ -48,12 +47,27 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                                         }
                                     }
                                 """
-                        )))
+                )))
+
+        orderServiceMock.register(get(urlEqualTo("/v1/"))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/hal+json")
+                .withBody(
+                    """
+                                    {
+                                      "_links": {
+                                            "orders": {
+                                                "href": "${routingProperties.orderServiceUrl}/v1/orders"
+                                            }
+                                        }
+                                    }
+                                """
+                )))
 
         val response = restTemplate.getForEntity("/v1/admin", Map::class.java)
         assertThat(response.headers["Content-Type"]).contains("application/hal+json")
         assertThat(response.body).isEqualTo(objectMapper.readValue(
-                """
+            """
             {
                 "_links": {
                     "jobDetails": {
@@ -67,6 +81,10 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                     "marketingCollection": {
                         "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections/{id}",
                         "templated": true
+                    },
+                    "orders": {
+                        "href": "${routingProperties.orderServiceUrl}/v1/orders",
+                         "templated": false
                     }
                 }
             }
@@ -77,10 +95,10 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
     @Test
     fun `aggregates customer-facing links`() {
         userServiceMock.register(get(urlEqualTo("/v1/"))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/hal+json")
-                        .withBody(
-                                """
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/hal+json")
+                .withBody(
+                    """
                                     {
                                         "_links": {
                                             "users": {
@@ -89,13 +107,13 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                                         }
                                     }
                                 """
-                        )))
+                )))
 
         videoServiceMock.register(get(urlEqualTo("/v1/"))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/hal+json")
-                        .withBody(
-                                """
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/hal+json")
+                .withBody(
+                    """
                                     {
                                         "_links": {
                                             "videos": {
@@ -104,12 +122,12 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                                         }
                                     }
                                 """
-                        )))
+                )))
 
 
         val response = restTemplate.getForObject("/v1/", Map::class.java)
         assertThat(response).isEqualTo(objectMapper.readValue(
-                """
+            """
             {
                 "_links": {
                     "users": {
@@ -129,9 +147,9 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
     @Test
     fun `propagates Authorization header`() {
         userServiceMock.register(get(urlEqualTo("/v1/"))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/hal+json")
-                ))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/hal+json")
+            ))
 
         val headers = HttpHeaders().apply {
             set("Authorization", "the-seaguls-poked-in-my-pants")
@@ -140,6 +158,6 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
         restTemplate.exchange("/v1/", HttpMethod.GET, entity, Map::class.java)
 
         userServiceWireMockServer.verify(getRequestedFor(urlEqualTo("/v1/"))
-                .withHeader("Authorization", equalTo("the-seaguls-poked-in-my-pants")))
+            .withHeader("Authorization", equalTo("the-seaguls-poked-in-my-pants")))
     }
 }
