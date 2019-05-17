@@ -5,11 +5,3 @@ spring:
         enabled: false
       forwarded:
         enabled: false
-gateway:
-  services:
-    videoIngestorUrl: http://video-ingestor
-    marketingServiceUrl: http://marketing-service
-    userServiceUrl: http://user-service
-    videoServiceUrl: http://video-service
-    keycloakUrl: http://keycloak
-    eventServiceUrl: http://event-service
