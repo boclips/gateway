@@ -6,4 +6,4 @@ gateway:
     videoServiceUrl: https://video-service.testing-boclips.com
     keycloakUrl: https://login.testing-boclips.com
     eventServiceUrl: https://event-service.testing-boclips.com
-    orderServiceUrl: https://order-service.testing-boclips.com
+    orderServiceUrl: https://terry.testing-boclips.com
