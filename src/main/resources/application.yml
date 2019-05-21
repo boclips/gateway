@@ -5,6 +5,3 @@ spring:
         enabled: false
       forwarded:
         enabled: false
-gateway:
-  services:
-    orderServiceUrl: http://terry
