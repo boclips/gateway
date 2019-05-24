@@ -43,7 +43,12 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
 
         "https://www.testing-boclips.com",
         "https://www.staging-boclips.com",
-        "https://www.boclips.com"
+        "https://www.boclips.com",
+
+        "https://myviewboardclips.cloud",
+        "https://myviewboardclips.stage.cloud",
+
+        "http://myobscuredomain1039.com"
     ])
     fun `allows requests with known origin`(host: String) {
         marketingServiceMock.register(WireMock.get(WireMock.urlEqualTo("/v1/marketing-collections"))
