@@ -22,6 +22,10 @@ class RoutesConfig {
                 uri(props.marketingServiceUrl)
             }
             route {
+                path("/v1/http-feeds/**")
+                uri(props.videoIngestorUrl)
+            }
+            route {
                 path("/v1/jobs/**")
                 uri(props.videoIngestorUrl)
             }
