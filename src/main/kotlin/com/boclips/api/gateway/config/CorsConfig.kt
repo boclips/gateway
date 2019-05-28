@@ -47,8 +47,8 @@ class CorsConfig {
                     "https://www.staging-boclips.com",
                     "https://www.boclips.com",
 
-                    "https://myviewboardclips.cloud",
-                    "https://myviewboardclips.stage.cloud"
+                    "https://myviewclip.myviewboard.cloud",
+                    "https://myviewclip.stage.myviewboard.cloud"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
