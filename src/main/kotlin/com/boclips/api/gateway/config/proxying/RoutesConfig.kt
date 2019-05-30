@@ -62,6 +62,10 @@ class RoutesConfig {
                 uri(props.orderServiceUrl)
             }
             route {
+                path("/v1/content-partners/**")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/token")
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
