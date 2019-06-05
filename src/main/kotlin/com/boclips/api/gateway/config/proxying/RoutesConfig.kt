@@ -12,6 +12,7 @@ class RoutesConfig {
     companion object {
         private const val REALM = "boclips"
         const val RETRIEVE_TOKEN_PATH = "/auth/realms/$REALM/protocol/openid-connect/token"
+        const val AUTHORIZE_PATH = "/auth/realms/$REALM/protocol/openid-connect/auth"
     }
 
     @Bean
@@ -69,6 +70,13 @@ class RoutesConfig {
                 path("/v1/token")
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
+                }
+                uri(props.keycloakUrl)
+            }
+            route {
+                path("/v1/authorize")
+                filters {
+                    rewritePath("/v1/authorize", AUTHORIZE_PATH)
                 }
                 uri(props.keycloakUrl)
             }

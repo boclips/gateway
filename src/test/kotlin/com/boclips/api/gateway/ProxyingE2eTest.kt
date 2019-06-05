@@ -240,6 +240,18 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
+    fun `authorize requests are proxied to keycloak`() {
+        keycloakMock.register(get(urlEqualTo("/auth/realms/boclips/protocol/openid-connect/auth"))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "text/plain")
+                .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/authorize", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
     fun `gateway request propagates X-Forwarded-* headers when present`() {
         marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
             .willReturn(aResponse()
