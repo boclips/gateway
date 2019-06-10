@@ -35,6 +35,10 @@ class CorsConfig {
                     "https://api.staging-boclips.com",
                     "https://api.boclips.com",
 
+                    "https://lti.testing-boclips.com",
+                    "https://lti.staging-boclips.com",
+                    "https://lti.boclips.com",
+
                     "https://login.testing-boclips.com",
                     "https://login.staging-boclips.com",
                     "https://login.boclips.com",
