@@ -8,23 +8,19 @@ environments:
     replicas: 2
     urls:
       - api.boclips.com
-      - backoffice.boclips.com/v1
       - teachers.boclips.com/v1
   staging:
     replicas: 2
     urls:
       - api.staging-boclips.com
-      - backoffice.staging-boclips.com/v1
       - teachers.staging-boclips.com/v1
   testing:
     replicas: 1
     urls:
       - api.testing-boclips.com
-      - backoffice.testing-boclips.com/v1
       - teachers.testing-boclips.com/v1
   local:
     replicas: 1
     urls:
       - api.local-boclips.com
-      - backoffice.local-boclips.com/v1
       - teachers.local-boclips.com/v1
