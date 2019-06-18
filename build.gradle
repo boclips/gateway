@@ -12,11 +12,8 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+		classpath 'org.owasp:dependency-check-gradle:5.0.0'
 	}
-}
-
-plugins {
-	id 'org.owasp.dependencycheck' version '4.0.2'
 }
 
 ext {
@@ -82,13 +79,17 @@ dependencyManagement {
 }
 
 dependencyCheck {
-	failBuildOnCVSS = 8 // Fail on high severity or greater
+	failBuildOnCVSS = 7 // Fail on high severity or greater
 
 	data {
-		directory='./dependency-check-cache'
+		directory = './dependency-check-cache'
 	}
 
 	analyzers {
 		assemblyEnabled = false
 	}
+
+	suppressionFile = './dependency-check-suppressions.xml'
+
+	outputDirectory = 'security-report'
 }
