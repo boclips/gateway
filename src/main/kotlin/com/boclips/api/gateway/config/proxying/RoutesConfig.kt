@@ -51,6 +51,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/events/player-interaction")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/events/no-search-results")
                 uri(props.videoServiceUrl)
             }
