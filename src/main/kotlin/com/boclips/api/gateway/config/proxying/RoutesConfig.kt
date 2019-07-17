@@ -59,6 +59,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/distribution-methods/**")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/events")
                 uri(props.eventServiceUrl)
             }
