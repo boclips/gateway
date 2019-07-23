@@ -43,11 +43,4 @@ class RepositoriesConfig(
         httpLinkClient,
         routingProperties.videoServiceUrl
     )
-
-    @Bean
-    @CustomerFacing
-    fun eventServiceLinkRepository() = HttpLinkRepository(
-        httpLinkClient,
-        routingProperties.eventServiceUrl
-    )
 }
