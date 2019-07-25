@@ -181,6 +181,18 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
+    fun `tags are proxied to video-service`() {
+        videoServiceMock.register(get(urlEqualTo("/v1/tags"))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "text/plain")
+                .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/tags", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
     fun `orders are proxied to order-service`() {
         orderServiceMock.register(get(urlEqualTo("/v1/orders"))
             .willReturn(aResponse()
