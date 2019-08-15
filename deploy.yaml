@@ -1,3 +1,4 @@
+---
 app: gateway
 port: 5000
 scale: Large
@@ -7,20 +8,12 @@ environments:
   production:
     replicas: 2
     urls:
-      - api.boclips.com
-      - teachers.boclips.com/v1
+    - api.boclips.com
   staging:
     replicas: 2
     urls:
-      - api.staging-boclips.com
-      - teachers.staging-boclips.com/v1
+    - api.staging-boclips.com
   testing:
     replicas: 1
     urls:
-      - api.testing-boclips.com
-      - teachers.testing-boclips.com/v1
-  local:
-    replicas: 1
-    urls:
-      - api.local-boclips.com
-      - teachers.local-boclips.com/v1
+    - api.testing-boclips.com
