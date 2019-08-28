@@ -9,3 +9,4 @@ gateway:
   services:
     orderServiceUrl: http://terry
     marketingServiceUrl: http://marketing-service
+    videoIngestorUrl: http://video-ingestor
