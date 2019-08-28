@@ -1,7 +1,6 @@
 gateway:
   services:
     videoIngestorUrl: https://video-ingestor.testing-boclips.com
-    marketingServiceUrl: https://marketing-service.testing-boclips.com
     userServiceUrl: https://user-service.testing-boclips.com
     videoServiceUrl: https://video-service.testing-boclips.com
     keycloakUrl: https://login.testing-boclips.com
