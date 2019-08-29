@@ -12,3 +12,4 @@ gateway:
     videoIngestorUrl: http://video-ingestor
     userServiceUrl: http://user-service
     eventServiceUrl: http://event-service
+    videoServiceUrl: http://video-service

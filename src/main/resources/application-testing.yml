@@ -1,4 +1,3 @@
 gateway:
   services:
-    videoServiceUrl: https://video-service.testing-boclips.com
     keycloakUrl: https://login.testing-boclips.com
