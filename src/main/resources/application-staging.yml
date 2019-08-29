@@ -1,6 +1,5 @@
 gateway:
   services:
-    userServiceUrl: https://user-service.staging-boclips.com
     videoServiceUrl: https://video-service.staging-boclips.com
     keycloakUrl: https://login.staging-boclips.com
     eventServiceUrl: https://event-service.staging-boclips.com

@@ -1,6 +1,5 @@
 gateway:
   services:
-    userServiceUrl: https://user-service.testing-boclips.com
     videoServiceUrl: https://video-service.testing-boclips.com
     keycloakUrl: https://login.testing-boclips.com
     eventServiceUrl: https://event-service.testing-boclips.com
