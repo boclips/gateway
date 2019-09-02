@@ -264,6 +264,30 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
+    fun `admin actions are proxied to video-service`() {
+        videoServiceMock.register(get(urlEqualTo("/v1/admin/actions"))
+            .willReturn(aResponse()
+                .withHeader("content-Type", "text/plain")
+                .withBody("hello-from-the-other-side-lol-jk-im-the-video-service"))
+        )
+
+        val response = restTemplate.getForObject("/v1/admin/actions", String::class.java)
+        assertThat(response).isEqualTo("hello-from-the-other-side-lol-jk-im-the-video-service")
+    }
+
+    @Test
+    fun `admin action sub resources are proxied to video-service`() {
+        videoServiceMock.register(get(urlEqualTo("/v1/admin/actions/whatever"))
+            .willReturn(aResponse()
+                .withHeader("content-Type", "text/plain")
+                .withBody("hello-from-the-other-side-lol-jk-im-the-video-service"))
+        )
+
+        val response = restTemplate.getForObject("/v1/admin/actions/whatever", String::class.java)
+        assertThat(response).isEqualTo("hello-from-the-other-side-lol-jk-im-the-video-service")
+    }
+
+    @Test
     fun `token requests are proxied to keycloak`() {
         keycloakMock.register(get(urlEqualTo("/auth/realms/boclips/protocol/openid-connect/token"))
             .willReturn(aResponse()
