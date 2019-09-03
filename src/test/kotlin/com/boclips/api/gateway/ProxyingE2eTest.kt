@@ -97,6 +97,18 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
+    fun `countries are proxied to user-service`() {
+        userServiceMock.register(get(urlEqualTo("/v1/countries"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/countries", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
     fun `content partners are proxied to video-service`() {
         videoServiceMock.register(get(urlEqualTo("/v1/content-partners"))
             .willReturn(aResponse()
