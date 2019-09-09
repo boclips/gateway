@@ -11,7 +11,6 @@ import org.springframework.http.HttpMethod
 
 
 class ProxyingE2eTest : AbstractSpringIntegrationTest() {
-
     @Test
     fun `marketing-collections are proxied to marketing-service`() {
         marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
@@ -129,6 +128,42 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         )
 
         val response = restTemplate.getForObject("/v1/schools", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
+    fun `contracts are proxied to User Service`() {
+        userServiceMock.register(get(urlEqualTo("/v1/contracts"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/contracts", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
+    fun `organisations are proxied to User Service`() {
+        userServiceMock.register(get(urlEqualTo("/v1/organisations"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/organisations", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
+    fun `api-integrations are proxied to User Service`() {
+        userServiceMock.register(get(urlEqualTo("/v1/api-integrations"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/api-integrations", String::class.java)
         assertThat(response).isEqualTo("hello")
     }
 
