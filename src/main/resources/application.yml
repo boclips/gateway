@@ -5,6 +5,9 @@ spring:
         enabled: false
       forwarded:
         enabled: false
+      metrics:
+        enabled: false
+
 gateway:
   services:
     orderServiceUrl: http://terry
@@ -13,3 +16,9 @@ gateway:
     userServiceUrl: http://user-service
     eventServiceUrl: http://event-service
     videoServiceUrl: http://video-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
