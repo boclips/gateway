@@ -2,7 +2,6 @@ package com.boclips.api.gateway.presentation
 
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
 import com.jayway.jsonpath.JsonPath
-import net.minidev.json.JSONArray
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpEntity
@@ -19,12 +18,10 @@ class MetricsControllerIntegrationTest : AbstractSpringIntegrationTest() {
 
         val body = restTemplate.getForObject("/actuator/metrics/boclips.api-usage", String::class.java)
 
-        val count = JsonPath.read<Double>(body, "$.measurements[0].value")
-        val urls = JsonPath.read<JSONArray>(body, "$.availableTags[?(@.tag=='url')].values").flatMap { it as Iterable<String> }
-        val clientIds = JsonPath.read<JSONArray>(body, "$.availableTags[?(@.tag=='client-id')].values").flatMap { it as Iterable<String> }
-        assertThat(count).isEqualTo(1.0)
-        assertThat(urls).containsExactly("$gatewayBaseUrl/actuator/health?really=true")
-        assertThat(clientIds).containsExactly("lti-pearson-myrealize")
+        val urls = JsonPath.read<List<List<String>>>(body, "$.availableTags[?(@.tag=='url')].values")
+        val clientIds = JsonPath.read<List<List<String>>>(body, "$.availableTags[?(@.tag=='client-id')].values")
+        assertThat(urls.flatten()).containsExactly("$gatewayBaseUrl/actuator/health?really=true")
+        assertThat(clientIds.flatten()).containsExactly("lti-pearson-myrealize")
     }
 
     @Test
