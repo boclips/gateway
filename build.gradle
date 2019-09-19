@@ -1,9 +1,10 @@
 buildscript {
 	ext {
-		kotlinVersion = '1.3.31'
-		springBootVersion = '2.1.6.RELEASE'
+		kotlinVersion = '1.3.50'
+		springBootVersion = '2.1.8.RELEASE'
 	}
-	ext["junit-jupiter.version"]  = "5.5.0"
+	ext['junit-jupiter.version']  = '5.5.0'
+
 	repositories {
 		mavenCentral()
 	}
