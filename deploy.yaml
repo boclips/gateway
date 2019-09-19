@@ -8,12 +8,12 @@ environments:
   production:
     replicas: 2
     urls:
-    - api.boclips.com
+    - api.boclips.com/v1
   staging:
     replicas: 2
     urls:
-    - api.staging-boclips.com
+    - api.staging-boclips.com/v1
   testing:
     replicas: 1
     urls:
-    - api.testing-boclips.com
+    - api.testing-boclips.com/v1
