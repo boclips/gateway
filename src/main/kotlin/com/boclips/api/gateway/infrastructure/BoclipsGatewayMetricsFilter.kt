@@ -26,7 +26,8 @@ class BoclipsGatewayMetricsFilter(private val meterRegistry: MeterRegistry) : We
                                 "boclips.api-usage",
                                 listOf(
                                         Tag.of("url", exchange.request.uri.toASCIIString()),
-                                        Tag.of("client-id", authorizedParty)
+                                        Tag.of("client-id", authorizedParty),
+                                        Tag.of("resource", exchange.request.uri.toASCIIString().substringAfter("/v1/").substringBefore("?").substringBefore("/"))
                                 )
                         ).increment()
                     }

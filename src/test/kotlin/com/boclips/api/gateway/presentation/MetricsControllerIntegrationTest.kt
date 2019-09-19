@@ -1,6 +1,7 @@
 package com.boclips.api.gateway.presentation
 
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.jayway.jsonpath.JsonPath
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -20,8 +21,10 @@ class MetricsControllerIntegrationTest : AbstractSpringIntegrationTest() {
 
         val urls = JsonPath.read<List<List<String>>>(body, "$.availableTags[?(@.tag=='url')].values")
         val clientIds = JsonPath.read<List<List<String>>>(body, "$.availableTags[?(@.tag=='client-id')].values")
-        assertThat(urls.flatten()).containsExactly("$gatewayBaseUrl/actuator/health?really=true")
+        val resources = JsonPath.read<List<List<String>>>(body, "$.availableTags[?(@.tag=='resource')].values")
+        assertThat(urls.flatten()).containsExactly("$gatewayBaseUrl/v1/videos?really=true")
         assertThat(clientIds.flatten()).containsExactly("lti-pearson-myrealize")
+        assertThat(resources.flatten()).containsExactly("videos")
     }
 
     @Test
@@ -39,8 +42,13 @@ class MetricsControllerIntegrationTest : AbstractSpringIntegrationTest() {
     }
 
     private fun performHttpRequestWithToken(token: String): ResponseEntity<String> {
+        videoServiceMock.register(WireMock.get(WireMock.urlEqualTo("/v1/videos?really=true"))
+                .willReturn(WireMock.aResponse()
+                        .withHeader("Content-Type", "text/plain")
+                        .withBody("hello")))
+
         val exchange = restTemplate.exchange(
-                "/actuator/health?really=true",
+                "/v1/videos?really=true",
                 HttpMethod.GET,
                 HttpEntity<Unit>(LinkedMultiValueMap<String, String>().apply {
                     this.add("Authorization", "Bearer $token")
