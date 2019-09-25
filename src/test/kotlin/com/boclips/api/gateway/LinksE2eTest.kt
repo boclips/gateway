@@ -33,22 +33,6 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                                 """
                 )))
 
-        marketingServiceMock.register(get(urlEqualTo("/v1/"))
-            .willReturn(aResponse()
-                .withHeader("Content-Type", "application/hal+json")
-                .withBody(
-                    """
-                                    {
-                                      "_links": {
-                                            "marketingCollection": {
-                                                "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections/{id}",
-                                                "templated": true
-                                            }
-                                        }
-                                    }
-                                """
-                )))
-
         orderServiceMock.register(get(urlEqualTo("/v1/"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/hal+json")
@@ -77,10 +61,6 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
                     "jobs": {
                         "href": "${routingProperties.videoIngestorUrl}/v1/jobs?page=0&size=20",
                         "templated": false
-                    },
-                    "marketingCollection": {
-                        "href": "${routingProperties.marketingServiceUrl}/v1/marketing-collections/{id}",
-                        "templated": true
                     },
                     "orders": {
                         "href": "${routingProperties.orderServiceUrl}/v1/orders",

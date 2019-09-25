@@ -11,6 +11,8 @@ import org.springframework.web.client.HttpClientErrorException
 
 class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
 
+    private val testPath = "/v1/http-feeds/foo"
+
     @ParameterizedTest
     @ValueSource(strings = [
         "http://localhost:8080",
@@ -53,7 +55,7 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
         "https://myviewclip.stage.myviewboard.cloud"
     ])
     fun `allows requests with known origin`(host: String) {
-        marketingServiceMock.register(WireMock.get(WireMock.urlEqualTo("/v1/marketing-collections"))
+        videoIngestorMock.register(WireMock.get(WireMock.urlEqualTo(testPath))
                 .willReturn(WireMock.aResponse().withBody("hello"))
         )
 
@@ -64,7 +66,7 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `does not allow requests with unknown origins`() {
-        marketingServiceMock.register(WireMock.get(WireMock.urlEqualTo("/v1/marketing-collections"))
+        videoIngestorMock.register(WireMock.get(WireMock.urlEqualTo(testPath))
                 .willReturn(WireMock.aResponse().withBody("hello"))
         )
 
@@ -78,7 +80,7 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
     private fun fireRequestWithOrigin(host: String): ResponseEntity<String> {
         val headers = HttpHeaders()
         headers.add("Origin", host)
-        return restTemplate.exchange<String>("/v1/marketing-collections", HttpMethod.GET, HttpEntity(null, headers), String::class.java)
+        return restTemplate.exchange<String>(testPath, HttpMethod.GET, HttpEntity(null, headers), String::class.java)
     }
 
 }

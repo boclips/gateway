@@ -12,30 +12,6 @@ import org.springframework.http.HttpMethod
 
 class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     @Test
-    fun `marketing-collections are proxied to marketing-service`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
-            .willReturn(aResponse()
-                .withHeader("Content-Type", "text/plain")
-                .withBody("hello"))
-        )
-
-        val response = restTemplate.getForObject("/v1/marketing-collections", String::class.java)
-        assertThat(response).isEqualTo("hello")
-    }
-
-    @Test
-    fun `marketing-collections sub-resource are proxied to marketing-service`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections/1"))
-            .willReturn(aResponse()
-                .withHeader("Content-Type", "text/plain")
-                .withBody("hello"))
-        )
-
-        val response = restTemplate.getForObject("/v1/marketing-collections/1", String::class.java)
-        assertThat(response).isEqualTo("hello")
-    }
-
-    @Test
     fun `jobs are proxied to video-ingestor`() {
         videoIngestorMock.register(get(urlEqualTo("/v1/jobs"))
             .willReturn(aResponse()
@@ -384,7 +360,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `gateway request propagates X-Forwarded-* headers when present`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
+        videoIngestorMock.register(get(urlEqualTo("/v1/http-feeds/foo"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/hal+json")
                 .withBody(""))
@@ -396,9 +372,9 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
             set("X-Forwarded-Proto", "https")
         }
         val entity = HttpEntity(null, headers)
-        restTemplate.exchange("/v1/marketing-collections", HttpMethod.GET, entity, String::class.java)
+        restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
 
-        marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/marketing-collections"))
+        videoIngestorMock.verifyThat(getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
             .withHeader("X-Forwarded-Host", equalTo("example.com"))
             .withHeader("X-Forwarded-Proto", equalTo("https"))
             .withHeader("X-Forwarded-Port", equalTo("443"))
@@ -407,7 +383,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `gateway request sets X-Forwarded-* headers when headers not present`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
+        videoIngestorMock.register(get(urlEqualTo("/v1/http-feeds/foo"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/hal+json")
                 .withBody(""))
@@ -415,9 +391,9 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
         val headers = HttpHeaders()
         val entity = HttpEntity(null, headers)
-        restTemplate.exchange("/v1/marketing-collections", HttpMethod.GET, entity, String::class.java)
+        restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
 
-        marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/marketing-collections"))
+        videoIngestorMock.verifyThat(getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
             .withHeader("X-Forwarded-Host", equalTo("localhost"))
             .withHeader("X-Forwarded-Proto", equalTo("http"))
             .withHeader("X-Forwarded-Port", AnythingPattern())
@@ -426,7 +402,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `gateway request strips origin header if present`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
+        videoIngestorMock.register(get(urlEqualTo("/v1/http-feeds/foo"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/hal+json")
                 .withBody(""))
@@ -434,16 +410,16 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
         val headers = HttpHeaders().apply { this.origin = "https://publishers.boclips.com" }
         val entity = HttpEntity(null, headers)
-        restTemplate.exchange("/v1/marketing-collections", HttpMethod.GET, entity, String::class.java)
+        restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
 
-        marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/marketing-collections"))
+        videoIngestorMock.verifyThat(getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
             .withoutHeader("origin")
         )
     }
 
     @Test
     fun `requests get origin headers rewritten`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/marketing-collections"))
+        videoIngestorMock.register(get(urlEqualTo("/v1/http-feeds/foo"))
             .willReturn(aResponse()
                 .withHeader("Access-Control-Allow-Origin", "*")
                 .withBody(""))
@@ -451,7 +427,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
         val headers = HttpHeaders()
         headers.add("Origin", "https://login.boclips.com")
-        val response = restTemplate.exchange<String>("/v1/marketing-collections", HttpMethod.GET, HttpEntity(null, headers), String::class.java)
+        val response = restTemplate.exchange<String>("/v1/http-feeds/foo", HttpMethod.GET, HttpEntity(null, headers), String::class.java)
 
         val allowedOrigins = response.headers["Access-Control-Allow-Origin"]
 

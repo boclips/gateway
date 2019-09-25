@@ -13,12 +13,6 @@ class RepositoriesConfig(
 ) {
 
     @Bean
-    fun marketingServiceLinkRepository() = HttpLinkRepository(
-        httpLinkClient,
-        routingProperties.marketingServiceUrl
-    )
-
-    @Bean
     fun orderServiceLinkRepository() = HttpLinkRepository(
         httpLinkClient,
         routingProperties.orderServiceUrl

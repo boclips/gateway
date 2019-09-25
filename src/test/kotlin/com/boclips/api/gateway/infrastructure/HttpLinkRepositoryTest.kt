@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired
 class HttpLinkRepositoryTest : AbstractSpringIntegrationTest() {
 
     @Autowired
-    lateinit var marketingServiceLinkRepository: HttpLinkRepository
+    lateinit var videoIngestorLinkRepository: HttpLinkRepository
 
     @Test
     fun `extracts all available links`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/"))
+        videoIngestorMock.register(get(urlEqualTo("/v1/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/hal+json")
                         .withBody(
@@ -34,7 +34,7 @@ class HttpLinkRepositoryTest : AbstractSpringIntegrationTest() {
                                 """
                         )))
 
-        assertThat(marketingServiceLinkRepository.findAll(RequestDomain(protocol = "http", host = "example.com", port = 80)).map { it.href }.toIterable()).containsExactlyInAnyOrder(
+        assertThat(videoIngestorLinkRepository.findAll(RequestDomain(protocol = "http", host = "example.com", port = 80)).map { it.href }.toIterable()).containsExactlyInAnyOrder(
                 "http://example.com/1",
                 "http://example.com/2"
         )

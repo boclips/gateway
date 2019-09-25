@@ -15,13 +15,13 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `when empty body returns no links`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/"))
+        videoIngestorMock.register(get(urlEqualTo("/v1/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/hal+json")
                 ))
 
         val links = httpLinkClient.fetch(
-                URI(marketingServiceWireMockServer.url("")),
+                URI(videoIngestorWireMockServer.url("")),
                 RequestDomain(protocol = "http", host = "example.com", port = 80)
         ).block()!!
 
@@ -30,14 +30,14 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `when server error return no links`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/"))
+        videoIngestorMock.register(get(urlEqualTo("/v1/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/hal+json")
                         .withStatus(500)
                 ))
 
         val links = httpLinkClient.fetch(
-                URI(marketingServiceWireMockServer.url("")),
+                URI(videoIngestorWireMockServer.url("")),
                 RequestDomain(protocol = "http", host = "example.com", port = 80)
         ).block()!!
 
@@ -46,15 +46,15 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `set X-Forwarded headers`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/"))
+        videoIngestorMock.register(get(urlEqualTo("/v1/"))
                 .willReturn(aResponse()))
 
         httpLinkClient.fetch(
-                URI(marketingServiceWireMockServer.url("")),
+                URI(videoIngestorWireMockServer.url("")),
                 RequestDomain(protocol = "https", host = "example.com", port = 80)
         ).block()
 
-        marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/"))
+        videoIngestorMock.verifyThat(getRequestedFor(urlEqualTo("/v1/"))
                 .withHeader("X-Forwarded-Host", equalTo("example.com"))
                 .withHeader("X-Forwarded-Port", equalTo("80"))
                 .withHeader("X-Forwarded-Proto", equalTo("https"))
@@ -63,15 +63,15 @@ internal class HttpLinkClientTest : AbstractSpringIntegrationTest() {
 
     @Test
     fun `sets Authorization headers`() {
-        marketingServiceMock.register(get(urlEqualTo("/v1/"))
+        videoIngestorMock.register(get(urlEqualTo("/v1/"))
                 .willReturn(aResponse()))
 
         httpLinkClient.fetch(
-                URI(marketingServiceWireMockServer.url("")),
+                URI(videoIngestorWireMockServer.url("")),
                 RequestDomain(protocol = "https", host = "example.com", port = 80, headers = mapOf("Authorization" to "poke me in the coconut"))
         ).block()
 
-        marketingServiceMock.verifyThat(getRequestedFor(urlEqualTo("/v1/"))
+        videoIngestorMock.verifyThat(getRequestedFor(urlEqualTo("/v1/"))
                 .withHeader("X-Forwarded-Host", equalTo("example.com"))
                 .withHeader("X-Forwarded-Port", equalTo("80"))
                 .withHeader("X-Forwarded-Proto", equalTo("https"))
