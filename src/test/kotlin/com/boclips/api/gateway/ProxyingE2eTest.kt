@@ -399,8 +399,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
                 .withBody(""))
         )
 
-        val headers = HttpHeaders()
-        val entity = HttpEntity(null, headers)
+        val entity = HttpEntity(null, HttpHeaders())
         restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
 
         videoIngestorMock.verifyThat(getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
@@ -408,6 +407,22 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
             .withHeader("X-Forwarded-Proto", equalTo("http"))
             .withHeader("X-Forwarded-Port", AnythingPattern())
         )
+    }
+
+    @Test
+    fun `gateway request propagates arbitrary headers when present`() {
+        videoIngestorMock.register(get(urlEqualTo("/v1/http-feeds/foo"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/hal+json")
+                        .withHeader("Content-Disposition", """attachment; filename="i-like-rats.csv"""")
+                        .withBody(""))
+        )
+
+        restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, HttpEntity(null, HttpHeaders()), String::class.java).apply {
+            assertThat(this.headers["Content-Type"]?.first()).isEqualTo("application/hal+json")
+            assertThat(this.headers["Content-Disposition"]?.first()).isEqualTo("""attachment; filename="i-like-rats.csv"""")
+            assertThat(this.headers["Access-Control-Expose-Headers"]?.first()).isEqualTo("Content-Disposition")
+        }
     }
 
     @Test
