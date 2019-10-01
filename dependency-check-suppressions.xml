@@ -9,4 +9,18 @@
         <gav regex="true">^org\.springframework\.security:spring-security-.*:.*$</gav>
         <cve>CVE-2018-1258</cve>
     </suppress>
+    <suppress until="2019-11-01Z">
+        <notes><![CDATA[
+   file name: spring-boot-starter-reactor-netty-2.1.8.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.boot:spring-boot-starter-reactor-netty:.*$</gav>
+        <cve>CVE-2015-2156</cve>
+    </suppress>
+    <suppress until="2019-11-01Z">
+        <notes><![CDATA[
+   file name: reactor-netty-0.8.11.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^io\.projectreactor\.netty:reactor-netty:.*$</gav>
+        <cve>CVE-2015-2156</cve>
+    </suppress>
 </suppressions>
