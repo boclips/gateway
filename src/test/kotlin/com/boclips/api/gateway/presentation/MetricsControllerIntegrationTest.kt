@@ -19,10 +19,8 @@ class MetricsControllerIntegrationTest : AbstractSpringIntegrationTest() {
 
         val body = restTemplate.getForObject("/actuator/metrics/boclips.api-usage", String::class.java)
 
-        val urls = JsonPath.read<List<List<String>>>(body, "$.availableTags[?(@.tag=='url')].values")
         val clientIds = JsonPath.read<List<List<String>>>(body, "$.availableTags[?(@.tag=='client-id')].values")
         val resources = JsonPath.read<List<List<String>>>(body, "$.availableTags[?(@.tag=='resource')].values")
-        assertThat(urls.flatten()).containsExactly("$gatewayBaseUrl/v1/videos?really=true")
         assertThat(clientIds.flatten()).containsExactly("lti-pearson-myrealize")
         assertThat(resources.flatten()).containsExactly("videos")
     }
