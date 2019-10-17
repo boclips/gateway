@@ -433,7 +433,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, HttpEntity(null, HttpHeaders()), String::class.java).apply {
             assertThat(this.headers["Content-Type"]?.first()).isEqualTo("application/hal+json")
             assertThat(this.headers["Content-Disposition"]?.first()).isEqualTo("""attachment; filename="i-like-rats.csv"""")
-            assertThat(this.headers["Access-Control-Expose-Headers"]?.first()).isEqualTo("Content-Disposition")
+            assertThat(this.headers["Access-Control-Expose-Headers"]!!).isEqualTo(listOf("*"))
         }
     }
 

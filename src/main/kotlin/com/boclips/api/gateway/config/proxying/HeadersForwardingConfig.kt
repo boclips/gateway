@@ -22,7 +22,7 @@ class HeadersForwardingConfig {
     }
 
     private fun setResponseHeaders(exchange: ServerWebExchange) {
-        exchange.response.headers["Access-Control-Expose-Headers"] = "Content-Disposition"
+        exchange.response.headers["Access-Control-Expose-Headers"] = "*"
     }
 
     private fun changeRequestHeaders(exchange: ServerWebExchange): ServerHttpRequest {
