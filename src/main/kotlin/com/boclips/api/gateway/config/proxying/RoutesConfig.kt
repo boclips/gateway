@@ -43,6 +43,10 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
+                path("/v1/selected-content-contracts/**")
+                uri(props.userServiceUrl)
+            }
+            route {
                 path("/v1/api-integrations/**")
                 uri(props.userServiceUrl)
             }
