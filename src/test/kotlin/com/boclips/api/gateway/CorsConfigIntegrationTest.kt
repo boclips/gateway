@@ -51,7 +51,9 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
         "https://www.staging-boclips.com",
         "https://www.boclips.com",
 
+        "https://myviewboard.com",
         "https://myviewclip.myviewboard.cloud",
+        "https://stage.myviewboard.com",
         "https://myviewclip.stage.myviewboard.cloud"
     ])
     fun `allows requests with known origin`(host: String) {
