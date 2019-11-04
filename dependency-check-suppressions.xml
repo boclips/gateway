@@ -12,20 +12,27 @@
         <gav regex="true">^org\.springframework\.security:spring-security-.*:.*$</gav>
         <cve>CVE-2018-1258</cve>
     </suppress>
-    <suppress until="2019-12-01Z">
+    <suppress until="2019-11-01Z">
         <notes><![CDATA[
-        This is a false positive, the scanner incorrectly matches a netty CVE against spring-boot-starter-reactor-netty.
-        Our effective (and safe) netty version is 4.1.42.Final
-        ]]></notes>
-        <gav regex="true">^org\.springframework\.boot:spring-boot-starter-reactor-netty:2\.2\.0\.RELEASE$</gav>
+   file name: spring-boot-starter-reactor-netty-2.1.8.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.boot:spring-boot-starter-reactor-netty:.*$</gav>
         <cve>CVE-2015-2156</cve>
     </suppress>
-    <suppress until="2019-12-01Z">
+    <suppress until="2019-11-01Z">
         <notes><![CDATA[
-        This is a false positive, the scanner incorrectly matches a netty CVE against reactor-netty.
-        Our effective (and safe) netty version is 4.1.42.Final
-        ]]></notes>
-        <gav regex="true">^io\.projectreactor\.netty:reactor-netty:0\.9\.0\.RELEASE$</gav>
+   file name: reactor-netty-0.8.11.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^io\.projectreactor\.netty:reactor-netty:.*$</gav>
         <cve>CVE-2015-2156</cve>
+    </suppress>
+    <suppress until="2019-11-01Z">
+        <notes><![CDATA[
+      file name: jackson-databind-2.9.10.jar
+
+      https://github.com/FasterXML/jackson-databind/issues/2478 They indicate a fix should be issued around the 19th october
+      ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cpe>cpe:/a:fasterxml:jackson</cpe>
     </suppress>
 </suppressions>
