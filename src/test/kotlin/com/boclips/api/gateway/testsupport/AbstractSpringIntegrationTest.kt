@@ -66,7 +66,6 @@ abstract class AbstractSpringIntegrationTest {
         val videoIngestorMock = WireMock("localhost", VIDEO_INGESTOR_PORT)
         val userServiceMock = WireMock("localhost", USER_SERVICE_PORT)
         val videoServiceMock = WireMock("localhost", VIDEO_SERVICE_PORT)
-        val eventServiceMock = WireMock("localhost", EVENT_SERVICE_PORT)
         val keycloakMock = WireMock("localhost", KEYCLOAK_PORT)
         val orderServiceMock = WireMock("localhost", ORDER_SERVICE_PORT)
 
@@ -86,9 +85,6 @@ abstract class AbstractSpringIntegrationTest {
     }
 
     @Autowired
-    private lateinit var restTemplateBuilder: RestTemplateBuilder
-
-    @Autowired
     lateinit var objectMapper: ObjectMapper
 
     @Autowired
@@ -101,7 +97,7 @@ abstract class AbstractSpringIntegrationTest {
     @BeforeEach
     fun setUp() {
         gatewayBaseUrl = "http://localhost:$appPort"
-        restTemplate = restTemplateBuilder.rootUri(gatewayBaseUrl).build()
+        restTemplate = RestTemplateBuilder().rootUri(gatewayBaseUrl).build()
         wiremockServers.forEach { it.resetAll() }
     }
 

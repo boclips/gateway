@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
-import reactor.core.publisher.Mono
 
 @Component
 class BoclipsGatewayMetricsFilter(private val meterRegistry: MeterRegistry) : WebFilter, Ordered {
@@ -19,7 +18,7 @@ class BoclipsGatewayMetricsFilter(private val meterRegistry: MeterRegistry) : We
     }
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain) =
-            chain.filter(exchange).doOnSuccessOrError { _, _ ->
+            chain.filter(exchange).doOnTerminate() {
                 exchange.request.headers["Authorization"]?.firstOrNull()?.removePrefix("Bearer ")?.let { token ->
                     safeDecode(token)?.getClaim("azp")?.asString()?.let { authorizedParty ->
                         meterRegistry.counter(
@@ -33,7 +32,7 @@ class BoclipsGatewayMetricsFilter(private val meterRegistry: MeterRegistry) : We
                 }
             }
 
-    fun safeDecode(token: String) : DecodedJWT? = try {
+    fun safeDecode(token: String): DecodedJWT? = try {
         JWT.decode(token)
     } catch (e: Exception) {
         null
