@@ -12,25 +12,28 @@
         <gav regex="true">^org\.springframework\.security:spring-security-.*:.*$</gav>
         <cve>CVE-2018-1258</cve>
     </suppress>
-    <suppress until="2019-11-01Z">
+    <suppress until="2019-12-01Z">
         <notes><![CDATA[
    file name: spring-boot-starter-reactor-netty-2.1.8.RELEASE.jar
    ]]></notes>
         <gav regex="true">^org\.springframework\.boot:spring-boot-starter-reactor-netty:.*$</gav>
         <cve>CVE-2015-2156</cve>
     </suppress>
-    <suppress until="2019-11-01Z">
+    <suppress until="2019-12-01Z">
         <notes><![CDATA[
    file name: reactor-netty-0.8.11.RELEASE.jar
    ]]></notes>
         <gav regex="true">^io\.projectreactor\.netty:reactor-netty:.*$</gav>
         <cve>CVE-2015-2156</cve>
     </suppress>
-    <suppress until="2019-11-01Z">
+    <suppress until="2019-12-01Z">
         <notes><![CDATA[
       file name: jackson-databind-2.9.10.jar
 
       https://github.com/FasterXML/jackson-databind/issues/2478 They indicate a fix should be issued around the 19th october
+
+      Spring Boot 2.2 updates this dependency to fixed version, bit Spring Cloud is still in release-candidate mode. We can
+      try updating again once a final version is released.
       ]]></notes>
         <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
         <cpe>cpe:/a:fasterxml:jackson</cpe>
