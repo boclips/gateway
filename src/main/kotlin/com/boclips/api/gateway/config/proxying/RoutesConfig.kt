@@ -87,6 +87,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/events/page-render")
+                uri(props.userServiceUrl)
+            }
+            route {
                 path("/v1/distribution-methods/**")
                 uri(props.videoServiceUrl)
             }
