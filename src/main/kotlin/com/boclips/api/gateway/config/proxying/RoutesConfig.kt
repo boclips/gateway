@@ -91,6 +91,10 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
+                path("/v1/events/expired-user-access")
+                uri(props.userServiceUrl)
+            }
+            route {
                 path("/v1/distribution-methods/**")
                 uri(props.videoServiceUrl)
             }
