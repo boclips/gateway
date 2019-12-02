@@ -54,7 +54,8 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
         "https://myviewboard.com",
         "https://myviewclip.myviewboard.cloud",
         "https://stage.myviewboard.com",
-        "https://myviewclip.stage.myviewboard.cloud"
+        "https://myviewclip.stage.myviewboard.cloud",
+        "https://myviewboardclips.com"
     ])
     fun `allows requests with known origin`(host: String) {
         videoIngestorMock.register(WireMock.get(WireMock.urlEqualTo(testPath))
