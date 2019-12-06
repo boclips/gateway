@@ -55,6 +55,10 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
+                path("/v1/independent-organisations/**")
+                uri(props.userServiceUrl)
+            }
+            route {
                 path("/v1/videos/**")
                 uri(props.videoServiceUrl)
             }
