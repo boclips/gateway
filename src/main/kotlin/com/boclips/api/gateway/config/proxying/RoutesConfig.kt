@@ -75,6 +75,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/video-types")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/events/playback")
                 uri(props.videoServiceUrl)
             }
