@@ -36,6 +36,18 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Test
+    fun `ingests are proxied to video-ingestor`() {
+        videoIngestorMock.register(get(urlEqualTo("/v1/ingests"))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "text/plain")
+                .withBody("hello"))
+        )
+
+        val response = restTemplate.getForObject("/v1/ingests", String::class.java)
+        assertThat(response).isEqualTo("hello")
+    }
+
+    @Test
     fun `jobs sub-resource are proxied to video-ingestor`() {
         videoIngestorMock.register(get(urlEqualTo("/v1/jobs/1"))
             .willReturn(aResponse()

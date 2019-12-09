@@ -27,6 +27,10 @@ class RoutesConfig {
                 uri(props.videoIngestorUrl)
             }
             route {
+                path("/v1/ingests/**")
+                uri(props.videoIngestorUrl)
+            }
+            route {
                 path("/v1/users/**")
                 uri(props.userServiceUrl)
             }
