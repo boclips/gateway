@@ -107,6 +107,10 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
+                path("/v1/events/playback/batch")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/distribution-methods/**")
                 uri(props.videoServiceUrl)
             }
