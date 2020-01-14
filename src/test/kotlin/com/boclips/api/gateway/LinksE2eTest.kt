@@ -140,4 +140,49 @@ class LinksE2eTest : AbstractSpringIntegrationTest() {
         userServiceWireMockServer.verify(getRequestedFor(urlEqualTo("/v1/"))
             .withHeader("Authorization", equalTo("the-seaguls-poked-in-my-pants")))
     }
+
+    @Test
+    fun `copes with unexpected payloads gracefully`() {
+
+        videoIngestorMock.register(get(urlEqualTo("/v1/"))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/hal+json")
+                .withBody(
+                    """
+                                    {
+                                        "content": "rats"
+                                    }
+                                """
+                )))
+
+        orderServiceMock.register(get(urlEqualTo("/v1/"))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/hal+json")
+                .withBody(
+                    """
+                                    {
+                                      "_links": {
+                                            "orders": {
+                                                "href": "${routingProperties.orderServiceUrl}/v1/orders"
+                                            }
+                                        }
+                                    }
+                                """
+                )))
+
+        val response = restTemplate.getForEntity("/v1/admin", Map::class.java)
+        assertThat(response.headers["Content-Type"]).contains("application/hal+json")
+        assertThat(response.body).isEqualTo(objectMapper.readValue(
+            """
+            {
+                "_links": {
+                    "orders": {
+                        "href": "${routingProperties.orderServiceUrl}/v1/orders",
+                         "templated": false
+                    }
+                }
+            }
+        """
+        ))
+    }
 }

@@ -14,11 +14,11 @@ class HttpLinkRepository(
     override fun findAll(requestDomain: RequestDomain) =
             httpLinkClient.fetch(URI(serviceUri), requestDomain)
                     .flatMapMany { links ->
-                        Flux.fromIterable(links._links.entries.map {
+                        Flux.fromIterable(links._links?.entries?.map {
                             Link(
                                     href = it.value["href"] as String,
                                     templated = it.value["templated"] as? Boolean ?: false,
                                     rel = it.key)
-                        })
+                        } ?: emptyList())
                     }
 }
