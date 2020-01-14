@@ -62,7 +62,9 @@ dependencies {
 	implementation('io.github.microutils:kotlin-logging:1.4.9')
 
 	implementation('com.fasterxml.jackson.module:jackson-module-kotlin')
-	implementation('com.fasterxml.jackson.core:jackson-databind:2.9.10')
+	implementation('com.fasterxml.jackson.core:jackson-databind:2.10.1')
+	implementation('com.fasterxml.jackson.core:jackson-core:2.10.1')
+	implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.1')
 
 	implementation('com.auth0:java-jwt:3.8.2')
 
