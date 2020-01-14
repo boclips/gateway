@@ -76,7 +76,7 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
         try {
             fireRequestWithOrigin("www.example.com")
         } catch (ex: HttpClientErrorException) {
-            assertThat(ex).hasMessage("403 Forbidden")
+            assertThat(ex).hasMessageContaining("403 Forbidden")
         }
     }
 

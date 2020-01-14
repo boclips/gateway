@@ -86,9 +86,6 @@ abstract class AbstractSpringIntegrationTest {
     }
 
     @Autowired
-    private lateinit var restTemplateBuilder: RestTemplateBuilder
-
-    @Autowired
     lateinit var objectMapper: ObjectMapper
 
     @Autowired
@@ -101,7 +98,7 @@ abstract class AbstractSpringIntegrationTest {
     @BeforeEach
     fun setUp() {
         gatewayBaseUrl = "http://localhost:$appPort"
-        restTemplate = restTemplateBuilder.rootUri(gatewayBaseUrl).build()
+        restTemplate = RestTemplateBuilder().rootUri(gatewayBaseUrl).build()
         wiremockServers.forEach { it.resetAll() }
     }
 
