@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base/
+namespace: testing
+replicas:
+- count: 1
+  name: gateway
+patchesJson6902:
+- path: domain.yaml
+  target:
+    group: extensions
+    kind: Ingress
+    name: gateway
+    version: v1beta1
+- path: jaeger-service-name.yaml
+  target:
+    group: apps
+    kind: Deployment
+    name: gateway
+    version: v1
+patchesStrategicMerge:
+- noncritical.yaml
