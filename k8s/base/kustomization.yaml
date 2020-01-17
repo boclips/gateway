@@ -7,27 +7,30 @@ resources:
 commonLabels:
   app: gateway
 commonAnnotations:
-  boclips-version: "0"
+  boclips-version: "1"
 patchesStrategicMerge:
 - spread-across-zones.yaml
 images:
 - name: eu.gcr.io/boclips-prod/boclips/gateway
-  newTag: "0"
+  newTag: "1"
 patchesJson6902:
 - path: boot-slow.yaml
   target:
-    &deployment
     group: apps
+    kind: Deployment
+    name: gateway
     version: v1
-    kind: Deployment
-    name: gateway
 - path: scale-large.yaml
-  target: *deployment
-vars:
-- name: VERSION
-  objref:
+  target:
+    group: apps
     kind: Deployment
     name: gateway
+    version: v1
+vars:
+- fieldref:
+    fieldPath: metadata.annotations.boclips-version
+  name: VERSION
+  objref:
     apiVersion: apps/v1
-  fieldref:
-    fieldpath: metadata.annotations.boclips-version
+    kind: Deployment
+    name: gateway
