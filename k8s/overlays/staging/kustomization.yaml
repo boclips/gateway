@@ -10,15 +10,15 @@ patches:
 - path: domain.yaml
   target:
     group: extensions
-    version: v1beta1
     kind: Ingress
+    version: v1beta1
 - path: jaeger-service-name.yaml
   target:
     group: apps
-    version: v1
     kind: Deployment
+    version: v1
 - path: noncritical.yaml
   target:
     group: apps
-    version: v1
     kind: Deployment
+    version: v1
