@@ -10,7 +10,7 @@ spring:
 
 gateway:
   services:
-    orderServiceUrl: http://terry
+    orderServiceUrl: http://order-service
     videoIngestorUrl: http://video-ingestor
     userServiceUrl: http://user-service
     eventServiceUrl: http://event-service
