@@ -8,23 +8,24 @@ commonLabels:
   app: gateway
 commonAnnotations:
   boclips-version: "1"
-patchesStrategicMerge:
-- spread-across-zones.yaml
 images:
 - name: eu.gcr.io/boclips-prod/boclips/gateway
   newTag: "1"
-patchesJson6902:
+patches:
+- path: spread-across-zones.yaml
+  target:
+    group: apps
+    kind: Deployment
+    version: v1
 - path: boot-slow.yaml
   target:
     group: apps
     kind: Deployment
-    name: gateway
     version: v1
 - path: scale-large.yaml
   target:
     group: apps
     kind: Deployment
-    name: gateway
     version: v1
 vars:
 - fieldref:
