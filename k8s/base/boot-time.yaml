@@ -2,9 +2,9 @@
   path: /spec/template/spec/containers/0/readinessProbe
   value:
     successThreshold: 1
-    failureThreshold: 2
+    failureThreshold: 6
     timeoutSeconds: 5
-    initialDelaySeconds: 10
+    initialDelaySeconds: 20
     httpGet:
       path: /actuator/health
       port: http

@@ -17,7 +17,7 @@ patches:
     group: apps
     kind: Deployment
     version: v1
-- path: boot-slow.yaml
+- path: boot-time.yaml
   target:
     group: apps
     kind: Deployment
