@@ -6,18 +6,19 @@ namespace: staging
 replicas:
 - count: 2
   name: gateway
-patchesJson6902:
+patches:
 - path: domain.yaml
   target:
     group: extensions
-    kind: Ingress
-    name: gateway
     version: v1beta1
+    kind: Ingress
 - path: jaeger-service-name.yaml
   target:
     group: apps
-    kind: Deployment
-    name: gateway
     version: v1
-patchesStrategicMerge:
-- noncritical.yaml
+    kind: Deployment
+- path: noncritical.yaml
+  target:
+    group: apps
+    version: v1
+    kind: Deployment
