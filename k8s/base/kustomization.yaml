@@ -9,10 +9,8 @@ commonLabels:
 commonAnnotations:
   boclips-version: "10"
 images:
-- name: eu.gcr.io/boclips-prod/boclips/
-  newTag: "10"
 - name: eu.gcr.io/boclips-prod/boclips/gateway
-  newTag: "9"
+  newTag: "10"
 patches:
 - path: spread-across-zones.yaml
   target:
