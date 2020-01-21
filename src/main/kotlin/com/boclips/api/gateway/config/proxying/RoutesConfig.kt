@@ -59,7 +59,7 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
-                path("/v1/independent-accounts/**")
+                path("/v1/accounts/**")
                 uri(props.userServiceUrl)
             }
             route {
