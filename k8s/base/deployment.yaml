@@ -10,7 +10,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: gateway
-        image: eu.gcr.io/boclips-prod/boclips/gateway:1
+        image: app:1
         env:
         - name: SENTRY_RELEASE
           value: gateway-$(VERSION)
