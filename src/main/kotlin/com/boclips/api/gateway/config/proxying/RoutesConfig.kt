@@ -131,6 +131,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/content-categories/**")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/admin/actions/**")
                 uri(props.videoServiceUrl)
             }
