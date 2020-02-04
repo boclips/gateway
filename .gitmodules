@@ -1,0 +1,3 @@
+[submodule "k8s/base/shared"]
+	path = k8s/base/shared
+	url = git@github.com:boclips/k8s
