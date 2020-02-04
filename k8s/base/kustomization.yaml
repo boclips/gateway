@@ -13,7 +13,7 @@ images:
   newName: eu.gcr.io/boclips-prod/boclips/gateway
   newTag: "41"
 patches:
-- path: shared/patches/spread-across-zones.yaml
+- path: spread-across-zones.yaml
   target:
     group: apps
     kind: Deployment
