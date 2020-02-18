@@ -7,11 +7,11 @@ resources:
 commonLabels:
   app: gateway
 commonAnnotations:
-  boclips-version: "59"
+  boclips-version: "60"
 images:
 - name: app
   newName: eu.gcr.io/boclips-prod/boclips/gateway
-  newTag: "59"
+  newTag: "60"
 patches:
 - path: spread-across-zones.yaml
   target:
