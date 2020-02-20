@@ -47,11 +47,11 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
-                path("/v1/contracts/**")
+                path("/v1/access-rules/**")
                 uri(props.userServiceUrl)
             }
             route {
-                path("/v1/selected-content-contracts/**")
+                path("/v1/selected-content-access-rules/**")
                 uri(props.userServiceUrl)
             }
             route {
