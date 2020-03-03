@@ -67,6 +67,10 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
+                path("/v1/content-packages/**")
+                uri(props.userServiceUrl)
+            }
+            route {
                 path("/v1/accounts/**")
                 uri(props.userServiceUrl)
             }
