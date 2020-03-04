@@ -61,7 +61,8 @@ class CorsConfig {
                     "https://test-k8s-system.nuadu.com",
                     "https://test2-k8s-system.nuadu.com",
                     "https://test3-k8s-system.nuadu.com",
-                    "https://app.nuadu.com"
+                    "https://app.nuadu.com",
+                    "https://app.nuadu.pl"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
