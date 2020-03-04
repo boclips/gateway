@@ -55,7 +55,13 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
         "https://myviewclip.myviewboard.cloud",
         "https://stage.myviewboard.com",
         "https://myviewclip.stage.myviewboard.cloud",
-        "https://myviewboardclips.com"
+        "https://myviewboardclips.com",
+
+        "http://nuadu-system-www-2.0:8000",
+        "https://test-k8s-system.nuadu.com",
+        "https://test2-k8s-system.nuadu.com",
+        "https://test3-k8s-system.nuadu.com",
+        "https://app.nuadu.com"
     ])
     fun `allows requests with known origin`(host: String) {
         videoIngestorMock.register(WireMock.get(WireMock.urlEqualTo(testPath))
