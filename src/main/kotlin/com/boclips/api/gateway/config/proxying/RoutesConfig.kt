@@ -143,6 +143,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/content-partner-contracts/**")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/marketing-statuses/**")
                 uri(props.videoServiceUrl)
             }
