@@ -21,6 +21,7 @@ class CorsConfig {
 
                     "https://teachers.testing-boclips.com",
                     "https://teachers.staging-boclips.com",
+                    "https://teachers.oldvic-boclips.com",
                     "https://teachers.boclips.com",
 
                     "https://backoffice.testing-boclips.com",
@@ -33,6 +34,7 @@ class CorsConfig {
 
                     "https://api.testing-boclips.com",
                     "https://api.staging-boclips.com",
+                    "https://api.oldvic-boclips.com",
                     "https://api.boclips.com",
 
                     "https://lti.testing-boclips.com",
