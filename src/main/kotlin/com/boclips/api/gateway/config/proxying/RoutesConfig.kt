@@ -155,7 +155,7 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
-                path("/v1/new-legal-restrictions/**")
+                path("/v1/contract-legal-restrictions")
                 uri(props.videoServiceUrl)
             }
             route {
