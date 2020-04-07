@@ -504,6 +504,31 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     }
 
     @Nested
+    inner class NewLegalRestrictions {
+        @Test
+        fun `new legal restrictions are proxied to video-service`() {
+            videoServiceMock.register(get(urlEqualTo("/v1/new-legal-restrictions"))
+                    .willReturn(aResponse()
+                            .withHeader("Content-Type", "text/plain")
+                            .withBody("hello-from-restrictions")))
+
+            val response = restTemplate.getForObject("/v1/new-legal-restrictions", String::class.java)
+            assertThat(response).isEqualTo("hello-from-restrictions")
+        }
+
+        @Test
+        fun `new legal restrictions type are proxied to video-service`() {
+            videoServiceMock.register(get(urlEqualTo("/v1/new-legal-restrictions/type/contentPartner"))
+                    .willReturn(aResponse()
+                            .withHeader("Content-Type", "text/plain")
+                            .withBody("hello-from-restrictions")))
+
+            val response = restTemplate.getForObject("/v1/new-legal-restrictions/type/contentPartner", String::class.java)
+            assertThat(response).isEqualTo("hello-from-restrictions")
+        }
+    }
+
+    @Nested
     inner class KeycloakProxies {
         @Test
         fun `token requests are proxied to keycloak`() {
