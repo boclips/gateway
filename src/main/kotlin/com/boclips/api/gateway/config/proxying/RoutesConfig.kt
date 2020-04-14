@@ -119,6 +119,10 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
+                path("/v1/events/platform-interaction")
+                uri(props.userServiceUrl)
+            }
+            route {
                 path("/v1/events/expired-user-access")
                 uri(props.userServiceUrl)
             }
