@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/v1")
 class LinksController(
-        val linkActions: LinkActions
+    val linkActions: LinkActions
 ) {
 
     @GetMapping("/admin", "/admin/")
@@ -21,9 +21,11 @@ class LinksController(
     }
 
     @GetMapping("", "/")
-    fun getCustomerFacingLinks(serverHttpRequest: ServerHttpRequest, response: ServerHttpResponse): Mono<LinksResource> {
+    fun getCustomerFacingLinks(
+        serverHttpRequest: ServerHttpRequest,
+        response: ServerHttpResponse
+    ): Mono<LinksResource> {
         response.headers.set("Content-Type", "application/hal+json")
         return linkActions.getCustomerFacingLinks(serverHttpRequest)
     }
-
 }
