@@ -401,6 +401,20 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
             assertThat(response).isEqualTo("hello")
         }
 
+        @Test
+        fun `videos are proxied to suggestions`() {
+            videoServiceMock.register(
+                get(urlEqualTo("/v1/suggestions"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("Content-Type", "text/plain")
+                            .withBody("hello")
+                    )
+            )
+
+            val response = restTemplate.getForObject("/v1/suggestions", String::class.java)
+            assertThat(response).isEqualTo("hello")
+        }
 
         @Test
         fun `(legacy) player interaction events are proxied to video-service`() {
