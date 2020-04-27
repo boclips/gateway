@@ -42,4 +42,11 @@
         <packageUrl regex="true">^pkg:maven/com\.squareup\.okhttp3/okhttp@.*$</packageUrl>
         <cve>CVE-2018-20200</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.2.2.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+        <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+    </suppress>
 </suppressions>
