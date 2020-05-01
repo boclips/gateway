@@ -16,7 +16,7 @@ class RequestExtractor {
         return RequestDomain(
                 protocol = request.headers["x-forwarded-proto"]?.firstOrNull() ?: requestUri.scheme,
                 host = buildHost(request),
-                port = request.headers["x-forwarded-port"]?.firstOrNull()?.toInt() ?: requestUri.port,
+                port = request.headers["x-forwarded-port"]?.first()?.toInt() ?: 443,
                 headers = request.headers["authorization"]?.firstOrNull()?.let { mapOf("Authorization" to it) }
                         ?: emptyMap()
         )

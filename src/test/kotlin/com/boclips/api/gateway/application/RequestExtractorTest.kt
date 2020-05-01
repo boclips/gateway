@@ -23,13 +23,13 @@ class RequestExtractorTest {
     }
 
     @Test
-    fun `extracts host port and protocol from uri when headers are not present`() {
+    fun `extracts host and protocol from uri, and defaults to port 443 when headers are not present`() {
         val (protocol, host, port) = requestExtractor.extract(MockServerHttpRequest
                 .get("http://localhost:8080")
                 .build())
 
         assertThat(host).isEqualTo("localhost")
-        assertThat(port).isEqualTo(8080)
+        assertThat(port).isEqualTo(443)
         assertThat(protocol).isEqualTo("http")
     }
 
@@ -44,14 +44,11 @@ class RequestExtractorTest {
 
     @Test
     fun `extracts Authorization header if present`() {
-        val (protocol, host, port, headers) = requestExtractor.extract(MockServerHttpRequest
+        val (_, _, _, headers) = requestExtractor.extract(MockServerHttpRequest
                 .get("http://localhost:8080")
                 .header("Authorization", "poke me in the coconut")
                 .build())
 
-        assertThat(host).isEqualTo("localhost")
-        assertThat(port).isEqualTo(8080)
-        assertThat(protocol).isEqualTo("http")
         assertThat(headers).containsEntry("Authorization", "poke me in the coconut")
     }
 }
