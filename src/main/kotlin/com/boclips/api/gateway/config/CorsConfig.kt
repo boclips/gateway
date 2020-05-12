@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsWebFilter
+import org.springframework.web.cors.reactive.DefaultCorsProcessor
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 import reactor.core.publisher.Mono
 
@@ -70,7 +71,7 @@ class CorsConfig {
             allowedHeaders = listOf("*")
             allowCredentials = true
         })
-    })
+    }, CloudCdnFriendlyCorsProcessor(DefaultCorsProcessor()))
 
     @Bean
     fun enforceGatewayAllowedOriginsFilter(): GlobalFilter {
