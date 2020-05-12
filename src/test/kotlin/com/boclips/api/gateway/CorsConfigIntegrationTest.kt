@@ -109,6 +109,8 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
         fireRequest("/v1/disciplines", GET).run { headers["Vary"] }!!.let { vary ->
             assertThat(vary).doesNotContain(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD)
             assertThat(vary).doesNotContain(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS)
+            assertThat(vary).contains(HttpHeaders.ORIGIN)
+            assertThat(vary).contains(HttpHeaders.ACCEPT_ENCODING)
         }
     }
 

@@ -10,7 +10,10 @@ class CloudCdnFriendlyCorsProcessor(private val next: CorsProcessor) : CorsProce
     override fun process(configuration: CorsConfiguration?, exchange: ServerWebExchange): Boolean =
             next.process(configuration, exchange).also {
                 if (exchange.request.method == GET) {
-                    exchange.response.headers.vary = listOf(HttpHeaders.ORIGIN)
+                    exchange.response.headers.set(
+                            HttpHeaders.VARY,
+                            listOf(HttpHeaders.ORIGIN, HttpHeaders.ACCEPT_ENCODING)
+                    )
                 }
             }
 }
