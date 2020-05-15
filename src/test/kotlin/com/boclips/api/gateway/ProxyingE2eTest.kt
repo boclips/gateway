@@ -555,6 +555,21 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         }
     }
 
+
+
+    @Nested
+    inner class ContentWarnings {
+        @Test
+        fun `content warnings are proxied to video-service`() {
+            videoServiceMock.register(get(urlEqualTo("/v1/content-warnings"))
+                    .willReturn(aResponse()
+                            .withHeader("Content-Type", "text/plain")
+                            .withBody("hello-from-video-service")))
+
+            val response = restTemplate.getForObject("/v1/content-warnings", String::class.java)
+            assertThat(response).isEqualTo("hello-from-video-service")
+        }
+    }
     @Nested
     inner class KeycloakProxies {
         @Test

@@ -103,6 +103,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/content-warnings")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/events/playback")
                 uri(props.videoServiceUrl)
             }
