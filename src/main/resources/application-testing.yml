@@ -1,3 +1,0 @@
-gateway:
-  services:
-    keycloakUrl: https://login.testing-boclips.com
