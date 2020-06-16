@@ -95,6 +95,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/attachment-types")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/video-types")
                 uri(props.videoServiceUrl)
             }
