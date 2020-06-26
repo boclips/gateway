@@ -67,7 +67,9 @@ class CorsConfig {
                     "https://app.nuadu.com",
                     "https://app.nuadu.pl",
 
-                    "https://local.lessonplanet.com"
+                    "https://local.lessonplanet.com",
+                    "https://staging.lessonplanet.com",
+                    "https://feature.lessonplanet.com"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
