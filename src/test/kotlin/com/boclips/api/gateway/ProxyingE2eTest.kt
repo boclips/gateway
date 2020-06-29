@@ -649,7 +649,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         }
 
         @Test
-        fun `user admin action sub resources are proxied to -service`() {
+        fun `user admin action sub resources are proxied to user-service`() {
             userServiceMock.register(
                 get(urlEqualTo("/v1/admin/users/actions/whatever"))
                     .willReturn(
@@ -661,6 +661,21 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
             val response = restTemplate.getForObject("/v1/admin/users/actions/whatever", String::class.java)
             assertThat(response).isEqualTo("response from the user service")
+        }
+
+        @Test
+
+        fun `order admin action sub resources are proxied to order-service`() {
+            orderServiceMock.register(
+                get(urlEqualTo("/v1/admin/orders/actions/anything"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("content-Type","text/plain")
+                            .withBody("any response from order service")
+                    )
+            )
+            val response = restTemplate.getForObject("/v1/admin/orders/actions/anything", String::class.java)
+            assertThat(response).isEqualTo("any response from order service")
         }
 
         @Test
