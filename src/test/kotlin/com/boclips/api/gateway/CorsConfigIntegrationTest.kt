@@ -68,6 +68,7 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
         "https://app.nuadu.pl",
 
         "https://local.lessonplanet.com",
+        "https://local.lessonplanet.com:3000",
         "https://staging.lessonplanet.com",
         "https://feature.lessonplanet.com"
     ])
