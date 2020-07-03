@@ -70,7 +70,16 @@ class CorsConfig {
                     "https://local.lessonplanet.com",
                     "https://local.lessonplanet.com:3000",
                     "https://staging.lessonplanet.com",
-                    "https://feature.lessonplanet.com"
+                    "https://feature.lessonplanet.com",
+
+                    "https://read.kortext.com",
+                    "https://read.dev.kortext.com",
+                    "https://read.qa.kortext.com",
+                    "https://read.uat.kortext.com",
+                    "https://read-api.kortext.com",
+                    "https://read-api.dev.kortext.com",
+                    "https://read-api.qa.kortext.com",
+                    "https://read-api.uat.kortext.com"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
