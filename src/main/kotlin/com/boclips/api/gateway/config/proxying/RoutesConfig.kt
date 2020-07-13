@@ -47,6 +47,10 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
+                path("/v1/e2e-users/**")
+                uri(props.userServiceUrl)
+            }
+            route {
                 path("/v1/countries/**")
                 uri(props.userServiceUrl)
             }
