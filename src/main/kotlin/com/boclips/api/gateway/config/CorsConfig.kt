@@ -71,6 +71,8 @@ class CorsConfig {
                     "https://local.lessonplanet.com:3000",
                     "https://staging.lessonplanet.com",
                     "https://feature.lessonplanet.com",
+                    "https://lessonplanet.com",
+                    "https://www.lessonplanet.com",
 
                     "https://read.kortext.com",
                     "https://read.dev.kortext.com",
