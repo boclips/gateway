@@ -151,6 +151,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/events/suggested-search-completions")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/distribution-methods/**")
                 uri(props.videoServiceUrl)
             }
