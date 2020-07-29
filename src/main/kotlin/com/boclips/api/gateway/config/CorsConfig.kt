@@ -81,7 +81,9 @@ class CorsConfig {
                     "https://read-api.kortext.com",
                     "https://read-api.dev.kortext.com",
                     "https://read-api.qa.kortext.com",
-                    "https://read-api.uat.kortext.com"
+                    "https://read-api.uat.kortext.com",
+
+                    "http://generalonologicsoft.com" // This is for them to test the integration, but they don't seem to have a proper staging environment...
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
