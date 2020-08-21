@@ -83,7 +83,10 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
         "https://read-api.qa.kortext.com",
         "https://read-api.uat.kortext.com",
 
-        "http://generalonologicsoft.com"
+        "http://generalonologicsoft.com",
+
+        "https://testnew.empass.mobi",
+        "https://app.learntinue.ai"
     ])
     fun `allows requests with known origin`(host: String) {
         videoIngestorMock.register(get(urlEqualTo(testPath))

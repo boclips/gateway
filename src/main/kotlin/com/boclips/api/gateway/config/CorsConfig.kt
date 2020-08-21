@@ -83,7 +83,10 @@ class CorsConfig {
                     "https://read-api.qa.kortext.com",
                     "https://read-api.uat.kortext.com",
 
-                    "http://generalonologicsoft.com" // This is for them to test the integration, but they don't seem to have a proper staging environment...
+                    "http://generalonologicsoft.com", // This is for them to test the integration, but they don't seem to have a proper staging environment...
+
+                    "https://testnew.empass.mobi",
+                    "https://app.learntinue.ai"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
