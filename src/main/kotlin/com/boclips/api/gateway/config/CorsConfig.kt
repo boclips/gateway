@@ -85,7 +85,7 @@ class CorsConfig {
 
                     "http://generalonologicsoft.com", // This is for them to test the integration, but they don't seem to have a proper staging environment...
 
-                    "https://testnew.empass.mobi",
+                    "http://testnew.empass.mobi",
                     "https://app.learntinue.ai"
             )
             allowedMethods = listOf("*")

@@ -85,7 +85,7 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
 
         "http://generalonologicsoft.com",
 
-        "https://testnew.empass.mobi",
+        "http://testnew.empass.mobi",
         "https://app.learntinue.ai"
     ])
     fun `allows requests with known origin`(host: String) {
