@@ -93,11 +93,17 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
         "https://reader.lightsailed.com",
         "https://ls-api.com",
         "https://qa-hot.ls-api.com",
-        "https://qa.lighthousereader.com"
+        "https://qa.lighthousereader.com",
+        "https://liz.qa.lighthousereader.com",
+        "https://dan.qa.lighthousereader.com",
+        "https://ab.qa.lighthousereader.com",
+        "https://waaris.qa.lighthousereader.com",
+        "https://rich.qa.lighthousereader.com",
+        "https://caz.qa.lighthousereader.com"
     ])
     fun `allows requests with known origin`(host: String) {
         videoIngestorMock.register(get(urlEqualTo(testPath))
-                .willReturn(aResponse().withBody("hello"))
+            .willReturn(aResponse().withBody("hello"))
         )
 
         val response = fireRequest(host)
@@ -108,7 +114,7 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
     @Test
     fun `does not allow requests with unknown origins`() {
         videoIngestorMock.register(get(urlEqualTo(testPath))
-                .willReturn(aResponse().withBody("hello"))
+            .willReturn(aResponse().withBody("hello"))
         )
 
         val ex = assertThrows<HttpClientErrorException> { fireRequest("www.example.com") }
@@ -119,20 +125,20 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
     @Test
     fun `sets preflight Vary headers for OPTIONS responses`() {
         videoServiceMock.register(options(urlEqualTo("/v1/subjects"))
-                .willReturn(aResponse().withBody("this-would-be-blank"))
+            .willReturn(aResponse().withBody("this-would-be-blank"))
         )
         fireRequest("/v1/subjects", OPTIONS)
-                .let { response -> response.headers["Vary"] }!!
-                .let { vary ->
-                    assertThat(vary).contains(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD)
-                    assertThat(vary).contains(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS)
-                }
+            .let { response -> response.headers["Vary"] }!!
+            .let { vary ->
+                assertThat(vary).contains(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD)
+                assertThat(vary).contains(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS)
+            }
     }
 
     @Test
     fun `doesn't set preflight Vary headers for GET responses (enable Cloud CDN caching)`() {
         videoServiceMock.register(get(urlEqualTo("/v1/disciplines"))
-                .willReturn(aResponse().withBody("some-json"))
+            .willReturn(aResponse().withBody("some-json"))
         )
         fireRequest("/v1/disciplines", GET).run { headers["Vary"] }!!.let { vary ->
             assertThat(vary).doesNotContain(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD)
@@ -143,16 +149,16 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
     }
 
     private fun fireRequest(path: String, method: HttpMethod): ResponseEntity<String> =
-            fireRequest(path, method, HttpHeaders())
+        fireRequest(path, method, HttpHeaders())
 
     private fun fireRequest(host: String): ResponseEntity<String> =
-            fireRequest(testPath, GET, HttpHeaders().apply { add("Origin", host) })
+        fireRequest(testPath, GET, HttpHeaders().apply { add("Origin", host) })
 
     private fun fireRequest(path: String, method: HttpMethod, headers: HttpHeaders): ResponseEntity<String> =
-            restTemplate.exchange<String>(
-                    path,
-                    method,
-                    HttpEntity(null, headers),
-                    String::class.java
-            )
+        restTemplate.exchange<String>(
+            path,
+            method,
+            HttpEntity(null, headers),
+            String::class.java
+        )
 }
