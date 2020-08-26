@@ -90,7 +90,10 @@ class CorsConfig {
 
                     "https://lighthousereader.com",
                     "https://lightsailed.com",
-                    "https://reader.lightsailed.com"
+                    "https://reader.lightsailed.com",
+                    "https://ls-api.com",
+                    "https://qa.lighthousereader.com",
+                    "https://qa-hot.ls-api.com"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
