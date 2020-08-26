@@ -89,7 +89,8 @@ class CorsConfig {
                     "https://app.learntinue.ai",
 
                     "https://lighthousereader.com",
-                    "https://lightsailed.com"
+                    "https://lightsailed.com",
+                    "https://reader.lightsailed.com"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
