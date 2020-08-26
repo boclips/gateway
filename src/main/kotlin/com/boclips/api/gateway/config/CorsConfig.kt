@@ -88,6 +88,7 @@ class CorsConfig {
                 "http://testnew.empass.mobi",
                 "https://app.learntinue.ai",
 
+                // These are all origins for lightsailed
                 "https://lighthousereader.com",
                 "https://lightsailed.com",
                 "https://reader.lightsailed.com",
@@ -99,7 +100,13 @@ class CorsConfig {
                 "https://ab.qa.lighthousereader.com",
                 "https://waaris.qa.lighthousereader.com",
                 "https://rich.qa.lighthousereader.com",
-                "https://caz.qa.lighthousereader.com"
+                "https://caz.qa.lighthousereader.com",
+                "https://qa-ab.ls-api.com",
+                "https://qa-waaris.ls-api.com",
+                "https://qa-hot.ls-api.com",
+                "https://sales.lightsailed.com",
+                "https://rosen.lightsailed.com",
+                "https://s2m-reader.lightsailed.com"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
