@@ -28,20 +28,6 @@
         <packageUrl regex="true">^pkg:maven/org\.apache\.thrift/libthrift@.*$</packageUrl>
         <vulnerabilityName>CVE-2019-0210</vulnerabilityName>
     </suppress>
-    <suppress until="2020-03-01Z">
-        <notes><![CDATA[
-   file name: spring-security-crypto-5.2.1.RELEASE.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
-        <cve>CVE-2018-1258</cve>
-    </suppress>
-    <suppress until="2020-03-01Z">
-        <notes><![CDATA[
-   file name: okhttp-3.12.0.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.squareup\.okhttp3/okhttp@.*$</packageUrl>
-        <cve>CVE-2018-20200</cve>
-    </suppress>
     <suppress>
         <notes><![CDATA[
    file name: spring-security-crypto-5.2.2.RELEASE.jar
