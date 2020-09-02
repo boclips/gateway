@@ -1,7 +1,7 @@
 buildscript {
 	ext {
 		kotlinVersion = '1.4.0'
-		springBootVersion = '2.2.6.RELEASE'
+		springBootVersion = '2.3.3.RELEASE'
 	}
 	ext['junit-jupiter.version']  = '5.5.2'
 
@@ -17,7 +17,7 @@ buildscript {
 }
 
 ext {
-	springCloudVersion = 'Hoxton.SR3'
+	springCloudVersion = 'Hoxton.SR8'
 }
 
 apply plugin: 'kotlin'
