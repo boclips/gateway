@@ -107,7 +107,7 @@ class CorsConfig {
                 "https://sales.lightsailed.com",
                 "https://rosen.lightsailed.com",
                 "https://s2m-reader.lightsailed.com",
-                "https://app.lighthousereader.com/"
+                "https://app.lighthousereader.com"
             )
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
