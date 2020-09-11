@@ -921,7 +921,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
                 )
         )
 
-        val headers = HttpHeaders().apply { this.origin = "https://publishers.boclips.com" }
+        val headers = HttpHeaders().apply { this.origin = "http://localhost:aaa.bbb" }
         val entity = HttpEntity(null, headers)
         restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
 
@@ -943,7 +943,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         )
 
         val headers = HttpHeaders()
-        headers.add("Origin", "https://login.boclips.com")
+        headers.add("Origin", "http://localhost:aaa.bbb")
         val response = restTemplate.exchange<String>(
             "/v1/http-feeds/foo",
             HttpMethod.GET,
@@ -953,7 +953,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
         val allowedOrigins = response.headers["Access-Control-Allow-Origin"]
 
-        assertThat(allowedOrigins).contains("https://login.boclips.com")
+        assertThat(allowedOrigins).contains("http://localhost:aaa.bbb")
         assertThat(allowedOrigins).doesNotContain("*")
     }
 }
