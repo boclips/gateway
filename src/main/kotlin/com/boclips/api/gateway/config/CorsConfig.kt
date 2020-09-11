@@ -1,5 +1,8 @@
 package com.boclips.api.gateway.config
 
+import com.boclips.api.gateway.config.cors.CorsProperties
+import mu.KLogging
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.gateway.filter.GlobalFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -8,9 +11,13 @@ import org.springframework.web.cors.reactive.CorsWebFilter
 import org.springframework.web.cors.reactive.DefaultCorsProcessor
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 import reactor.core.publisher.Mono
+import javax.annotation.PostConstruct
 
 @Configuration
 class CorsConfig {
+
+    @Autowired
+    lateinit var corsProperties: CorsProperties
 
     @Bean
     fun corsWebFilter() = CorsWebFilter(UrlBasedCorsConfigurationSource().apply {
@@ -129,4 +136,12 @@ class CorsConfig {
             })
         }
     }
+
+    // TODO - remove when sure that new secret for allowed origins is parsed correctly
+    @PostConstruct
+    fun init() {
+        logger.info { "Allowed origins:\n${corsProperties.resolvedAllowedOrigins.joinToString("\n")}" }
+    }
+
+    companion object : KLogging()
 }

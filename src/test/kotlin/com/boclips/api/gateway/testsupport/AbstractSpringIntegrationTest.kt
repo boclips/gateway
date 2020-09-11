@@ -31,7 +31,8 @@ import org.springframework.web.client.RestTemplate
     "gateway.services.videoServiceUrl=http://localhost:$VIDEO_SERVICE_PORT",
     "gateway.services.eventServiceUrl=http://localhost:$EVENT_SERVICE_PORT",
     "gateway.services.keycloakUrl=http://localhost:$KEYCLOAK_PORT",
-    "gateway.services.orderServiceUrl=http://localhost:$ORDER_SERVICE_PORT"
+    "gateway.services.orderServiceUrl=http://localhost:$ORDER_SERVICE_PORT",
+    "gateway.cors.allowedOrigins=http://localhost:aaa.bbb|http://localhost:ccc.ddd"
 ])
 abstract class AbstractSpringIntegrationTest {
 
