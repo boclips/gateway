@@ -304,6 +304,21 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
             val response = restTemplate.getForObject("/v1/events/platform-interaction", String::class.java)
             assertThat(response).isEqualTo("hello-from-user-service")
         }
+
+        @Test
+        fun `integrations proxied to user-service`() {
+            userServiceMock.register(
+                get(urlEqualTo("/v1/integrations"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("Content-Type", "text/plain")
+                            .withBody("hello-from-user-service")
+                    )
+            )
+
+            val response = restTemplate.getForObject("/v1/integrations", String::class.java)
+            assertThat(response).isEqualTo("hello-from-user-service")
+        }
     }
 
     @Nested

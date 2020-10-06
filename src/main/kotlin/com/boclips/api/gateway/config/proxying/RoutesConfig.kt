@@ -147,6 +147,10 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
+                path("/v1/integrations/**")
+                uri(props.userServiceUrl)
+            }
+            route {
                 path("/v1/events/playback/batch")
                 uri(props.videoServiceUrl)
             }
