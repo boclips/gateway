@@ -115,6 +115,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/new-suggestions/**")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/content-warnings")
                 uri(props.videoServiceUrl)
             }
