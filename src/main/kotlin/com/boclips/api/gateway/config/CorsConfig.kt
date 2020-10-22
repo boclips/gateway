@@ -1,7 +1,6 @@
 package com.boclips.api.gateway.config
 
 import com.boclips.api.gateway.config.cors.CorsProperties
-import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.gateway.filter.GlobalFilter
 import org.springframework.context.annotation.Bean
@@ -19,17 +18,14 @@ class CorsConfig {
     lateinit var corsProperties: CorsProperties
 
     @Bean
-    fun corsWebFilter(): CorsWebFilter {
-        logger.info { "allowedOriginsTest: [${corsProperties.allowedOriginsTest}]" }
-        return CorsWebFilter(UrlBasedCorsConfigurationSource().apply {
-            registerCorsConfiguration("/**", CorsConfiguration().apply {
-                allowedOrigins = corsProperties.resolvedAllowedOrigins
-                allowedMethods = listOf("*")
-                allowedHeaders = listOf("*")
-                allowCredentials = true
-            })
-        }, CloudCdnFriendlyCorsProcessor(DefaultCorsProcessor()))
-    }
+    fun corsWebFilter() = CorsWebFilter(UrlBasedCorsConfigurationSource().apply {
+        registerCorsConfiguration("/**", CorsConfiguration().apply {
+            allowedOrigins = corsProperties.resolvedAllowedOrigins
+            allowedMethods = listOf("*")
+            allowedHeaders = listOf("*")
+            allowCredentials = true
+        })
+    }, CloudCdnFriendlyCorsProcessor(DefaultCorsProcessor()))
 
     @Bean
     fun enforceGatewayAllowedOriginsFilter(): GlobalFilter {
@@ -45,6 +41,4 @@ class CorsConfig {
             })
         }
     }
-
-    companion object: KLogging()
 }

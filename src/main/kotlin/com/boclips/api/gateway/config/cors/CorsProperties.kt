@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties("gateway.cors")
 class CorsProperties {
     lateinit var allowedOrigins: String
-    lateinit var allowedOriginsTest: String
 
     val resolvedAllowedOrigins: List<String> by lazy {
         allowedOrigins.split("|")
