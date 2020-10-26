@@ -15,7 +15,7 @@ class LinksController(
 ) {
 
     @GetMapping("/admin", "/admin/")
-    fun getBackOfficeLinks(serverHttpRequest: ServerHttpRequest, response: ServerHttpResponse): Mono<LinksResource> {
+    fun getHQLinks(serverHttpRequest: ServerHttpRequest, response: ServerHttpResponse): Mono<LinksResource> {
         response.headers.set("Content-Type", "application/hal+json")
         return linkActions.getAllLinks(serverHttpRequest)
     }
