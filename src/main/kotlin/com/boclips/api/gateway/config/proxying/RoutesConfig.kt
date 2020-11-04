@@ -6,6 +6,7 @@ import org.springframework.cloud.gateway.route.builder.filters
 import org.springframework.cloud.gateway.route.builder.routes
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import reactor.core.publisher.Mono
 
 @Configuration
 class RoutesConfig {
@@ -214,6 +215,9 @@ class RoutesConfig {
                 path("/v1/token")
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
+                        .filter { exchange, chain ->
+                            chain.filter(exchange).then(Mono.fromRunnable { println("nanana") })
+                        }
                 }
                 uri(props.keycloakUrl)
             }
