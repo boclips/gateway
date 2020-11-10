@@ -6,7 +6,6 @@ import org.springframework.cloud.gateway.route.builder.filters
 import org.springframework.cloud.gateway.route.builder.routes
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import reactor.core.publisher.Mono
 
 @Configuration
 class RoutesConfig {
@@ -17,7 +16,11 @@ class RoutesConfig {
     }
 
     @Bean
-    fun routeLocator(builder: RouteLocatorBuilder, props: RoutingProperties): RouteLocator {
+    fun routeLocator(
+        builder: RouteLocatorBuilder,
+        props: RoutingProperties,
+        createApiUserFilterProducer: CreateApiUserFilterProducer
+    ): RouteLocator {
         return builder.routes {
             route {
                 path("/v1/http-feeds/**")
@@ -215,9 +218,7 @@ class RoutesConfig {
                 path("/v1/token")
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
-                        .filter { exchange, chain ->
-                            chain.filter(exchange).then(Mono.fromRunnable { println("nanana") })
-                        }
+                    createApiUserFilterProducer.get(this)
                 }
                 uri(props.keycloakUrl)
             }

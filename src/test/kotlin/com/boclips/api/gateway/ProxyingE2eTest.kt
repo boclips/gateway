@@ -1,5 +1,6 @@
 package com.boclips.api.gateway
 
+import com.boclips.api.gateway.config.TokenResponse
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
@@ -700,7 +701,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
                 get(urlEqualTo("/v1/admin/orders/actions/anything"))
                     .willReturn(
                         aResponse()
-                            .withHeader("content-Type","text/plain")
+                            .withHeader("content-Type", "text/plain")
                             .withBody("any response from order service")
                     )
             )
@@ -762,7 +763,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
                 get(urlEqualTo("/v1/orders"))
                     .willReturn(
                         aResponse()
-                            .withHeader("Content-Type", "text/plain")
+                            .withHeader("Content-Type", "text/json")
                             .withBody("hello-from-order-service")
                     )
             )
@@ -825,19 +826,56 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
     @Nested
     inner class KeycloakProxies {
+        val token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJEVzg1cWVGSGp3dG9UN0Z2RkRwajJWelJyZTJRT3dsc" +
+            "2JPNHQ1blNWQXpFIn0.eyJleHAiOjE2MDUwMjQ2NDMsImlhdCI6MTYwNTAyNDM0MywiYXV0aF90aW1lIjoxNjA0OTk3Mzg1LCJqdG" +
+            "kiOiIyZDM2NzlkMi1iMjQ5LTQzYjktYWMxMC1iOTg2YzhlMzRkNjgiLCJpc3MiOiJodHRwczovL2xvZ2luLnN0YWdpbmctYm9jbGl" +
+            "wcy5jb20vYXV0aC9yZWFsbXMvYm9jbGlwcyIsImF1ZCI6WyJ2aWRlby1pbmdlc3RvciIsInZpZGVvLXNlcnZpY2UiLCJvcmRlci1z" +
+            "ZXJ2aWNlIiwidXNlci1zZXJ2aWNlIiwiYWNjb3VudCJdLCJzdWIiOiJiNjZmNmY5OC0zYzViLTQ5ZTMtYWMxYi0yZThkZWY2Yzk1Y" +
+            "zAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJ0ZWFjaGVycyIsIm5vbmNlIjoiMmI3MjdkNmEtN2M1MS00YjQ1LThhODEtZmY3YzNmZj" +
+            "czOTRjIiwic2Vzc2lvbl9zdGF0ZSI6IjcyNWM5ZGU0LWFjNGMtNGZlYy05NGQ4LTg1NjhlZjgxNzQ5NCIsImFjciI6IjAiLCJhbGx" +
+            "vd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly90ZWFjaGVycy5zdGFnaW5nLWJvY2xpcHMuY29tIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgx" +
+            "IiwiaHR0cDovL2JvdGh5LmxvY2FsOjgwODEiLCJodHRwOi8vMTAuMC4yLjI6ODA4MSJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiO" +
+            "lsiUk9MRV9URUFDSEVSIiwiUk9MRV9IUSJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InZpZGVvLWluZ2VzdG9yIjp7InJvbGVzIjpbIl" +
+            "JPTEVfVklFV19IVFRQX0ZFRURTIiwiUk9MRV9UUklHR0VSX0lOR0VTVFMiLCJST0xFX1ZJRVdfTElOS1MiLCJST0xFX0NSRUFURV9" +
+            "IVFRQX0ZFRURTIiwiUk9MRV9WSUVXX0lOR0VTVF9WSURFT19TVEFUVVNFUyIsIlJPTEVfVklFV19KT0JTIiwiUk9MRV9WSUVXX0lO" +
+            "R0VTVF9WSURFT1MiLCJST0xFX0NSRUFURV9KT0JTIl19LCJ2aWRlby1zZXJ2aWNlIjp7InJvbGVzIjpbIlJPTEVfVVBEQVRFX1NVQ" +
+            "kpFQ1RTIiwiUk9MRV9WSUVXX0NPTExFQ1RJT05TIiwiUk9MRV9WSUVXX0RJU1RSSUJVVElPTl9NRVRIT0RTIiwiUk9MRV9WSUVXX1" +
+            "ZJREVPX1RZUEVTIiwiUk9MRV9VUERBVEVfQ0hBTk5FTFMiLCJST0xFX1RBR19WSURFT1MiLCJST0xFX1ZJRVdfQU5ZX1ZJREVPIiw" +
+            "iUk9MRV9WSUVXX0FHRV9SQU5HRVMiLCJST0xFX1ZJRVdfRElTQ0lQTElORVMiLCJST0xFX1ZJRVdfQVRUQUNITUVOVF9UWVBFUyIs" +
+            "IlJPTEVfVVBEQVRFX1ZJREVPUyIsIlJPTEVfVVBEQVRFX0NPTExFQ1RJT05TIiwiUk9MRV9WSUVXX0NPTlRSQUNUUyIsIlJPTEVfR" +
+            "EVMRVRFX1RBR1MiLCJST0xFX1ZJRVdfVEFHUyIsIlJPTEVfVklFV19ESVNBQkxFRF9WSURFT1MiLCJST0xFX0lOU0VSVF9DSEFOTk" +
+            "VMUyIsIlJPTEVfSU5TRVJUX1RBR1MiLCJST0xFX1ZJRVdfTEVHQUxfUkVTVFJJQ1RJT05TIiwiUk9MRV9VUERBVEVfRElTQ0lQTEl" +
+            "ORVMiLCJST0xFX0lOU0VSVF9DT0xMRUNUSU9OUyIsIlJPTEVfVklFV19BTllfQ09MTEVDVElPTiIsIlJPTEVfQ1JFQVRFX1NVQkpFQ" +
+            "1RTIiwiUk9MRV9WSUVXX0NPTlRFTlRfV0FSTklOR1MiLCJST0xFX1JBVEVfVklERU9TIiwiUk9MRV9ET1dOTE9BRF9WSURFTyIsIlJ" +
+            "PTEVfREVMRVRFX1NVQkpFQ1RTIiwiUk9MRV9WSUVXX0NPTlRFTlRfUEFSVE5FUlMiLCJST0xFX0RPV05MT0FEX1RSQU5TQ1JJUFQi" +
+            "LCJST0xFX0RFTEVURV9DT0xMRUNUSU9OUyIsIlJPTEVfVklFV19NQVJLRVRJTkdfU1RBVFVTRVMiLCJST0xFX0lOU0VSVF9ESVNDS" +
+            "VBMSU5FUyIsIlJPTEVfU0hBUkVfVklERU9TIiwiUk9MRV9JTlNFUlRfRVZFTlRTIiwiUk9MRV9WSUVXX0NIQU5ORUxTIiwiUk9MRV" +
+            "9WSUVXX0NPTlRFTlRfQ0FURUdPUklFUyIsIlJPTEVfVklFV19WSURFT1MiXX0sIm9yZGVyLXNlcnZpY2UiOnsicm9sZXMiOlsiUk9" +
+            "MRV9VUERBVEVfT1JERVJTIiwiUk9MRV9WSUVXX09SREVSUyIsIlJPTEVfQ1JFQVRFX09SREVSUyJdfSwidXNlci1zZXJ2aWNlIjp7" +
+            "InJvbGVzIjpbIlJPTEVfVklFV19DT05URU5UX1BBQ0tBR0VTIiwiUk9MRV9TWU5DSFJPTklaRV9VU0VSU19IVUJTUE9UIiwiUk9M" +
+            "RV9WSUVXX0FDQ0VTU19SVUxFUyIsIlJPTEVfVVBEQVRFX0FDQ0VTU19SVUxFUyIsIlJPTEVfU1lOQ0hST05JWkVfVVNFUlNfS0VZQ" +
+            "0xPQUsiLCJST0xFX0lOU0VSVF9PUkdBTklTQVRJT05TIiwiUk9MRV9VUERBVEVfT1JHQU5JU0FUSU9OUyIsIlJPTEVfVklFV19PUk" +
+            "dBTklTQVRJT05TIiwiUk9MRV9VUERBVEVfQ09OVEVOVF9QQUNLQUdFUyJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJ2aWV3LXByb2Z" +
+            "pbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJNYXJjaW4gS" +
+            "mFuaWsiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtYXJjaW5AYm9jbGlwcy5jb20iLCJnaXZlbl9uYW1lIjoiTWFyY2luIiwiZmFtaW" +
+            "x5X25hbWUiOiJKYW5payIsImVtYWlsIjoibWFyY2luQGJvY2xpcHMuY29tIn0.QkYV9y6PXXWZgbvVOg8hGHFsm0uWza74DWioW6a" +
+            "SLP1AUDBKgGCvK3BExhE-U9sA_o9eiXXKouDbDgWlJqmqPSGBrsr7Une5dDSAM8-a7rsMAYrM843frBen4QvGVhF2zVXAkiMrG25" +
+            "5D2S79IW8lEXeTg9ojb6f962pItDsM1e2xjDWXv88GhUosD9YHokTjH6l8umR1ouq45-ncMhNmGwwl-cdIyC9n0u_zdfduTH7jIaF" +
+            "wEkLfscNkY8vxDzV5FJxBijS0PzTvqHyHoFVcu2J7NNWbzPX-WCZvKuQ6AyJm_sPRDZk0bshDwSWY3f3qVWsMTtkR0c1UeJl4eDTtQ"
+
         @Test
         fun `token requests are proxied to keycloak`() {
             keycloakMock.register(
                 get(urlEqualTo("/auth/realms/boclips/protocol/openid-connect/token"))
                     .willReturn(
                         aResponse()
-                            .withHeader("Content-Type", "text/plain")
-                            .withBody("hello")
+                            .withHeader("Content-Type", "application/json")
+                            .withBody("""{"access_token":"$token"}""")
                     )
             )
 
-            val response = restTemplate.getForObject("/v1/token", String::class.java)
-            assertThat(response).isEqualTo("hello")
+            val response = restTemplate.getForObject("/v1/token", TokenResponse::class.java)
+            assertThat(response!!.access_token).isEqualTo(token)
         }
 
         @Test
