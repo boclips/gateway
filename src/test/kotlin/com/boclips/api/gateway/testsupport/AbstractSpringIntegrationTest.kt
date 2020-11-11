@@ -7,6 +7,8 @@ import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Compani
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.USER_SERVICE_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.VIDEO_INGESTOR_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.VIDEO_SERVICE_PORT
+import com.boclips.users.api.httpclient.test.fakes.ApiUsersClientFake
+import com.boclips.users.api.httpclient.test.fakes.UsersClientFake
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
@@ -19,21 +21,27 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.web.client.RestTemplate
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(properties = [
-    "gateway.services.videoIngestorUrl=http://localhost:$VIDEO_INGESTOR_PORT",
-    "gateway.services.userServiceUrl=http://localhost:$USER_SERVICE_PORT",
-    "gateway.services.videoServiceUrl=http://localhost:$VIDEO_SERVICE_PORT",
-    "gateway.services.eventServiceUrl=http://localhost:$EVENT_SERVICE_PORT",
-    "gateway.services.keycloakUrl=http://localhost:$KEYCLOAK_PORT",
-    "gateway.services.orderServiceUrl=http://localhost:$ORDER_SERVICE_PORT",
-    "gateway.cors.allowedOrigins=http://localhost:aaa.bbb|http://localhost:ccc.ddd"
-])
+@TestPropertySource(
+    properties = [
+        "gateway.services.videoIngestorUrl=http://localhost:$VIDEO_INGESTOR_PORT",
+        "gateway.services.userServiceUrl=http://localhost:$USER_SERVICE_PORT",
+        "gateway.services.videoServiceUrl=http://localhost:$VIDEO_SERVICE_PORT",
+        "gateway.services.eventServiceUrl=http://localhost:$EVENT_SERVICE_PORT",
+        "gateway.services.keycloakUrl=http://localhost:$KEYCLOAK_PORT",
+        "gateway.services.orderServiceUrl=http://localhost:$ORDER_SERVICE_PORT",
+        "gateway.cors.allowedOrigins=http://localhost:aaa.bbb|http://localhost:ccc.ddd"
+    ]
+)
+@ActiveProfiles(
+    "fake-user-service"
+)
 abstract class AbstractSpringIntegrationTest {
 
     @LocalServerPort
@@ -54,7 +62,6 @@ abstract class AbstractSpringIntegrationTest {
         val keycloakWireMockServer = WireMockServer(options().port(KEYCLOAK_PORT))
         val orderServicekWireMockServer = WireMockServer(options().port(ORDER_SERVICE_PORT))
 
-
         val wiremockServers = listOf(
             videoIngestorWireMockServer,
             userServiceWireMockServer,
@@ -71,7 +78,6 @@ abstract class AbstractSpringIntegrationTest {
         val keycloakMock = WireMock("localhost", KEYCLOAK_PORT)
         val orderServiceMock = WireMock("localhost", ORDER_SERVICE_PORT)
 
-
         @BeforeAll
         @JvmStatic
         internal fun beforeAll() {
@@ -83,7 +89,6 @@ abstract class AbstractSpringIntegrationTest {
         internal fun afterAll() {
             wiremockServers.forEach { it.stop() }
         }
-
     }
 
     @Autowired
@@ -92,9 +97,14 @@ abstract class AbstractSpringIntegrationTest {
     @Autowired
     lateinit var routingProperties: RoutingProperties
 
+    @Autowired
+    lateinit var usersClientFake: UsersClientFake
+
+    @Autowired
+    lateinit var apiUsersClientFake: ApiUsersClientFake
+
     lateinit var restTemplate: RestTemplate
     lateinit var gatewayBaseUrl: String
-
 
     @BeforeEach
     fun setUp() {
@@ -102,5 +112,4 @@ abstract class AbstractSpringIntegrationTest {
         restTemplate = RestTemplateBuilder().rootUri(gatewayBaseUrl).build()
         wiremockServers.forEach { it.resetAll() }
     }
-
 }
