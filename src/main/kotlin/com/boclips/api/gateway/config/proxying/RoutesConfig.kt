@@ -16,11 +16,7 @@ class RoutesConfig {
     }
 
     @Bean
-    fun routeLocator(
-        builder: RouteLocatorBuilder,
-        props: RoutingProperties,
-        handleAccessTokenFilterProducer: HandleAccessTokenFilterProducer
-    ): RouteLocator {
+    fun routeLocator(builder: RouteLocatorBuilder, props: RoutingProperties): RouteLocator {
         return builder.routes {
             route {
                 path("/v1/http-feeds/**")
@@ -222,7 +218,6 @@ class RoutesConfig {
                 path("/v1/token")
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
-                    handleAccessTokenFilterProducer.get(this)
                 }
                 uri(props.keycloakUrl)
             }
