@@ -1,11 +1,10 @@
 package com.boclips.api.gateway
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
+import com.boclips.api.gateway.config.TokenResponse
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest
-import com.github.tomakehurst.wiremock.client.WireMock.aResponse
-import com.github.tomakehurst.wiremock.client.WireMock.equalTo
-import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
-import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.AnythingPattern
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
@@ -714,7 +713,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
                 get(urlEqualTo("/v1/admin/orders/actions/anything"))
                     .willReturn(
                         aResponse()
-                            .withHeader("content-Type","text/plain")
+                            .withHeader("content-Type", "text/plain")
                             .withBody("any response from order service")
                     )
             )
@@ -776,7 +775,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
                 get(urlEqualTo("/v1/orders"))
                     .willReturn(
                         aResponse()
-                            .withHeader("Content-Type", "text/plain")
+                            .withHeader("Content-Type", "text/json")
                             .withBody("hello-from-order-service")
                     )
             )
@@ -839,19 +838,21 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
 
     @Nested
     inner class KeycloakProxies {
+        val token = JWT.create().withSubject("hello").sign(Algorithm.none())
+
         @Test
         fun `token requests are proxied to keycloak`() {
             keycloakMock.register(
                 get(urlEqualTo("/auth/realms/boclips/protocol/openid-connect/token"))
                     .willReturn(
                         aResponse()
-                            .withHeader("Content-Type", "text/plain")
-                            .withBody("hello")
+                            .withHeader("Content-Type", "application/json")
+                            .withBody("""{"access_token":"$token"}""")
                     )
             )
 
-            val response = restTemplate.getForObject("/v1/token", String::class.java)
-            assertThat(response).isEqualTo("hello")
+            val response = restTemplate.getForObject("/v1/token", TokenResponse::class.java)
+            assertThat(response!!.access_token).isEqualTo(token)
         }
 
         @Test

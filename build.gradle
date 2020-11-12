@@ -46,6 +46,7 @@ compileTestKotlin {
 repositories {
 	mavenCentral()
 	maven { url "https://repo.spring.io/milestone" }
+	maven { url 'https://jitpack.io' }
 }
 
 test {
@@ -67,12 +68,16 @@ dependencies {
 	implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.1')
 
 	implementation('com.auth0:java-jwt:3.8.2')
+	implementation 'org.springframework.hateoas:spring-hateoas'
 
 	implementation('io.micrometer:micrometer-core')
 	implementation('io.micrometer:micrometer-registry-prometheus')
 
 	implementation('io.sentry:sentry-logback:1.7.21')
 	implementation('io.opentracing.contrib:opentracing-spring-jaeger-web-starter:2.0.3')
+	implementation("com.github.boclips:user-service:283")
+	// Required by user-service client
+	implementation 'io.github.openfeign:feign-core:10.7.0'
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock')
@@ -102,4 +107,9 @@ dependencyCheck {
 	suppressionFile = './dependency-check-suppressions.xml'
 
 	outputDirectory = 'security-report'
+}
+
+//https://github.com/spring-cloud/spring-cloud-gateway/issues/319
+configurations {
+	runtime.exclude module: 'spring-boot-starter-web'
 }
