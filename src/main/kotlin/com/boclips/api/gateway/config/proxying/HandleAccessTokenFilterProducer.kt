@@ -15,7 +15,9 @@ class HandleAccessTokenFilterProducer(
         return gatewayFilterSpec.modifyResponseBody(
             TokenResponse::class.java, TokenResponse::class.java
         ) { _: ServerWebExchange, body: TokenResponse ->
-            handleAccessToken(body.access_token)
+            body.access_token?.let {
+                handleAccessToken(it)
+            }
             Mono.just(body)
         }
     }
