@@ -785,6 +785,21 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         }
 
         @Test
+        fun `cart is proxied to order-service`() {
+            orderServiceMock.register(
+                get(urlEqualTo("/v1/cart"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("Content-Type", "text/json")
+                            .withBody("hello-from-order-service")
+                    )
+            )
+
+            val response = restTemplate.getForObject("/v1/cart", String::class.java)
+            assertThat(response).isEqualTo("hello-from-order-service")
+        }
+
+        @Test
         fun `orders sub-resources are proxied to order-service`() {
             orderServiceMock.register(
                 get(urlEqualTo("/v1/orders/1"))
