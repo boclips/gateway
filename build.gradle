@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		kotlinVersion = '1.4.0'
+		kotlinVersion = '1.4.21'
 		springBootVersion = '2.3.4.RELEASE'
 	}
 	ext['junit-jupiter.version']  = '5.5.2'
@@ -17,7 +17,7 @@ buildscript {
 }
 
 ext {
-	springCloudVersion = 'Hoxton.SR8'
+	springCloudVersion = 'Hoxton.SR9'
 }
 
 apply plugin: 'kotlin'
@@ -63,9 +63,9 @@ dependencies {
 	implementation('io.github.microutils:kotlin-logging:1.8.3')
 
 	implementation('com.fasterxml.jackson.module:jackson-module-kotlin')
-	implementation('com.fasterxml.jackson.core:jackson-databind:2.10.1')
-	implementation('com.fasterxml.jackson.core:jackson-core:2.10.1')
-	implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.1')
+	implementation('com.fasterxml.jackson.core:jackson-databind:2.11.0')
+	implementation('com.fasterxml.jackson.core:jackson-core:2.11.0')
+	implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.0')
 
 	implementation('com.auth0:java-jwt:3.8.2')
 	implementation 'org.springframework.hateoas:spring-hateoas'
@@ -74,7 +74,7 @@ dependencies {
 	implementation('io.micrometer:micrometer-registry-prometheus')
 
 	implementation('io.sentry:sentry-logback:1.7.21')
-	implementation('io.opentracing.contrib:opentracing-spring-jaeger-cloud-starter:3.2.2')
+	implementation('io.opentracing.contrib:opentracing-spring-jaeger-web-starter:3.0.0')
 	implementation("com.github.boclips:user-service:283")
 	// Required by user-service client
 	implementation 'io.github.openfeign:feign-core:10.7.0'
