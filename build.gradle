@@ -74,7 +74,7 @@ dependencies {
 	implementation('io.micrometer:micrometer-registry-prometheus')
 
 	implementation('io.sentry:sentry-logback:1.7.21')
-	implementation('io.opentracing.contrib:opentracing-spring-jaeger-web-starter:2.0.3')
+	implementation('io.opentracing.contrib:opentracing-spring-jaeger-cloud-starter:3.2.2')
 	implementation("com.github.boclips:user-service:283")
 	// Required by user-service client
 	implementation 'io.github.openfeign:feign-core:10.7.0'
