@@ -22,4 +22,24 @@
         <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/httpclient@.*$</packageUrl>
         <cve>CVE-2020-13956</cve>
     </suppress>
+
+    <suppress until="2021-01-08">
+        <notes><![CDATA[
+   file name: keycloak-spring-security-adapter-11.0.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.keycloak/keycloak\-spring\-security\-adapter@.*$</packageUrl>
+        <vulnerabilityName>CVE-2020-10776</vulnerabilityName>
+        <vulnerabilityName>CVE-2020-14366</vulnerabilityName>
+        <vulnerabilityName>CVE-2020-14389</vulnerabilityName>
+    </suppress>
+
+    <suppress until="2021-01-08">
+        <notes><![CDATA[
+   file name: keycloak-core-11.0.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.keycloak/keycloak\-core@.*$</packageUrl>
+        <vulnerabilityName>CVE-2020-10776</vulnerabilityName>
+        <vulnerabilityName>CVE-2020-14366</vulnerabilityName>
+        <vulnerabilityName>CVE-2020-14389</vulnerabilityName>
+    </suppress>
 </suppressions>
