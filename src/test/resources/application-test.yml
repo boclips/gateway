@@ -1,0 +1,5 @@
+gateway:
+  cors:
+    allowedOriginsTemp:
+      - "http://localhost:aaa.bbb"
+      - "http://localhost:ccc.ddd"

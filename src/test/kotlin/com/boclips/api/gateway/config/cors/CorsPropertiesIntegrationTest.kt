@@ -12,7 +12,7 @@ class CorsPropertiesIntegrationTest: AbstractSpringIntegrationTest() {
 
     @Test
     fun `should split concatenated property to required type`() {
-        val allowedOrigins = corsProperties.resolvedAllowedOrigins
+        val allowedOrigins = corsProperties.allowedOriginsTemp
         assertThat(allowedOrigins).containsExactly("http://localhost:aaa.bbb", "http://localhost:ccc.ddd")
     }
 }
