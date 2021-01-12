@@ -20,7 +20,6 @@ class CreateApiUserTest : AbstractSpringIntegrationTest() {
     @BeforeEach
     fun before() {
         usersClientFake.clear()
-        apiUsersClientFake.clear()
     }
 
     @Test
@@ -37,9 +36,29 @@ class CreateApiUserTest : AbstractSpringIntegrationTest() {
             boclipsUserId = "boclips-user-id"
         )
 
-        assertThat(apiUsersClientFake.findAll()).hasSize(1)
-        assertThat(apiUsersClientFake.findAll().first().id).isEqualTo("boclips-user-id")
-        assertThat(apiUsersClientFake.findAll().first().organisation!!.id).isEqualTo("org-id")
+        val apiUser = usersClientFake.getUser("boclips-user-id")
+        assertThat(apiUser).isNotNull
+        assertThat(apiUser.id).isEqualTo("boclips-user-id")
+        assertThat(apiUser.organisation!!.id).isEqualTo("org-id")
+    }
+
+    @Test
+    fun `should not invoke createApiUser when that user already exists`() {
+        usersClientFake.add(
+            UserResourceFactory.sample(
+                id = "boclips-user-id",
+            )
+        )
+
+        createApiUser(
+            serviceAccountUserId = "cortext-service-account-user-id",
+            boclipsUserId = "boclips-user-id"
+        )
+
+        val apiUser = usersClientFake.getUser("boclips-user-id")
+        assertThat(apiUser).isNotNull
+        assertThat(apiUser.id).isEqualTo("boclips-user-id")
+        assertThat(apiUser.organisation!!.id).isEqualTo("org-id")
     }
 
     @Test
