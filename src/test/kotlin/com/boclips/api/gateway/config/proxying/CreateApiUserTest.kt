@@ -21,12 +21,12 @@ class CreateApiUserTest : AbstractSpringIntegrationTest() {
     @Autowired
     lateinit var createApiUser: CreateApiUser
 
-    lateinit var mockUsersClientFake: UsersClientFake
+    lateinit var spyUsersClientFake: UsersClientFake
 
     @BeforeEach
     fun before() {
         usersClientFake.clear()
-        mockUsersClientFake = spy(usersClientFake)
+        spyUsersClientFake = spy(usersClientFake)
     }
 
     @Test
@@ -62,8 +62,8 @@ class CreateApiUserTest : AbstractSpringIntegrationTest() {
             boclipsUserId = "boclips-user-id"
         )
 
-        verify(mockUsersClientFake, times(0)).getUser(any())
-        verify(mockUsersClientFake, times(0)).createApiUser(any())
+        verify(spyUsersClientFake, times(0)).getUser(any())
+        verify(spyUsersClientFake, times(0)).createApiUser(any())
     }
 
     @Test
