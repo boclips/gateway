@@ -1,16 +1,19 @@
 package com.boclips.api.gateway.application.user
 
-import com.boclips.users.api.httpclient.ApiUsersClient
 import com.boclips.users.api.httpclient.UsersClient
-import com.boclips.users.api.request.CreateApiUserRequest
+import com.boclips.users.api.request.user.CreateUserRequest
+import feign.FeignException
 import org.springframework.stereotype.Component
 
 @Component
 class CreateApiUser(
-    val usersClient: UsersClient,
-    val apiUsersClient: ApiUsersClient
+    val usersClient: UsersClient
 ) {
     operator fun invoke(serviceAccountUserId: String, boclipsUserId: String) {
+        if (userAlreadyExists(boclipsUserId)) {
+            return
+        }
+
         val serviceAccountUser = usersClient.getUser(serviceAccountUserId)
 
         val organisationId = serviceAccountUser.organisation?.id
@@ -18,6 +21,18 @@ class CreateApiUser(
                 "Service account user: ${serviceAccountUser.id} does not have an organisation"
             )
 
-        apiUsersClient.createApiUser(boclipsUserId, CreateApiUserRequest(organisationId))
+        usersClient.createApiUser(
+            CreateUserRequest.CreateApiUserRequest(
+                apiUserId = boclipsUserId,
+                organisationId = organisationId
+            )
+        )
+    }
+
+    private fun userAlreadyExists(boclipsUserId: String) = try {
+        usersClient.headUser(boclipsUserId)
+        true
+    } catch (err: FeignException.NotFound) {
+        false
     }
 }

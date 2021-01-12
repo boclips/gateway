@@ -6,6 +6,7 @@ import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
+import reactor.core.scheduler.Schedulers
 
 @Component
 class HandleAccessTokenFilterProducer(
@@ -15,10 +16,12 @@ class HandleAccessTokenFilterProducer(
         return gatewayFilterSpec.modifyResponseBody(
             TokenResponse::class.java, TokenResponse::class.java
         ) { _: ServerWebExchange, body: TokenResponse ->
-            body.access_token?.let {
-                handleAccessToken(it)
-            }
-            Mono.just(body)
+            Mono.fromCallable {
+                body.access_token?.let {
+                    handleAccessToken(it)
+                }
+                body
+            }.subscribeOn(Schedulers.elastic())
         }
     }
 }

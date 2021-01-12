@@ -7,7 +7,6 @@ import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Compani
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.USER_SERVICE_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.VIDEO_INGESTOR_PORT
 import com.boclips.api.gateway.testsupport.AbstractSpringIntegrationTest.Companion.VIDEO_SERVICE_PORT
-import com.boclips.users.api.httpclient.test.fakes.ApiUsersClientFake
 import com.boclips.users.api.httpclient.test.fakes.UsersClientFake
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
@@ -99,9 +98,6 @@ abstract class AbstractSpringIntegrationTest {
 
     @Autowired
     lateinit var usersClientFake: UsersClientFake
-
-    @Autowired
-    lateinit var apiUsersClientFake: ApiUsersClientFake
 
     lateinit var restTemplate: RestTemplate
     lateinit var gatewayBaseUrl: String
