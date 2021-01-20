@@ -27,7 +27,7 @@ class HttpLinkClient {
                 .exchange()
                 .flatMap {
                     if (it.statusCode().isError) {
-                        logger.warn("Unable to fetch links from uri=$uri, status=${it.statusCode()}")
+                        logger.info("Unable to fetch links from uri=$uri, status=${it.statusCode()}")
                         Mono.just(noLinks)
                     } else {
                         it.bodyToMono(Links::class.java)
