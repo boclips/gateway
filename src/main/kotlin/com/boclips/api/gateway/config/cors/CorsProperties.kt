@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties("gateway.cors")
 class CorsProperties {
-    lateinit var allowedOriginsTemp: List<String>
+    lateinit var allowedOrigins: List<String>
 }

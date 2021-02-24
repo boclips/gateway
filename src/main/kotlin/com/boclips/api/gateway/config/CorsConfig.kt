@@ -20,7 +20,7 @@ class CorsConfig {
     @Bean
     fun corsWebFilter() = CorsWebFilter(UrlBasedCorsConfigurationSource().apply {
         registerCorsConfiguration("/**", CorsConfiguration().apply {
-            allowedOrigins = corsProperties.allowedOriginsTemp
+            allowedOrigins = corsProperties.allowedOrigins
             allowedMethods = listOf("*")
             allowedHeaders = listOf("*")
             allowCredentials = true
