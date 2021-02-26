@@ -183,10 +183,6 @@ class RoutesConfig {
                 uri(props.orderServiceUrl)
             }
             route {
-                path("/v1/content-partners/**")
-                uri(props.videoServiceUrl)
-            }
-            route {
                 path("/v1/channels/**")
                 uri(props.videoServiceUrl)
             }
