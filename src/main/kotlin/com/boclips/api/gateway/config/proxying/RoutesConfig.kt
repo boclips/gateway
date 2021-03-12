@@ -43,7 +43,7 @@ class RoutesConfig {
                 uri(props.videoIngestorUrl)
             }
             route {
-                path("/v1/users/**/collections")
+                path("/v1/users/*/collections")
                 uri(props.videoServiceUrl)
             }
             route {
