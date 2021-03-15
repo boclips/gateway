@@ -40,7 +40,8 @@ class CreateApiUserTest : AbstractSpringIntegrationTest() {
 
         createApiUser(
             serviceAccountUserId = "cortext-service-account-user-id",
-            boclipsUserId = "boclips-user-id"
+            boclipsUserId = "boclips-user-id",
+            externalUserId = "external-user-id"
         )
 
         val apiUser = usersClientFake.getUser("boclips-user-id")
@@ -59,7 +60,8 @@ class CreateApiUserTest : AbstractSpringIntegrationTest() {
 
         createApiUser(
             serviceAccountUserId = "cortext-service-account-user-id",
-            boclipsUserId = "boclips-user-id"
+            boclipsUserId = "boclips-user-id",
+            externalUserId = "external-user-id"
         )
 
         verify(spyUsersClientFake, times(0)).getUser(any())
@@ -71,7 +73,8 @@ class CreateApiUserTest : AbstractSpringIntegrationTest() {
         assertThrows<FeignException.NotFound> {
             createApiUser(
                 serviceAccountUserId = "non-existing",
-                boclipsUserId = "bo-id"
+                boclipsUserId = "bo-id",
+                externalUserId = "external-user-id"
             )
         }
     }
@@ -88,7 +91,8 @@ class CreateApiUserTest : AbstractSpringIntegrationTest() {
         assertThrows<IllegalStateException> {
             createApiUser(
                 serviceAccountUserId = "cortext-service-account-user-id",
-                boclipsUserId = "bo-id"
+                boclipsUserId = "bo-id",
+                externalUserId = "external-user-id"
             )
         }
     }

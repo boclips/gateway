@@ -75,7 +75,7 @@ dependencies {
 
 	implementation('io.sentry:sentry-logback:1.7.21')
 	implementation('io.opentracing.contrib:opentracing-spring-jaeger-cloud-starter:3.2.2')
-	implementation("com.github.boclips:user-service:v300")
+	implementation("com.github.boclips:user-service:v314")
 	// Required by user-service client
 	implementation 'io.github.openfeign:feign-core:11.0'
 	implementation("io.github.openfeign:feign-okhttp:11.0")

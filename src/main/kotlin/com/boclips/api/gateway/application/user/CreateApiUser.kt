@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class CreateApiUser(
     val usersClient: UsersClient
 ) {
-    operator fun invoke(serviceAccountUserId: String, boclipsUserId: String) {
+    operator fun invoke(serviceAccountUserId: String, boclipsUserId: String, externalUserId: String) {
         if (userAlreadyExists(boclipsUserId)) {
             return
         }
@@ -24,7 +24,8 @@ class CreateApiUser(
         usersClient.createApiUser(
             CreateUserRequest.CreateApiUserRequest(
                 apiUserId = boclipsUserId,
-                organisationId = organisationId
+                organisationId = organisationId,
+                externalUserId = externalUserId
             )
         )
     }
