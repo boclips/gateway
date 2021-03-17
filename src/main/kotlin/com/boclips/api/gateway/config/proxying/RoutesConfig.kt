@@ -19,7 +19,7 @@ class RoutesConfig {
     fun routeLocator(
         builder: RouteLocatorBuilder,
         props: RoutingProperties,
-        handleAccessTokenFilterProducer: HandleAccessTokenFilterProducer
+        handleAccessTokenFilterFactory: HandleAccessTokenFilterFactory
     ): RouteLocator {
         return builder.routes {
             route {
@@ -222,7 +222,7 @@ class RoutesConfig {
                 path("/v1/token")
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
-                    handleAccessTokenFilterProducer.get(this)
+                    handleAccessTokenFilterFactory.get(this)
                 }
                 uri(props.keycloakUrl)
             }

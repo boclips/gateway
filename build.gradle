@@ -86,6 +86,7 @@ dependencies {
 	testImplementation('org.junit.jupiter:junit-jupiter-params')
 	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 	testImplementation('com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0')
+	testImplementation('io.projectreactor:reactor-test:3.4.3')
 }
 
 dependencyManagement {
