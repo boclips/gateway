@@ -1,9 +1,9 @@
 buildscript {
-	ext {
-		kotlinVersion = '1.4.21'
-		springBootVersion = '2.3.4.RELEASE'
-	}
-	ext['junit-jupiter.version']  = '5.5.2'
+    ext {
+        kotlinVersion = '1.4.21'
+        springBootVersion = '2.3.9.RELEASE'
+    }
+    ext['junit-jupiter.version'] = '5.5.2'
 
 	repositories {
 		mavenCentral()
@@ -80,12 +80,16 @@ dependencies {
 	implementation 'io.github.openfeign:feign-core:11.0'
 	implementation("io.github.openfeign:feign-okhttp:11.0")
 
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
-	testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock')
-	testImplementation('org.junit.jupiter:junit-jupiter-api')
-	testImplementation('org.junit.jupiter:junit-jupiter-params')
-	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
-	testImplementation('com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'junit'
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock')
+    testImplementation('org.junit.jupiter:junit-jupiter-api')
+    testImplementation('org.junit.jupiter:junit-jupiter-params')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
+    testImplementation('com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0')
+    testImplementation('io.projectreactor:reactor-test:3.4.3')
 }
 
 dependencyManagement {

@@ -3,10 +3,10 @@ package com.boclips.api.gateway.application.user
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.nhaarman.mockitokotlin2.*
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 
-class HandleAccessTokenTest {
+class HandleAccessTokenCustomBoclipsClaimsTest {
     @Test
     fun `tries to create a user when custom claims are present`() {
         val token = JWT.create()
@@ -16,7 +16,7 @@ class HandleAccessTokenTest {
             .sign(Algorithm.none())
 
         val createApiUserMock = mock<CreateApiUser>()
-        val handleAccessToken = HandleAccessToken(createApiUserMock)
+        val handleAccessToken = HandleAccessTokenCustomBoclipsClaims(createApiUserMock)
         handleAccessToken(token)
 
         verify(createApiUserMock, times(1))
@@ -35,7 +35,7 @@ class HandleAccessTokenTest {
             .sign(Algorithm.none())
 
         val createApiUserMock = mock<CreateApiUser>()
-        val handleAccessToken = HandleAccessToken(createApiUserMock)
+        val handleAccessToken = HandleAccessTokenCustomBoclipsClaims(createApiUserMock)
         handleAccessToken(token)
 
         verify(createApiUserMock, never()).invoke(anyOrNull(), anyOrNull(), anyOrNull())
@@ -49,7 +49,7 @@ class HandleAccessTokenTest {
             .sign(Algorithm.none())
 
         val createApiUserMock = mock<CreateApiUser>()
-        val handleAccessToken = HandleAccessToken(createApiUserMock)
+        val handleAccessToken = HandleAccessTokenCustomBoclipsClaims(createApiUserMock)
         handleAccessToken(token)
 
         verify(createApiUserMock, never()).invoke(anyOrNull(), anyOrNull(), anyOrNull())
@@ -62,7 +62,7 @@ class HandleAccessTokenTest {
             .sign(Algorithm.none())
 
         val createApiUserMock = mock<CreateApiUser>()
-        val handleAccessToken = HandleAccessToken(createApiUserMock)
+        val handleAccessToken = HandleAccessTokenCustomBoclipsClaims(createApiUserMock)
         handleAccessToken(token)
 
         verify(createApiUserMock, never()).invoke(anyOrNull(), anyOrNull(), anyOrNull())
@@ -83,7 +83,7 @@ class HandleAccessTokenTest {
         )
             .doThrow(RuntimeException())
 
-        val handleAccessToken = HandleAccessToken(createApiUserMock)
+        val handleAccessToken = HandleAccessTokenCustomBoclipsClaims(createApiUserMock)
 
         assertDoesNotThrow { handleAccessToken(token) }
     }

@@ -1,5 +1,6 @@
 package com.boclips.api.gateway.config.proxying
 
+import com.boclips.api.gateway.config.TokenResponse
 import org.springframework.cloud.gateway.route.RouteLocator
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder
 import org.springframework.cloud.gateway.route.builder.filters
@@ -19,7 +20,7 @@ class RoutesConfig {
     fun routeLocator(
         builder: RouteLocatorBuilder,
         props: RoutingProperties,
-        handleAccessTokenFilterProducer: HandleAccessTokenFilterProducer
+        handleAccessTokenFilter: HandleAccessTokenFilter
     ): RouteLocator {
         return builder.routes {
             route {
@@ -222,7 +223,9 @@ class RoutesConfig {
                 path("/v1/token")
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
-                    handleAccessTokenFilterProducer.get(this)
+                    modifyResponseBody(TokenResponse::class.java, TokenResponse::class.java) {
+                        _, body -> handleAccessTokenFilter(body)
+                    }
                 }
                 uri(props.keycloakUrl)
             }
