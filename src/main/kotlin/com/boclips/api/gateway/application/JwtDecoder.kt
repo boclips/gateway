@@ -6,8 +6,8 @@ import mu.KLogging
 
 class JwtDecoder {
     companion object : KLogging() {
-        fun safeDecode(token: String): DecodedJWT? = try {
-            JWT.decode(token)
+        fun safeDecode(token: String?): DecodedJWT? = try {
+            token?.let{ JWT.decode(it) }
         } catch (e: Exception) {
             logger.warn { "Token decoding failed with a cause: ${e.cause}" }
             null
