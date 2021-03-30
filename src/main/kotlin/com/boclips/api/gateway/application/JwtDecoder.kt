@@ -9,7 +9,6 @@ class JwtDecoder {
         fun safeDecode(token: String?): DecodedJWT? = try {
             token?.let{ JWT.decode(it) }
         } catch (e: Exception) {
-            logger.warn(e) { "Token decoding failed with a cause: ${e.cause}" }
             null
         }
     }
