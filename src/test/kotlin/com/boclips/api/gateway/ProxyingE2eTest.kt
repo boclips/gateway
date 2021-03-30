@@ -735,6 +735,21 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
             val response = restTemplate.getForObject("/v1/videos/suggested-search-completions", String::class.java)
             assertThat(response).isEqualTo("hello-from-video-service")
         }
+
+        @Test
+        fun `taxonomies requests are proxied to the video-service`() {
+            videoServiceMock.register(
+                get(urlEqualTo("/v1/taxonomies"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("Content-Type", "text/plain")
+                            .withBody("hello-from-video-service")
+                    )
+            )
+
+            val response = restTemplate.getForObject("/v1/taxonomies", String::class.java)
+            assertThat(response).isEqualTo("hello-from-video-service")
+        }
     }
 
     @Nested
@@ -856,119 +871,122 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         }
     }
 
-    @Test
-    fun `gateway request propagates X-Forwarded-* headers when present`() {
-        videoIngestorMock.register(
-            get(urlEqualTo("/v1/http-feeds/foo"))
-                .willReturn(
-                    aResponse()
-                        .withHeader("Content-Type", "application/hal+json")
-                        .withBody("")
-                )
-        )
+    @Nested
+    inner class Headers {
+        @Test
+        fun `gateway request propagates X-Forwarded- headers when present`() {
+            videoIngestorMock.register(
+                get(urlEqualTo("/v1/http-feeds/foo"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("Content-Type", "application/hal+json")
+                            .withBody("")
+                    )
+            )
 
-        val headers = HttpHeaders().apply {
-            set("X-Forwarded-Host", "example.com")
-            set("X-Forwarded-Port", "443")
-            set("X-Forwarded-Proto", "https")
-        }
-        val entity = HttpEntity(null, headers)
-        restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
-
-        videoIngestorMock.verifyThat(
-            getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
-                .withHeader("X-Forwarded-Host", equalTo("example.com"))
-                .withHeader("X-Forwarded-Proto", equalTo("https"))
-                .withHeader("X-Forwarded-Port", equalTo("443"))
-        )
-    }
-
-    @Test
-    fun `gateway request sets X-Forwarded-* headers when headers not present`() {
-        videoIngestorMock.register(
-            get(urlEqualTo("/v1/http-feeds/foo"))
-                .willReturn(
-                    aResponse()
-                        .withHeader("Content-Type", "application/hal+json")
-                        .withBody("")
-                )
-        )
-
-        val entity = HttpEntity(null, HttpHeaders())
-        restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
-
-        videoIngestorMock.verifyThat(
-            getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
-                .withHeader("X-Forwarded-Host", equalTo("localhost"))
-                .withHeader("X-Forwarded-Proto", equalTo("http"))
-                .withHeader("X-Forwarded-Port", AnythingPattern())
-        )
-    }
-
-    @Test
-    fun `gateway request propagates arbitrary headers when present`() {
-        videoIngestorMock.register(
-            get(urlEqualTo("/v1/http-feeds/foo"))
-                .willReturn(
-                    aResponse()
-                        .withHeader("Content-Type", "application/hal+json")
-                        .withHeader("Content-Disposition", """attachment; filename="i-like-rats.csv"""")
-                        .withBody("")
-                )
-        )
-
-        restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, HttpEntity(null, HttpHeaders()), String::class.java)
-            .apply {
-                assertThat(this.headers["Content-Type"]?.first()).isEqualTo("application/hal+json")
-                assertThat(this.headers["Content-Disposition"]?.first()).isEqualTo("""attachment; filename="i-like-rats.csv"""")
-                assertThat(this.headers["Access-Control-Expose-Headers"]!!).isEqualTo(listOf("*"))
+            val headers = HttpHeaders().apply {
+                set("X-Forwarded-Host", "example.com")
+                set("X-Forwarded-Port", "443")
+                set("X-Forwarded-Proto", "https")
             }
-    }
+            val entity = HttpEntity(null, headers)
+            restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
 
-    @Test
-    fun `gateway request strips origin header if present`() {
-        videoIngestorMock.register(
-            get(urlEqualTo("/v1/http-feeds/foo"))
-                .willReturn(
-                    aResponse()
-                        .withHeader("Content-Type", "application/hal+json")
-                        .withBody("")
-                )
-        )
+            videoIngestorMock.verifyThat(
+                getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
+                    .withHeader("X-Forwarded-Host", equalTo("example.com"))
+                    .withHeader("X-Forwarded-Proto", equalTo("https"))
+                    .withHeader("X-Forwarded-Port", equalTo("443"))
+            )
+        }
 
-        val headers = HttpHeaders().apply { this.origin = "http://localhost:aaa.bbb" }
-        val entity = HttpEntity(null, headers)
-        restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
+        @Test
+        fun `gateway request sets X-Forwarded- headers when headers not present`() {
+            videoIngestorMock.register(
+                get(urlEqualTo("/v1/http-feeds/foo"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("Content-Type", "application/hal+json")
+                            .withBody("")
+                    )
+            )
 
-        videoIngestorMock.verifyThat(
-            getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
-                .withoutHeader("origin")
-        )
-    }
+            val entity = HttpEntity(null, HttpHeaders())
+            restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
 
-    @Test
-    fun `requests get origin headers rewritten`() {
-        videoIngestorMock.register(
-            get(urlEqualTo("/v1/http-feeds/foo"))
-                .willReturn(
-                    aResponse()
-                        .withHeader("Access-Control-Allow-Origin", "*")
-                        .withBody("")
-                )
-        )
+            videoIngestorMock.verifyThat(
+                getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
+                    .withHeader("X-Forwarded-Host", equalTo("localhost"))
+                    .withHeader("X-Forwarded-Proto", equalTo("http"))
+                    .withHeader("X-Forwarded-Port", AnythingPattern())
+            )
+        }
 
-        val headers = HttpHeaders()
-        headers.add("Origin", "http://localhost:aaa.bbb")
-        val response = restTemplate.exchange<String>(
-            "/v1/http-feeds/foo",
-            HttpMethod.GET,
-            HttpEntity(null, headers),
-            String::class.java
-        )
+        @Test
+        fun `gateway request propagates arbitrary headers when present`() {
+            videoIngestorMock.register(
+                get(urlEqualTo("/v1/http-feeds/foo"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("Content-Type", "application/hal+json")
+                            .withHeader("Content-Disposition", """attachment; filename="i-like-rats.csv"""")
+                            .withBody("")
+                    )
+            )
 
-        val allowedOrigins = response.headers["Access-Control-Allow-Origin"]
+            restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, HttpEntity(null, HttpHeaders()), String::class.java)
+                .apply {
+                    assertThat(this.headers["Content-Type"]?.first()).isEqualTo("application/hal+json")
+                    assertThat(this.headers["Content-Disposition"]?.first()).isEqualTo("""attachment; filename="i-like-rats.csv"""")
+                    assertThat(this.headers["Access-Control-Expose-Headers"]!!).isEqualTo(listOf("*"))
+                }
+        }
 
-        assertThat(allowedOrigins).contains("http://localhost:aaa.bbb")
-        assertThat(allowedOrigins).doesNotContain("*")
+        @Test
+        fun `gateway request strips origin header if present`() {
+            videoIngestorMock.register(
+                get(urlEqualTo("/v1/http-feeds/foo"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("Content-Type", "application/hal+json")
+                            .withBody("")
+                    )
+            )
+
+            val headers = HttpHeaders().apply { this.origin = "http://localhost:aaa.bbb" }
+            val entity = HttpEntity(null, headers)
+            restTemplate.exchange("/v1/http-feeds/foo", HttpMethod.GET, entity, String::class.java)
+
+            videoIngestorMock.verifyThat(
+                getRequestedFor(urlEqualTo("/v1/http-feeds/foo"))
+                    .withoutHeader("origin")
+            )
+        }
+
+        @Test
+        fun `requests get origin headers rewritten`() {
+            videoIngestorMock.register(
+                get(urlEqualTo("/v1/http-feeds/foo"))
+                    .willReturn(
+                        aResponse()
+                            .withHeader("Access-Control-Allow-Origin", "*")
+                            .withBody("")
+                    )
+            )
+
+            val headers = HttpHeaders()
+            headers.add("Origin", "http://localhost:aaa.bbb")
+            val response = restTemplate.exchange<String>(
+                "/v1/http-feeds/foo",
+                HttpMethod.GET,
+                HttpEntity(null, headers),
+                String::class.java
+            )
+
+            val allowedOrigins = response.headers["Access-Control-Allow-Origin"]
+
+            assertThat(allowedOrigins).contains("http://localhost:aaa.bbb")
+            assertThat(allowedOrigins).doesNotContain("*")
+        }
     }
 }

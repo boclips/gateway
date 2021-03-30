@@ -92,6 +92,26 @@ class RoutesConfig {
                 uri(props.userServiceUrl)
             }
             route {
+                path("/v1/events/page-render")
+                uri(props.userServiceUrl)
+            }
+            route {
+                path("/v1/events/platform-interaction")
+                uri(props.userServiceUrl)
+            }
+            route {
+                path("/v1/events/expired-user-access")
+                uri(props.userServiceUrl)
+            }
+            route {
+                path("/v1/integrations/**")
+                uri(props.userServiceUrl)
+            }
+            route {
+                path("/v1/admin/users/actions/**")
+                uri(props.userServiceUrl)
+            }
+            route {
                 path("/v1/videos/**")
                 uri(props.videoServiceUrl)
             }
@@ -144,22 +164,6 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
-                path("/v1/events/page-render")
-                uri(props.userServiceUrl)
-            }
-            route {
-                path("/v1/events/platform-interaction")
-                uri(props.userServiceUrl)
-            }
-            route {
-                path("/v1/events/expired-user-access")
-                uri(props.userServiceUrl)
-            }
-            route {
-                path("/v1/integrations/**")
-                uri(props.userServiceUrl)
-            }
-            route {
                 path("/v1/events/playback/batch")
                 uri(props.videoServiceUrl)
             }
@@ -174,14 +178,6 @@ class RoutesConfig {
             route {
                 path("/v1/collections/**")
                 uri(props.videoServiceUrl)
-            }
-            route {
-                path("/v1/orders/**")
-                uri(props.orderServiceUrl)
-            }
-            route {
-                path("/v1/cart/**")
-                uri(props.orderServiceUrl)
             }
             route {
                 path("/v1/channels/**")
@@ -212,8 +208,16 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
-                path("/v1/admin/users/actions/**")
-                uri(props.userServiceUrl)
+                path("/v1/taxonomies")
+                uri(props.videoServiceUrl)
+            }
+            route {
+                path("/v1/orders/**")
+                uri(props.orderServiceUrl)
+            }
+            route {
+                path("/v1/cart/**")
+                uri(props.orderServiceUrl)
             }
             route {
                 path("/v1/admin/orders/actions/**")
