@@ -212,6 +212,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/categories")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/orders/**")
                 uri(props.orderServiceUrl)
             }
