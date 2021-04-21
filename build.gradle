@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        kotlinVersion = '1.4.32'
-        springBootVersion = '2.4.5'
+        kotlinVersion = '1.4.21'
+        springBootVersion = '2.3.9.RELEASE'
     }
     ext['junit-jupiter.version'] = '5.5.2'
 
@@ -17,7 +17,7 @@ buildscript {
 }
 
 ext {
-	springCloudVersion = '2020.0.1'
+	springCloudVersion = 'Hoxton.SR9'
 }
 
 apply plugin: 'kotlin'
@@ -76,7 +76,7 @@ dependencies {
 	implementation('io.sentry:sentry-logback:4.3.0')
 	implementation('io.sentry:sentry-spring-boot-starter:4.3.0')
 	implementation('io.opentracing.contrib:opentracing-spring-jaeger-cloud-starter:3.2.2')
-	implementation("com.github.boclips:user-service:v338")
+	implementation("com.github.boclips:user-service:v314")
 	// Required by user-service client
 	implementation 'io.github.openfeign:feign-core:11.0'
 	implementation("io.github.openfeign:feign-okhttp:11.0")
