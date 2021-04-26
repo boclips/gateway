@@ -10,8 +10,10 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.http.*
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.OPTIONS
+import org.springframework.test.context.TestPropertySource
 import org.springframework.web.client.HttpClientErrorException
 
+@TestPropertySource(properties = ["gateway.cors.allowedOrigins=http://localhost*"])
 class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
 
     private val testPath = "/v1/http-feeds/foo"
@@ -19,7 +21,8 @@ class CorsConfigIntegrationTest : AbstractSpringIntegrationTest() {
     @ParameterizedTest
     @ValueSource(strings = [
         "http://localhost:aaa.bbb",
-        "http://localhost:ccc.ddd"
+        "http://localhost:ccc.ddd",
+        "http://localhost:i-am-a-wildcard"
     ])
     fun `allows requests with known origin`(host: String) {
         videoIngestorMock.register(get(urlEqualTo(testPath))
