@@ -1,16 +1,20 @@
 package com.boclips.api.gateway.config.proxying
 
 import com.boclips.api.gateway.config.TokenResponse
+import io.netty.handler.codec.http.HttpResponseStatus.BAD_GATEWAY
+import mu.KLogging
 import org.springframework.cloud.gateway.route.RouteLocator
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder
 import org.springframework.cloud.gateway.route.builder.filters
 import org.springframework.cloud.gateway.route.builder.routes
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import reactor.core.publisher.Mono
+
 
 @Configuration
 class RoutesConfig {
-    companion object {
+    companion object : KLogging() {
         private const val REALM = "boclips"
         const val RETRIEVE_TOKEN_PATH = "/auth/realms/$REALM/protocol/openid-connect/token"
         const val AUTHORIZE_PATH = "/auth/realms/$REALM/protocol/openid-connect/auth"
@@ -226,9 +230,23 @@ class RoutesConfig {
             route {
                 path("/v1/token")
                 filters {
+                    filter { exchange, chain ->
+                        chain.filter(exchange).doOnRequest {
+                            if (exchange.response.statusCode === BAD_GATEWAY) {
+                                modifyRequestBody<String, String> { originalBody ->
+                                    if (originalBody != null) {
+                                        logger.debug("Request body {}", originalBody);
+                                        Mono.just(originalBody);
+                                    } else {
+                                        Mono.empty();
+                                    }
+                                }
+                            }
+                        }
+                    }
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
-                    modifyResponseBody(TokenResponse::class.java, TokenResponse::class.java) {
-                        _, body -> handleAccessTokenFilter(body)
+                    modifyResponseBody(TokenResponse::class.java, TokenResponse::class.java) { _, body ->
+                        handleAccessTokenFilter(body)
                     }
                 }
                 uri(props.keycloakUrl)
