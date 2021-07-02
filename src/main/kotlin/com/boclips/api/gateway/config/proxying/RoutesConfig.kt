@@ -1,16 +1,20 @@
 package com.boclips.api.gateway.config.proxying
 
 import com.boclips.api.gateway.config.TokenResponse
+import io.netty.handler.codec.http.HttpResponseStatus
+import mu.KLogging
 import org.springframework.cloud.gateway.route.RouteLocator
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder
 import org.springframework.cloud.gateway.route.builder.filters
 import org.springframework.cloud.gateway.route.builder.routes
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import reactor.core.publisher.Mono
+import java.net.URI
 
 @Configuration
 class RoutesConfig {
-    companion object {
+    companion object : KLogging() {
         private const val REALM = "boclips"
         const val RETRIEVE_TOKEN_PATH = "/auth/realms/$REALM/protocol/openid-connect/token"
         const val AUTHORIZE_PATH = "/auth/realms/$REALM/protocol/openid-connect/auth"
@@ -227,8 +231,18 @@ class RoutesConfig {
                 path("/v1/token")
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
-                    modifyResponseBody(TokenResponse::class.java, TokenResponse::class.java) {
-                        _, body -> handleAccessTokenFilter(body)
+                    modifyRequestBody(String::class.java, String::class.java) { exchange, originalBody ->
+                        if (exchange.response.statusCode?.is5xxServerError == true && originalBody != null) {
+                            val regex = "client_id=(.*-private)".toRegex()
+                            logger.info("Request body {}", regex.find(originalBody)?.value)
+                        }
+
+                        originalBody?.let {
+                            Mono.just(it)
+                        } ?: Mono.empty()
+                    }
+                    modifyResponseBody(TokenResponse::class.java, TokenResponse::class.java) { _, body ->
+                        handleAccessTokenFilter(body)
                     }
                 }
                 uri(props.keycloakUrl)
