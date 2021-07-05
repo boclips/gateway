@@ -229,16 +229,6 @@ class RoutesConfig {
                 path("/v1/token")
                 filters {
                     rewritePath("/v1/token", RETRIEVE_TOKEN_PATH)
-                    modifyRequestBody(String::class.java, String::class.java) { _, originalBody ->
-                        if (originalBody != null) {
-                            val regex = "client_id=(.*-private)".toRegex()
-                            logger.info("Request body {}", regex.find(originalBody)?.value)
-
-                            Mono.just(originalBody)
-                        } else {
-                            Mono.empty()
-                        }
-                    }
                     modifyResponseBody(TokenResponse::class.java, TokenResponse::class.java) { _, body ->
                         handleAccessTokenFilter(body)
                     }
