@@ -437,7 +437,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
         }
 
         @Test
-        fun `videos are proxied to age-ranges`() {
+        fun `age-ranges are proxied to videos`() {
             videoServiceMock.register(
                 get(urlEqualTo("/v1/age-ranges"))
                     .willReturn(
