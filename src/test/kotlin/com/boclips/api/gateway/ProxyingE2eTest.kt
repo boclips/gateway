@@ -337,6 +337,17 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
     @Nested
     inner class VideoServiceProxies {
         @Test
+        fun `video feeds are proxied to video-service`() {
+            videoServiceMock.register(
+                get(urlEqualTo("/v1/feed/videos"))
+                    .willReturn(aResponse().withHeader("Content-Type", "text/plain").withBody("hello from the other side"))
+            )
+
+            val response = restTemplate.getForObject("/v1/feed/videos", String::class.java)
+            assertThat(response).isEqualTo("hello from the other side")
+        }
+
+        @Test
         fun `content partner contracts are proxied to video-service`() {
             videoServiceMock.register(
                 get(urlEqualTo("/v1/contracts"))

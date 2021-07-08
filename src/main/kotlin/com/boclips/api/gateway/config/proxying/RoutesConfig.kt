@@ -210,6 +210,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/feed/videos")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/categories")
                 uri(props.videoServiceUrl)
             }
