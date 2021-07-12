@@ -318,6 +318,7 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
             val response = restTemplate.getForObject("/v1/integrations", String::class.java)
             assertThat(response).isEqualTo("hello-from-user-service")
         }
+
         @Test
         fun `api-users proxied to user-service`() {
             userServiceMock.register(
@@ -344,6 +345,17 @@ class ProxyingE2eTest : AbstractSpringIntegrationTest() {
             )
 
             val response = restTemplate.getForObject("/v1/feed/videos", String::class.java)
+            assertThat(response).isEqualTo("hello from the other side")
+        }
+
+        @Test
+        fun `custom-metadata is proxied to video-service`() {
+            videoServiceMock.register(
+                get(urlEqualTo("/v1/custom-metadata"))
+                    .willReturn(aResponse().withHeader("Content-Type", "text/plain").withBody("hello from the other side"))
+            )
+
+            val response = restTemplate.getForObject("/v1/custom-metadata", String::class.java)
             assertThat(response).isEqualTo("hello from the other side")
         }
 

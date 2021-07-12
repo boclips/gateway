@@ -214,6 +214,10 @@ class RoutesConfig {
                 uri(props.videoServiceUrl)
             }
             route {
+                path("/v1/custom-metadata")
+                uri(props.videoServiceUrl)
+            }
+            route {
                 path("/v1/categories")
                 uri(props.videoServiceUrl)
             }
